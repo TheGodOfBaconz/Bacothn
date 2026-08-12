@@ -194,10 +194,6 @@ body {
 }
 
 
-/* ========================================
-   TITLE GLITCH
-======================================== */
-
 #bacothn-title.glitch {
 
     animation:
@@ -587,7 +583,7 @@ footer p {
 
 
 /* ========================================
-   SOCIAL LINKS PAGE HEADER
+   LINKS PAGE HEADER
 ======================================== */
 
 .links-header {
@@ -913,10 +909,6 @@ footer p {
 }
 
 
-/* ========================================
-   BOT NOTE
-======================================== */
-
 .bot-note {
 
     max-width: 650px;
@@ -961,10 +953,6 @@ footer p {
 
 }
 
-
-/* ========================================
-   COPY BUTTON
-======================================== */
 
 .copy-button {
 
@@ -1021,10 +1009,6 @@ footer p {
 }
 
 
-/* ========================================
-   LINKS FOOTER
-======================================== */
-
 .links-footer {
 
     padding:
@@ -1067,7 +1051,574 @@ footer p {
 
 
 /* ========================================
-   MOBILE
+   PROFILE PAGE
+======================================== */
+
+.profile-page-body {
+
+    position: relative;
+
+    min-height: 100vh;
+
+    background: #030303;
+
+    overflow: hidden;
+}
+
+
+/* ========================================
+   FALLING WORD BACKGROUND
+======================================== */
+
+.falling-background {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+
+.falling-word {
+
+    position: absolute;
+
+    top: -80px;
+
+    left: 0;
+
+    color: #ff1616;
+
+    font-size: 14px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    opacity: 0.32;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 0 12px
+        rgba(255, 0, 0, 0.25);
+
+    animation-name:
+        fallingWord;
+
+    animation-timing-function:
+        linear;
+
+    animation-fill-mode:
+        forwards;
+
+    user-select: none;
+}
+
+
+@keyframes fallingWord {
+
+    from {
+
+        transform:
+            translateY(-100px)
+            rotate(var(--rotation));
+
+    }
+
+    to {
+
+        transform:
+            translateY(calc(100vh + 150px))
+            rotate(var(--rotation));
+
+    }
+
+}
+
+
+/* ========================================
+   PROFILE HEADER
+======================================== */
+
+.profile-header {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 76px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+
+    padding:
+        0
+        35px;
+
+    background:
+        rgba(3, 3, 3, 0.45);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    z-index: 20;
+
+}
+
+
+.profile-header-logo {
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 17px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    transition:
+        color 0.2s ease;
+
+}
+
+
+.profile-header-logo:hover {
+
+    color: #ff1616;
+
+}
+
+
+.profile-header-title {
+
+    color: #eeeeee;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+.profile-menu-button {
+
+    justify-self: end;
+
+    color: #999999;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    padding:
+        10px
+        15px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 6px;
+
+    transition:
+        color 0.2s ease,
+
+        background 0.2s ease,
+
+        border-color 0.2s ease;
+
+}
+
+
+.profile-menu-button:hover {
+
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-color:
+        rgba(255, 255, 255, 0.25);
+
+}
+
+
+/* ========================================
+   PROFILE MAIN
+======================================== */
+
+.profile-main {
+
+    position: relative;
+
+    z-index: 5;
+
+    min-height: 100vh;
+
+    padding:
+        140px
+        25px
+        80px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+/* ========================================
+   PROFILE GLASS PLATE
+======================================== */
+
+.profile-plate {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 900px;
+
+    padding:
+        65px;
+
+    background:
+        rgba(8, 8, 8, 0.40);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 28px;
+
+    /*
+        Blurs the falling background
+        behind the plate.
+    */
+
+    backdrop-filter:
+        blur(35px);
+
+    -webkit-backdrop-filter:
+        blur(35px);
+
+    box-shadow:
+
+        0 30px 100px
+        rgba(0, 0, 0, 0.55),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.05);
+
+    overflow: hidden;
+
+}
+
+
+.profile-plate::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 0, 0, 0.07),
+            transparent 35%,
+            rgba(0, 60, 255, 0.06)
+        );
+
+}
+
+
+/* ========================================
+   PROFILE CONTENT
+======================================== */
+
+.profile-content {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.profile-eyebrow {
+
+    color: #777777;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* ========================================
+   PROFILE NAME
+======================================== */
+
+.profile-name {
+
+    font-size:
+        clamp(
+            45px,
+            8vw,
+            88px
+        );
+
+    font-weight: 950;
+
+    letter-spacing: -5px;
+
+    line-height: 0.95;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5b0000 0%,
+            #ff1515 25%,
+            #173cff 50%,
+            #ff1515 75%,
+            #5b0000 100%
+        );
+
+    background-size:
+        300% 100%;
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    -webkit-text-fill-color:
+        transparent;
+
+    animation:
+        profileNameColor
+        4s
+        ease-in-out
+        infinite;
+
+    text-shadow:
+        0 0 35px
+        rgba(255, 0, 0, 0.12);
+
+}
+
+
+@keyframes profileNameColor {
+
+    0% {
+
+        background-position:
+            0% 50%;
+
+    }
+
+    50% {
+
+        background-position:
+            100% 50%;
+
+    }
+
+    100% {
+
+        background-position:
+            0% 50%;
+
+    }
+
+}
+
+
+/* ========================================
+   PROFILE LINE
+======================================== */
+
+.profile-line {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin:
+        35px
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.5),
+            rgba(255, 255, 255, 0.08),
+            rgba(0, 60, 255, 0.5)
+        );
+
+}
+
+
+/* ========================================
+   PROFILE DESCRIPTION
+======================================== */
+
+.profile-description {
+
+    max-width: 780px;
+
+    color: #b0b0b0;
+
+    font-size: 16px;
+
+    line-height: 1.9;
+
+}
+
+
+/* ========================================
+   PROFILE NOTE
+======================================== */
+
+.profile-note {
+
+    margin-top: 30px;
+
+    color: #ff3030;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* ========================================
+   PROFILE MUSIC
+======================================== */
+
+.profile-music {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 40px;
+
+}
+
+
+.music-button {
+
+    padding:
+        11px
+        17px;
+
+    background:
+        rgba(255, 0, 0, 0.08);
+
+    color: #ff3030;
+
+    border:
+        1px solid
+        rgba(255, 40, 40, 0.3);
+
+    border-radius: 7px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+
+        border-color 0.2s ease,
+
+        color 0.2s ease;
+
+}
+
+
+.music-button:hover {
+
+    background:
+        rgba(255, 0, 0, 0.16);
+
+    border-color:
+        rgba(255, 50, 50, 0.6);
+
+    color: #ffffff;
+
+}
+
+
+.music-status {
+
+    color: #555555;
+
+    font-size: 10px;
+
+    font-family:
+        monospace;
+
+}
+
+
+/* ========================================
+   PROFILE MOBILE
 ======================================== */
 
 @media (max-width: 700px) {
@@ -1214,5 +1765,109 @@ footer p {
         padding: 24px;
 
     }
+
+
+    /* PROFILE MOBILE */
+
+    .profile-header {
+
+        height: 68px;
+
+        grid-template-columns:
+            auto
+            1fr
+            auto;
+
+        padding:
+            0
+            16px;
+
+    }
+
+
+    .profile-header-logo {
+
+        font-size: 14px;
+
+        letter-spacing: 2px;
+
+    }
+
+
+    .profile-header-title {
+
+        font-size: 12px;
+
+        text-align: center;
+
+    }
+
+
+    .profile-menu-button {
+
+        padding:
+            8px
+            10px;
+
+        font-size: 10px;
+
+    }
+
+
+    .profile-main {
+
+        padding:
+            110px
+            16px
+            60px;
+
+    }
+
+
+    .profile-plate {
+
+        padding:
+            35px
+            25px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .profile-name {
+
+        font-size:
+            clamp(
+                42px,
+                13vw,
+                70px
+            );
+
+        letter-spacing:
+            -3px;
+
+    }
+
+
+    .profile-description {
+
+        font-size: 14px;
+
+        line-height: 1.8;
+
+    }
+
+
+    .profile-music {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
 
 }
