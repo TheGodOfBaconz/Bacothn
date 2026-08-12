@@ -10,13 +10,15 @@ html {
 
 body {
     background: #080808;
-    color: #eee;
+    color: #eeeeee;
     font-family: Arial, Helvetica, sans-serif;
     overflow-x: hidden;
 }
 
 
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar {
     position: fixed;
@@ -35,6 +37,7 @@ body {
     background: rgba(8, 8, 8, 0.78);
 
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
     border-bottom: 1px solid #1c1c1c;
 
@@ -64,7 +67,7 @@ body {
 
     font-size: 13px;
 
-    transition: 0.2s;
+    transition: color 0.2s ease;
 }
 
 .navbar nav a:hover {
@@ -72,7 +75,9 @@ body {
 }
 
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero {
     min-height: 100vh;
@@ -97,6 +102,7 @@ body {
 }
 
 .hero-content {
+    width: 100%;
     max-width: 950px;
 }
 
@@ -112,12 +118,14 @@ body {
 }
 
 
-/* BACOTHN GLITCH TITLE */
+/* =========================
+   BACOTHN TITLE
+========================= */
 
 #bacothn-title {
     position: relative;
 
-    color: #ff1a1a;
+    color: #ff1616;
 
     font-size: clamp(60px, 13vw, 150px);
 
@@ -129,47 +137,60 @@ body {
 
     min-height: 1em;
 
+    white-space: nowrap;
+
     text-shadow:
-        0 0 12px rgba(255, 0, 0, 0.25),
-        0 0 35px rgba(255, 0, 0, 0.08);
+        0 0 10px rgba(255, 0, 0, 0.3),
+        0 0 30px rgba(255, 0, 0, 0.12);
+
+    user-select: none;
 }
 
 
-/* SMALL GLITCH EFFECT */
+/* GLITCH TRANSITION */
 
 #bacothn-title.glitch {
-    animation: glitch 0.12s steps(2, end);
+    animation: titleGlitch 0.12s steps(2, end);
 }
 
-@keyframes glitch {
+@keyframes titleGlitch {
 
     0% {
-        transform: translate(0);
+        transform: translate(0, 0);
         opacity: 1;
     }
 
-    25% {
-        transform: translate(-2px, 1px);
+    20% {
+        transform: translate(-3px, 1px);
+        opacity: 0.75;
+    }
+
+    40% {
+        transform: translate(3px, -1px);
+        opacity: 1;
+    }
+
+    60% {
+        transform: translate(-2px, 0);
         opacity: 0.8;
     }
 
-    50% {
-        transform: translate(2px, -1px);
-        opacity: 1;
-    }
-
-    75% {
-        transform: translate(-1px, 0);
-        opacity: 0.85;
+    80% {
+        transform: translate(2px, 1px);
+        opacity: 0.9;
     }
 
     100% {
-        transform: translate(0);
+        transform: translate(0, 0);
         opacity: 1;
     }
 
 }
 
+
+/* =========================
+   SUBTITLE
+========================= */
 
 .subtitle {
     max-width: 550px;
@@ -184,7 +205,9 @@ body {
 }
 
 
-/* BUTTONS */
+/* =========================
+   BUTTONS
+========================= */
 
 .buttons {
     display: flex;
@@ -207,33 +230,40 @@ body {
 
     font-weight: bold;
 
-    transition: 0.2s;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.primary {
+.button.primary {
     background: white;
 
     color: black;
 }
 
-.primary:hover {
+.button.primary:hover {
     transform: translateY(-3px);
 }
 
-.secondary {
+.button.secondary {
     color: white;
 
     border: 1px solid #333;
 }
 
-.secondary:hover {
+.button.secondary:hover {
     background: #151515;
 
     border-color: #555;
+
+    transform: translateY(-3px);
 }
 
 
-/* SCROLL */
+/* =========================
+   SCROLL HINT
+========================= */
 
 .scroll-hint {
     position: absolute;
@@ -248,7 +278,9 @@ body {
 }
 
 
-/* SECTIONS */
+/* =========================
+   SECTIONS
+========================= */
 
 .section {
     max-width: 1150px;
@@ -269,7 +301,9 @@ body {
 }
 
 
-/* QUICK CARDS */
+/* =========================
+   QUICK LINKS
+========================= */
 
 .quick-links {
     display: grid;
@@ -292,7 +326,10 @@ body {
 
     text-decoration: none;
 
-    transition: 0.25s;
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .quick-card:hover {
@@ -330,7 +367,9 @@ body {
 }
 
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer {
     padding: 70px 7% 40px;
@@ -372,6 +411,8 @@ footer p {
     text-decoration: none;
 
     font-size: 12px;
+
+    transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
@@ -383,7 +424,156 @@ footer p {
 }
 
 
-/* MOBILE */
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-page {
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 130px 6% 80px;
+}
+
+.profile-card {
+    width: 100%;
+
+    max-width: 850px;
+
+    padding: 45px;
+
+    background: #0d0d0d;
+
+    border: 1px solid #202020;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 20px 80px rgba(0, 0, 0, 0.35);
+}
+
+.profile-top {
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #151515;
+
+    border: 1px solid #333;
+
+    border-radius: 50%;
+
+    color: #ff1616;
+
+    font-size: 38px;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 0 30px rgba(255, 0, 0, 0.08);
+}
+
+.profile-top h1 {
+    font-size: clamp(32px, 6vw, 55px);
+
+    letter-spacing: -2px;
+}
+
+.profile-subtitle {
+    color: #666;
+
+    margin-top: 8px;
+
+    font-size: 14px;
+}
+
+.profile-divider {
+    height: 1px;
+
+    background: #222;
+
+    margin: 40px 0;
+}
+
+.profile-info {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.profile-item {
+    padding: 20px;
+
+    background: #111;
+
+    border: 1px solid #1d1d1d;
+
+    border-radius: 8px;
+}
+
+.profile-item span {
+    color: #555;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+.profile-item p {
+    color: #aaa;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-top: 12px;
+}
+
+.profile-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 35px;
+}
+
+
+/* =========================
+   PAGE SECTION
+========================= */
+
+.page-section {
+    min-height: 100vh;
+
+    padding-top: 150px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media (max-width: 750px) {
 
@@ -422,4 +612,34 @@ footer p {
     .button {
         width: 100%;
     }
+
+    .profile-card {
+        padding: 28px;
+    }
+
+    .profile-top {
+        align-items: flex-start;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+
+        font-size: 28px;
+    }
+
+    .profile-info {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-buttons {
+        flex-direction: column;
+    }
+
+    .profile-buttons .button {
+        width: 100%;
+
+        text-align: center;
+    }
+
 }
