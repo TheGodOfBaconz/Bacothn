@@ -323,21 +323,6 @@ body {
 }
 
 
-.button.primary {
-    background: #ffffff;
-
-    color: #000000;
-}
-
-
-.button.primary:hover {
-
-    transform:
-        translateY(-3px);
-
-}
-
-
 .button.secondary {
 
     color: #ffffff;
@@ -583,7 +568,7 @@ footer p {
 
 
 /* ========================================
-   LINKS PAGE HEADER
+   LINKS PAGE
 ======================================== */
 
 .links-header {
@@ -677,57 +662,17 @@ footer p {
 
 .links-header-right {
 
-    display: flex;
-
-    justify-content:
-        flex-end;
+    display: none;
 
 }
 
 
 .menu-button {
 
-    color: #999999;
-
-    text-decoration: none;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    padding:
-        10px
-        15px;
-
-    border:
-        1px solid #292929;
-
-    border-radius: 6px;
-
-    transition:
-        color 0.2s ease,
-
-        background 0.2s ease,
-
-        border-color 0.2s ease;
+    display: none;
 
 }
 
-
-.menu-button:hover {
-
-    color: #ffffff;
-
-    background: #151515;
-
-    border-color: #444444;
-
-}
-
-
-/* ========================================
-   SOCIAL LINKS PAGE
-======================================== */
 
 .links-main {
 
@@ -813,10 +758,6 @@ footer p {
 }
 
 
-/* ========================================
-   SOCIAL LINK ITEMS
-======================================== */
-
 .social-links-list {
 
     display: flex;
@@ -890,21 +831,12 @@ footer p {
 
     word-break: break-word;
 
-    transition:
-        color 0.2s ease,
-
-        text-shadow 0.2s ease;
-
 }
 
 
 .social-link:hover {
 
     color: #ff4a4a;
-
-    text-shadow:
-        0 0 12px
-        rgba(255, 0, 0, 0.25);
 
 }
 
@@ -979,13 +911,6 @@ footer p {
 
     cursor: pointer;
 
-    transition:
-        color 0.2s ease,
-
-        background 0.2s ease,
-
-        border-color 0.2s ease;
-
 }
 
 
@@ -994,8 +919,6 @@ footer p {
     color: #ffffff;
 
     background: #151515;
-
-    border-color: #444444;
 
 }
 
@@ -1051,7 +974,7 @@ footer p {
 
 
 /* ========================================
-   PROFILE PAGE
+   PROFILE BACKGROUND
 ======================================== */
 
 .profile-page-body {
@@ -1063,12 +986,9 @@ footer p {
     background: #030303;
 
     overflow: hidden;
+
 }
 
-
-/* ========================================
-   FALLING WORD BACKGROUND
-======================================== */
 
 .falling-background {
 
@@ -1077,6 +997,7 @@ footer p {
     inset: 0;
 
     width: 100%;
+
     height: 100%;
 
     overflow: hidden;
@@ -1084,6 +1005,7 @@ footer p {
     z-index: 0;
 
     pointer-events: none;
+
 }
 
 
@@ -1121,6 +1043,7 @@ footer p {
         forwards;
 
     user-select: none;
+
 }
 
 
@@ -1203,16 +1126,6 @@ footer p {
 
     letter-spacing: 3px;
 
-    transition:
-        color 0.2s ease;
-
-}
-
-
-.profile-header-logo:hover {
-
-    color: #ff1616;
-
 }
 
 
@@ -1225,51 +1138,6 @@ footer p {
     font-weight: 700;
 
     letter-spacing: 1px;
-
-}
-
-
-.profile-menu-button {
-
-    justify-self: end;
-
-    color: #999999;
-
-    text-decoration: none;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    padding:
-        10px
-        15px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.12);
-
-    border-radius: 6px;
-
-    transition:
-        color 0.2s ease,
-
-        background 0.2s ease,
-
-        border-color 0.2s ease;
-
-}
-
-
-.profile-menu-button:hover {
-
-    color: #ffffff;
-
-    background:
-        rgba(255, 255, 255, 0.06);
-
-    border-color:
-        rgba(255, 255, 255, 0.25);
 
 }
 
@@ -1315,8 +1183,13 @@ footer p {
     padding:
         65px;
 
+    /*
+        75% transparent.
+        25% dark glass remains.
+    */
+
     background:
-        rgba(8, 8, 8, 0.40);
+        rgba(8, 8, 8, 0.25);
 
     border:
         1px solid
@@ -1325,20 +1198,19 @@ footer p {
     border-radius: 28px;
 
     /*
-        Blurs the falling background
-        behind the plate.
+        Exactly 30px background blur.
     */
 
     backdrop-filter:
-        blur(35px);
+        blur(30px);
 
     -webkit-backdrop-filter:
-        blur(35px);
+        blur(30px);
 
     box-shadow:
 
         0 30px 100px
-        rgba(0, 0, 0, 0.55),
+        rgba(0, 0, 0, 0.45),
 
         inset 0 1px 0
         rgba(255, 255, 255, 0.05);
@@ -1361,9 +1233,9 @@ footer p {
     background:
         linear-gradient(
             135deg,
-            rgba(255, 0, 0, 0.07),
+            rgba(255, 0, 0, 0.045),
             transparent 35%,
-            rgba(0, 60, 255, 0.06)
+            rgba(0, 60, 255, 0.04)
         );
 
 }
@@ -1403,18 +1275,24 @@ footer p {
 
 .profile-name {
 
+    width: 100%;
+
+    max-width: 100%;
+
     font-size:
         clamp(
-            45px,
-            8vw,
-            88px
+            38px,
+            7vw,
+            82px
         );
 
     font-weight: 950;
 
-    letter-spacing: -5px;
+    letter-spacing: -4px;
 
-    line-height: 0.95;
+    line-height: 1;
+
+    white-space: nowrap;
 
     background:
         linear-gradient(
@@ -1443,10 +1321,6 @@ footer p {
         4s
         ease-in-out
         infinite;
-
-    text-shadow:
-        0 0 35px
-        rgba(255, 0, 0, 0.12);
 
 }
 
@@ -1582,13 +1456,6 @@ footer p {
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-
-        border-color 0.2s ease,
-
-        color 0.2s ease;
-
 }
 
 
@@ -1596,9 +1463,6 @@ footer p {
 
     background:
         rgba(255, 0, 0, 0.16);
-
-    border-color:
-        rgba(255, 50, 50, 0.6);
 
     color: #ffffff;
 
@@ -1618,7 +1482,7 @@ footer p {
 
 
 /* ========================================
-   PROFILE MOBILE
+   MOBILE
 ======================================== */
 
 @media (max-width: 700px) {
@@ -1698,7 +1562,6 @@ footer p {
         height: 68px;
 
         grid-template-columns:
-            auto
             1fr
             auto;
 
@@ -1709,29 +1572,17 @@ footer p {
     }
 
 
-    .links-logo {
+    .links-header-left {
 
-        font-size: 14px;
-
-        letter-spacing: 2px;
+        justify-content:
+            flex-start;
 
     }
 
 
     .links-header-title {
 
-        font-size: 12px;
-
-    }
-
-
-    .menu-button {
-
-        padding:
-            8px
-            10px;
-
-        font-size: 10px;
+        display: none;
 
     }
 
@@ -1767,14 +1618,13 @@ footer p {
     }
 
 
-    /* PROFILE MOBILE */
+    /* PROFILE */
 
     .profile-header {
 
         height: 68px;
 
         grid-template-columns:
-            auto
             1fr
             auto;
 
@@ -1785,31 +1635,9 @@ footer p {
     }
 
 
-    .profile-header-logo {
-
-        font-size: 14px;
-
-        letter-spacing: 2px;
-
-    }
-
-
     .profile-header-title {
 
-        font-size: 12px;
-
-        text-align: center;
-
-    }
-
-
-    .profile-menu-button {
-
-        padding:
-            8px
-            10px;
-
-        font-size: 10px;
+        display: none;
 
     }
 
@@ -1839,13 +1667,13 @@ footer p {
 
         font-size:
             clamp(
-                42px,
-                13vw,
+                34px,
+                11vw,
                 70px
             );
 
         letter-spacing:
-            -3px;
+            -2px;
 
     }
 
@@ -1868,6 +1696,5 @@ footer p {
             column;
 
     }
-
 
 }
