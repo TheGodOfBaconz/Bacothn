@@ -22,17 +22,16 @@
         href="style.css"
     >
 
-
-    <!-- ========================================
-         BACON CLICKER STYLES
-    ========================================= -->
-
     <style>
 
+        /* ========================================
+           BACON LAUNCHER
+        ======================================== */
+
         .bacon-launcher {
-            margin: 35px auto 0;
             width: 100%;
             max-width: 650px;
+            margin: 35px auto 0;
         }
 
         .bacon-play-button {
@@ -50,6 +49,8 @@
             letter-spacing: 2px;
 
             cursor: pointer;
+
+            -webkit-tap-highlight-color: transparent;
 
             transition:
                 background 0.2s ease,
@@ -69,13 +70,13 @@
         }
 
         .bacon-play-button:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
 
 
-        /* ====================================
-           GAME WINDOW
-        ==================================== */
+        /* ========================================
+           GAME
+        ======================================== */
 
         .bacon-game {
             position: relative;
@@ -86,7 +87,6 @@
             min-height: 480px;
 
             margin: 25px auto 0;
-
             padding: 30px;
 
             background:
@@ -97,46 +97,33 @@
                     #050505 100%
                 );
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.1);
-
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
 
             overflow: hidden;
 
-            opacity: 0;
-            transform: scale(0.7);
-
-            pointer-events: none;
-
             display: none;
 
+            opacity: 0;
+
+            transform:
+                scale(0.55)
+                rotate(-2deg);
+
             box-shadow:
-                0 25px 80px
-                rgba(0, 0, 0, 0.55),
+                0 25px 80px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
-                inset 0 1px 0
-                rgba(255, 255, 255, 0.04);
+            isolation: isolate;
         }
-
-
-        /* ====================================
-           GAME OPEN ANIMATION
-        ==================================== */
 
         .bacon-game.opening {
             display: block;
 
             animation:
                 baconGameOpen
-                0.8s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                )
+                0.75s
+                cubic-bezier(0.16, 1, 0.3, 1)
                 forwards;
         }
 
@@ -147,20 +134,20 @@
 
                 transform:
                     scale(0.55)
-                    rotate(-2deg);
+                    rotate(-3deg);
             }
 
-            35% {
+            40% {
                 opacity: 1;
 
                 transform:
-                    scale(1.03)
+                    scale(1.04)
                     rotate(1deg);
             }
 
-            60% {
+            70% {
                 transform:
-                    scale(0.97)
+                    scale(0.98)
                     rotate(-0.5deg);
             }
 
@@ -175,16 +162,16 @@
         }
 
 
-        /* ====================================
-           CRACK EFFECT
-        ==================================== */
+        /* ========================================
+           CRACKS
+        ======================================== */
 
         .bacon-cracks {
             position: absolute;
 
             inset: 0;
 
-            z-index: 20;
+            z-index: 30;
 
             pointer-events: none;
 
@@ -198,7 +185,7 @@
 
             animation:
                 crackFlash
-                0.65s
+                0.7s
                 ease-out
                 forwards;
         }
@@ -206,68 +193,70 @@
         .crack-line {
             position: absolute;
 
-            width: 2px;
-
-            height: 150%;
-
-            top: -25%;
-
             left: 50%;
+            top: 50%;
 
-            background:
-                rgba(255, 255, 255, 0.85);
+            width: 3px;
+            height: 170%;
+
+            background: rgba(255, 255, 255, 0.9);
 
             box-shadow:
-                0 0 8px
-                rgba(255, 255, 255, 0.3);
+                0 0 8px rgba(255, 255, 255, 0.4);
 
             transform-origin: center;
         }
 
         .crack-line:nth-child(1) {
-            transform: rotate(17deg);
+            transform: translate(-50%, -50%) rotate(15deg);
         }
 
         .crack-line:nth-child(2) {
-            transform: rotate(-29deg);
+            transform: translate(-50%, -50%) rotate(-25deg);
         }
 
         .crack-line:nth-child(3) {
-            transform: rotate(63deg);
+            transform: translate(-50%, -50%) rotate(47deg);
         }
 
         .crack-line:nth-child(4) {
-            transform: rotate(-66deg);
+            transform: translate(-50%, -50%) rotate(-58deg);
         }
 
         .crack-line:nth-child(5) {
-            transform: rotate(89deg);
+            transform: translate(-50%, -50%) rotate(80deg);
         }
 
         @keyframes crackFlash {
 
             0% {
                 opacity: 0;
+
+                transform: scale(0.4);
             }
 
             20% {
                 opacity: 1;
+
+                transform: scale(1);
             }
 
             45% {
-                opacity: 0.85;
+                opacity: 0.9;
             }
 
             100% {
                 opacity: 0;
+
+                transform: scale(1.15);
             }
 
         }
 
 
-        /* ====================================
+        /* ========================================
            EXPLOSION
-        ==================================== */
+        ======================================== */
 
         .bacon-explosion {
             position: absolute;
@@ -275,12 +264,10 @@
             left: 50%;
             top: 50%;
 
-            width: 20px;
-            height: 20px;
+            width: 25px;
+            height: 25px;
 
-            transform:
-                translate(-50%, -50%)
-                scale(0);
+            z-index: 40;
 
             border-radius: 50%;
 
@@ -288,20 +275,22 @@
 
             box-shadow:
                 0 0 20px #ffffff,
-                0 0 50px rgba(255, 40, 40, 0.8),
-                0 0 100px rgba(255, 0, 0, 0.4);
+                0 0 50px rgba(255, 30, 30, 0.9),
+                0 0 100px rgba(255, 0, 0, 0.5);
 
             opacity: 0;
 
-            z-index: 25;
-
             pointer-events: none;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0);
         }
 
         .bacon-explosion.active {
             animation:
                 baconExplosion
-                0.55s
+                0.6s
                 ease-out
                 forwards;
         }
@@ -321,7 +310,7 @@
 
                 transform:
                     translate(-50%, -50%)
-                    scale(12);
+                    scale(10);
             }
 
             100% {
@@ -329,46 +318,50 @@
 
                 transform:
                     translate(-50%, -50%)
-                    scale(18);
+                    scale(20);
             }
 
         }
 
 
-        /* ====================================
+        /* ========================================
            GAME CONTENT
-        ==================================== */
+        ======================================== */
 
         .bacon-game-content {
             position: relative;
 
-            z-index: 5;
+            z-index: 10;
+
+            width: 100%;
 
             opacity: 0;
 
-            animation:
-                none;
+            pointer-events: none;
+
+            transform: translateY(15px);
         }
 
         .bacon-game-content.visible {
+            pointer-events: auto;
+
             animation:
                 baconContentReveal
-                0.9s
+                0.6s
                 ease-out
-                0.45s
                 forwards;
         }
 
         @keyframes baconContentReveal {
 
-            0% {
+            from {
                 opacity: 0;
 
                 transform:
                     translateY(15px);
             }
 
-            100% {
+            to {
                 opacity: 1;
 
                 transform:
@@ -378,15 +371,14 @@
         }
 
 
-        /* ====================================
-           GAME HEADER
-        ==================================== */
+        /* ========================================
+           TITLE / SCORE
+        ======================================== */
 
         .bacon-game-title {
             color: #555555;
 
             font-size: 9px;
-
             font-weight: 900;
 
             letter-spacing: 4px;
@@ -400,7 +392,6 @@
             color: #ffffff;
 
             font-size: 38px;
-
             font-weight: 950;
 
             letter-spacing: -2px;
@@ -412,7 +403,6 @@
             color: #444444;
 
             font-size: 9px;
-
             font-weight: 900;
 
             letter-spacing: 3px;
@@ -423,40 +413,50 @@
         }
 
 
-        /* ====================================
-           BACON BUTTON
-        ==================================== */
+        /* ========================================
+           BACON CLICK AREA
+        ======================================== */
 
         .bacon-click-area {
             position: relative;
 
-            width: 220px;
+            width: 240px;
             height: 220px;
 
-            margin: 35px auto 20px;
+            margin: 30px auto 15px;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
+
+            z-index: 50;
+
+            pointer-events: auto;
         }
 
+
+        /* ========================================
+           BACON BUTTON
+        ======================================== */
+
         .bacon-button {
-            width: 180px;
-            height: 180px;
+            position: relative;
+
+            width: 190px;
+            height: 190px;
 
             padding: 0;
+            margin: 0;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             background: transparent;
 
-            border: none;
+            border: 0;
 
             cursor: pointer;
 
@@ -466,21 +466,33 @@
 
             user-select: none;
 
+            -webkit-user-select: none;
+
+            z-index: 60;
+
+            pointer-events: auto;
+
+            transform: scale(1);
+
             transition:
-                transform 0.08s
-                cubic-bezier(
-                    0.2,
-                    1.4,
-                    0.4,
-                    1
+                filter 0.15s ease;
+        }
+
+        .bacon-button:hover {
+            filter:
+                drop-shadow(
+                    0 0 15px
+                    rgba(255, 30, 30, 0.18)
                 );
         }
 
         .bacon-button:active {
-            transform: scale(0.85);
+            transform: scale(0.84);
         }
 
         .bacon-button img {
+            display: block;
+
             width: 160px;
             height: 160px;
 
@@ -490,25 +502,70 @@
 
             user-select: none;
 
-            -webkit-user-drag: none;
+            -webkit-user-select: none;
 
-            filter:
-                drop-shadow(
-                    0 12px 25px
-                    rgba(0, 0, 0, 0.5)
-                );
+            -webkit-user-drag: none;
         }
+
+
+        /* ========================================
+           INITIAL BACON REVEAL
+        ======================================== */
+
+        .bacon-button.bacon-reveal img {
+            animation:
+                baconReveal
+                1.15s
+                cubic-bezier(0.16, 1, 0.3, 1)
+                forwards;
+        }
+
+        @keyframes baconReveal {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    scale(0.15)
+                    rotate(-360deg);
+            }
+
+            35% {
+                opacity: 0.35;
+
+                transform:
+                    scale(0.55)
+                    rotate(-180deg);
+            }
+
+            70% {
+                opacity: 0.8;
+
+                transform:
+                    scale(1.12)
+                    rotate(20deg);
+            }
+
+            100% {
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    rotate(0deg);
+            }
+
+        }
+
+
+        /* ========================================
+           CLICK POP
+        ======================================== */
 
         .bacon-button.bacon-pop {
             animation:
                 baconPop
-                0.16s
-                cubic-bezier(
-                    0.2,
-                    1.5,
-                    0.4,
-                    1
-                );
+                0.18s
+                cubic-bezier(0.2, 1.5, 0.4, 1);
         }
 
         @keyframes baconPop {
@@ -517,11 +574,11 @@
                 transform: scale(1);
             }
 
-            45% {
+            40% {
                 transform: scale(0.82);
             }
 
-            75% {
+            72% {
                 transform: scale(1.08);
             }
 
@@ -532,66 +589,24 @@
         }
 
 
-        /* Initial bacon reveal */
-
-        .bacon-button.reveal img {
-            animation:
-                baconReveal
-                1s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                )
-                forwards;
-        }
-
-        @keyframes baconReveal {
-
-            0% {
-                opacity: 0;
-
-                transform:
-                    scale(0.2)
-                    rotate(-220deg);
-            }
-
-            55% {
-                opacity: 1;
-
-                transform:
-                    scale(1.08)
-                    rotate(15deg);
-            }
-
-            100% {
-                opacity: 1;
-
-                transform:
-                    scale(1)
-                    rotate(0);
-            }
-
-        }
-
-
-        /* ====================================
-           FLOATING BACON NUMBER
-        ==================================== */
+        /* ========================================
+           FLOATING +BACON
+        ======================================== */
 
         .bacon-float {
             position: absolute;
 
-            color: #ff3030;
-
-            font-size: 14px;
-
-            font-weight: 950;
+            z-index: 100;
 
             pointer-events: none;
 
-            z-index: 50;
+            color: #ff3030;
+
+            font-size: 14px;
+            font-weight: 950;
+
+            transform:
+                translate(-50%, 0);
 
             animation:
                 baconFloat
@@ -602,28 +617,28 @@
 
         @keyframes baconFloat {
 
-            0% {
+            from {
                 opacity: 1;
 
                 transform:
-                    translateY(0)
+                    translate(-50%, 0)
                     scale(1);
             }
 
-            100% {
+            to {
                 opacity: 0;
 
                 transform:
-                    translateY(-65px)
+                    translate(-50%, -70px)
                     scale(1.15);
             }
 
         }
 
 
-        /* ====================================
+        /* ========================================
            COMBO
-        ==================================== */
+        ======================================== */
 
         .bacon-combo {
             min-height: 20px;
@@ -631,7 +646,6 @@
             color: #ff2424;
 
             font-size: 10px;
-
             font-weight: 900;
 
             letter-spacing: 2px;
@@ -640,9 +654,9 @@
         }
 
 
-        /* ====================================
+        /* ========================================
            STATS
-        ==================================== */
+        ======================================== */
 
         .bacon-stats {
             display: grid;
@@ -652,7 +666,7 @@
 
             gap: 8px;
 
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
         .bacon-stat {
@@ -676,7 +690,6 @@
             color: #444444;
 
             font-size: 7px;
-
             font-weight: 900;
 
             letter-spacing: 1px;
@@ -691,9 +704,9 @@
         }
 
 
-        /* ====================================
+        /* ========================================
            SHOP
-        ==================================== */
+        ======================================== */
 
         .bacon-shop {
             margin-top: 25px;
@@ -709,7 +722,6 @@
             color: #555555;
 
             font-size: 9px;
-
             font-weight: 900;
 
             letter-spacing: 3px;
@@ -776,7 +788,6 @@
             color: #eeeeee;
 
             font-size: 10px;
-
             font-weight: 900;
 
             letter-spacing: 1px;
@@ -798,23 +809,23 @@
             color: #ff2424;
 
             font-size: 8px;
-
             font-weight: 900;
 
             margin-top: 7px;
         }
 
 
-        /* ====================================
+        /* ========================================
            MOBILE
-        ==================================== */
+        ======================================== */
 
         @media (max-width: 700px) {
 
             .bacon-game {
                 min-height: 450px;
 
-                padding: 25px 16px;
+                padding:
+                    25px 15px;
 
                 border-radius: 15px;
             }
@@ -824,15 +835,15 @@
             }
 
             .bacon-click-area {
-                width: 200px;
-                height: 200px;
+                width: 220px;
+                height: 210px;
 
                 margin-top: 25px;
             }
 
             .bacon-button {
-                width: 180px;
-                height: 180px;
+                width: 190px;
+                height: 190px;
             }
 
             .bacon-button img {
@@ -842,11 +853,6 @@
 
             .bacon-upgrades {
                 grid-template-columns: 1fr;
-            }
-
-            .bacon-stats {
-                grid-template-columns:
-                    repeat(3, 1fr);
             }
 
         }
@@ -860,7 +866,7 @@
 
 
     <!-- ========================================
-         MAIN NAVBAR
+         NAVBAR
     ========================================= -->
 
     <header class="navbar">
@@ -923,14 +929,12 @@
                         HOME
                     </a>
 
-
                     <a
                         href="profile.html"
                         class="page-menu-link"
                     >
                         PROFILE
                     </a>
-
 
                     <a
                         href="about.html"
@@ -939,14 +943,12 @@
                         ABOUT
                     </a>
 
-
                     <a
                         href="projects.html"
                         class="page-menu-link"
                     >
                         PROJECTS
                     </a>
-
 
                     <a
                         href="links.html"
@@ -975,15 +977,12 @@
 
             <div class="hero-content">
 
-
                 <div class="eyebrow">
                     PERSONAL WEBSITE
                 </div>
 
 
-                <div
-                    id="bacothn-title"
-                >
+                <div id="bacothn-title">
                     BACOTHN
                 </div>
 
@@ -996,10 +995,11 @@
 
 
                 <!-- ====================================
-                     BACON CLICKER LAUNCHER
+                     BACON CLICKER
                 ===================================== -->
 
                 <div class="bacon-launcher">
+
 
                     <button
                         id="baconPlayButton"
@@ -1010,9 +1010,6 @@
                     </button>
 
 
-                    <!-- =================================
-                         GAME
-                    ================================== -->
 
                     <div
                         id="baconGame"
@@ -1020,7 +1017,7 @@
                     >
 
 
-                        <!-- CRACKS -->
+                        <!-- CRACK -->
 
                         <div
                             id="baconCracks"
@@ -1034,6 +1031,7 @@
                             <div class="crack-line"></div>
 
                         </div>
+
 
 
                         <!-- EXPLOSION -->
@@ -1051,6 +1049,7 @@
                             id="baconGameContent"
                             class="bacon-game-content"
                         >
+
 
                             <div class="bacon-game-title">
                                 BACON TAPPER
@@ -1080,7 +1079,7 @@
 
                                 <button
                                     id="baconButton"
-                                    class="bacon-button reveal"
+                                    class="bacon-button"
                                     type="button"
                                     aria-label="Tap the bacon"
                                 >
@@ -1264,6 +1263,7 @@
 
                             </div>
 
+
                         </div>
 
                     </div>
@@ -1275,7 +1275,6 @@
                     SCROLL
                 </div>
 
-
             </div>
 
         </section>
@@ -1285,46 +1284,70 @@
 
 
     <!-- ========================================
-         BACON CLICKER SCRIPT
+         BACON CLICKER JAVASCRIPT
     ========================================= -->
 
     <script>
 
-        const baconPlayButton =
-            document.getElementById("baconPlayButton");
+        const playButton =
+            document.getElementById(
+                "baconPlayButton"
+            );
 
-        const baconGame =
-            document.getElementById("baconGame");
+        const game =
+            document.getElementById(
+                "baconGame"
+            );
 
-        const baconCracks =
-            document.getElementById("baconCracks");
+        const cracks =
+            document.getElementById(
+                "baconCracks"
+            );
 
-        const baconExplosion =
-            document.getElementById("baconExplosion");
+        const explosion =
+            document.getElementById(
+                "baconExplosion"
+            );
 
-        const baconGameContent =
-            document.getElementById("baconGameContent");
+        const gameContent =
+            document.getElementById(
+                "baconGameContent"
+            );
 
         const baconButton =
-            document.getElementById("baconButton");
+            document.getElementById(
+                "baconButton"
+            );
 
-        const baconClickArea =
-            document.getElementById("baconClickArea");
+        const clickArea =
+            document.getElementById(
+                "baconClickArea"
+            );
 
-        const baconScore =
-            document.getElementById("baconScore");
+        const score =
+            document.getElementById(
+                "baconScore"
+            );
 
-        const baconBest =
-            document.getElementById("baconBest");
+        const bestDisplay =
+            document.getElementById(
+                "baconBest"
+            );
 
-        const baconPerClick =
-            document.getElementById("baconPerClick");
+        const perClickDisplay =
+            document.getElementById(
+                "baconPerClick"
+            );
 
-        const baconPerSecond =
-            document.getElementById("baconPerSecond");
+        const perSecondDisplay =
+            document.getElementById(
+                "baconPerSecond"
+            );
 
-        const baconCombo =
-            document.getElementById("baconCombo");
+        const comboDisplay =
+            document.getElementById(
+                "baconCombo"
+            );
 
 
         let bacon =
@@ -1397,9 +1420,9 @@
         };
 
 
-        /* ====================================
+        /* ========================================
            LOAD UPGRADES
-        ==================================== */
+        ======================================== */
 
         Object.keys(upgrades).forEach(
             function(key) {
@@ -1415,9 +1438,9 @@
         );
 
 
-        /* ====================================
-           FORMAT NUMBERS
-        ==================================== */
+        /* ========================================
+           NUMBER FORMAT
+        ======================================== */
 
         function formatNumber(number) {
 
@@ -1427,9 +1450,9 @@
         }
 
 
-        /* ====================================
-           TOTAL PRODUCTION
-        ==================================== */
+        /* ========================================
+           BACON PER SECOND
+        ======================================== */
 
         function getPerSecond() {
 
@@ -1450,9 +1473,9 @@
         }
 
 
-        /* ====================================
+        /* ========================================
            UPGRADE COST
-        ==================================== */
+        ======================================== */
 
         function getUpgradeCost(key) {
 
@@ -1470,9 +1493,9 @@
         }
 
 
-        /* ====================================
+        /* ========================================
            SAVE
-        ==================================== */
+        ======================================== */
 
         function saveGame() {
 
@@ -1511,22 +1534,23 @@
         }
 
 
-        /* ====================================
-           UPDATE UI
-        ==================================== */
+        /* ========================================
+           UI
+        ======================================== */
 
         function updateUI() {
 
-            baconScore.textContent =
+            score.textContent =
                 formatNumber(bacon);
 
-            baconBest.textContent =
+            bestDisplay.textContent =
                 formatNumber(best);
 
-            baconPerClick.textContent =
-                "+" + formatNumber(perClick);
+            perClickDisplay.textContent =
+                "+" +
+                formatNumber(perClick);
 
-            baconPerSecond.textContent =
+            perSecondDisplay.textContent =
                 formatNumber(
                     getPerSecond()
                 );
@@ -1537,7 +1561,8 @@
             ).textContent =
                 formatNumber(
                     getUpgradeCost("tiny")
-                ) + " BACON";
+                ) +
+                " BACON";
 
 
             document.getElementById(
@@ -1545,7 +1570,8 @@
             ).textContent =
                 formatNumber(
                     getUpgradeCost("bot")
-                ) + " BACON";
+                ) +
+                " BACON";
 
 
             document.getElementById(
@@ -1553,7 +1579,8 @@
             ).textContent =
                 formatNumber(
                     getUpgradeCost("supreme")
-                ) + " BACON";
+                ) +
+                " BACON";
 
 
             document.getElementById(
@@ -1561,7 +1588,8 @@
             ).textContent =
                 formatNumber(
                     getUpgradeCost("mega")
-                ) + " BACON";
+                ) +
+                " BACON";
 
 
             document.querySelectorAll(
@@ -1582,55 +1610,30 @@
         }
 
 
-        /* ====================================
-           AFK REWARDS
-        ==================================== */
+        /* ========================================
+           AFK REWARD
+        ======================================== */
 
-        function calculateAFK() {
+        const now =
+            Date.now();
 
-            const now =
-                Date.now();
-
-            const secondsAway =
-                Math.max(
-                    0,
-                    Math.floor(
-                        (now - lastSeen) / 1000
-                    )
-                );
-
-
-            const cappedSeconds =
-                Math.min(
-                    secondsAway,
-                    60 * 60 * 8
-                );
-
-
-            const production =
-                getPerSecond();
-
-
-            if (
-                production <= 0 ||
-                cappedSeconds <= 30
-            ) {
-
-                return 0;
-
-            }
-
-
-            return (
-                production *
-                cappedSeconds
+        const secondsAway =
+            Math.max(
+                0,
+                Math.floor(
+                    (now - lastSeen) / 1000
+                )
             );
 
-        }
-
+        const cappedSeconds =
+            Math.min(
+                secondsAway,
+                60 * 60 * 8
+            );
 
         const afkReward =
-            calculateAFK();
+            getPerSecond() *
+            cappedSeconds;
 
 
         if (afkReward > 0) {
@@ -1646,11 +1649,11 @@
         }
 
 
-        /* ====================================
-           PLAY BUTTON
-        ==================================== */
+        /* ========================================
+           OPEN GAME
+        ======================================== */
 
-        baconPlayButton.addEventListener(
+        playButton.addEventListener(
             "click",
             function() {
 
@@ -1660,98 +1663,125 @@
 
                 gameStarted = true;
 
-                baconPlayButton.style.display =
+
+                playButton.style.display =
                     "none";
 
 
-                baconGame.style.display =
+                game.style.display =
                     "block";
 
 
-                baconGame.classList.remove(
-                    "opening"
-                );
+                /*
+                    Force browser to register
+                    the initial state before
+                    starting animation.
+                */
 
-                baconCracks.classList.remove(
-                    "active"
-                );
-
-                baconExplosion.classList.remove(
-                    "active"
-                );
-
-                baconGameContent.classList.remove(
-                    "visible"
-                );
+                void game.offsetWidth;
 
 
-                void baconGame.offsetWidth;
-
-
-                baconGame.classList.add(
+                game.classList.add(
                     "opening"
                 );
 
 
+                /*
+                    CRACK
+                */
+
                 setTimeout(
                     function() {
 
-                        baconCracks.classList.add(
+                        cracks.classList.add(
                             "active"
                         );
 
                     },
-                    150
+                    180
                 );
 
+
+                /*
+                    EXPLOSION
+                */
 
                 setTimeout(
                     function() {
 
-                        baconExplosion.classList.add(
+                        explosion.classList.add(
                             "active"
                         );
 
                     },
-                    380
+                    400
                 );
 
+
+                /*
+                    Reveal the game content.
+                */
 
                 setTimeout(
                     function() {
 
-                        baconGameContent.classList.add(
+                        gameContent.classList.add(
                             "visible"
                         );
 
+
+                        /*
+                            Start bacon animation
+                            ONLY NOW.
+                        */
+
+                        baconButton.classList.remove(
+                            "bacon-reveal"
+                        );
+
+                        void baconButton.offsetWidth;
+
+                        baconButton.classList.add(
+                            "bacon-reveal"
+                        );
+
+
+                        /*
+                            Make absolutely sure
+                            the bacon can receive
+                            touches.
+                        */
+
+                        baconButton.style.pointerEvents =
+                            "auto";
+
+                        clickArea.style.pointerEvents =
+                            "auto";
+
+
+                        updateUI();
+
                     },
-                    550
+                    600
                 );
-
-
-                updateUI();
 
             }
         );
 
 
-        /* ====================================
+        /* ========================================
            BACON CLICK
-        ==================================== */
+        ======================================== */
 
         baconButton.addEventListener(
             "click",
             function(event) {
 
-                const rect =
-                    baconClickArea.getBoundingClientRect();
-
-
                 let amount =
                     perClick;
 
 
-                /* Combo */
+                /* COMBO */
 
                 combo++;
 
@@ -1766,7 +1796,7 @@
 
                             combo = 0;
 
-                            baconCombo.textContent =
+                            comboDisplay.textContent =
                                 "";
 
                         },
@@ -1776,7 +1806,7 @@
 
                 if (combo >= 2) {
 
-                    const comboBonus =
+                    const bonus =
                         Math.min(
                             Math.floor(
                                 combo / 5
@@ -1784,26 +1814,27 @@
                             10
                         );
 
-                    amount += comboBonus;
+                    amount += bonus;
 
-                    baconCombo.textContent =
+                    comboDisplay.textContent =
                         "COMBO ×" +
                         combo;
 
                 }
 
 
-                /* Critical */
+                /* CRITICAL */
 
                 const critical =
-                    Math.random() < 0.01;
+                    Math.random() <
+                    0.01;
 
 
                 if (critical) {
 
                     amount *= 10;
 
-                    baconCombo.textContent =
+                    comboDisplay.textContent =
                         "CRITICAL BACON! +" +
                         formatNumber(amount);
 
@@ -1816,13 +1847,11 @@
 
 
                 if (bacon > best) {
-
                     best = bacon;
-
                 }
 
 
-                /* Pop animation */
+                /* POP */
 
                 baconButton.classList.remove(
                     "bacon-pop"
@@ -1835,7 +1864,7 @@
                 );
 
 
-                /* Floating number */
+                /* FLOATING NUMBER */
 
                 const floating =
                     document.createElement(
@@ -1850,23 +1879,27 @@
                     formatNumber(amount);
 
 
-                const x =
-                    event.clientX -
-                    rect.left;
-
-                const y =
-                    event.clientY -
-                    rect.top;
+                const rect =
+                    clickArea.getBoundingClientRect();
 
 
                 floating.style.left =
-                    x + "px";
+                    (
+                        event.clientX -
+                        rect.left
+                    ) +
+                    "px";
+
 
                 floating.style.top =
-                    y + "px";
+                    (
+                        event.clientY -
+                        rect.top
+                    ) +
+                    "px";
 
 
-                baconClickArea.appendChild(
+                clickArea.appendChild(
                     floating
                 );
 
@@ -1889,9 +1922,9 @@
         );
 
 
-        /* ====================================
+        /* ========================================
            UPGRADES
-        ==================================== */
+        ======================================== */
 
         document.querySelectorAll(
             ".bacon-upgrade"
@@ -1930,23 +1963,20 @@
         );
 
 
-        /* ====================================
-           AUTOMATIC BACON
-        ==================================== */
+        /* ========================================
+           AUTO CLICKERS
+        ======================================== */
 
         setInterval(
             function() {
-
-                if (!gameStarted) {
-                    return;
-                }
-
 
                 const production =
                     getPerSecond();
 
 
-                if (production <= 0) {
+                if (
+                    production <= 0
+                ) {
                     return;
                 }
 
@@ -1970,20 +2000,20 @@
         );
 
 
-        /* ====================================
-           INITIAL SAVE
-        ==================================== */
-
-        saveGame();
+        /* ========================================
+           INITIALIZE
+        ======================================== */
 
         updateUI();
+
+        saveGame();
 
     </script>
 
 
 
     <!-- ========================================
-         MAIN SITE SCRIPT
+         SITE SCRIPT
     ========================================= -->
 
     <script src="script.js"></script>
