@@ -4,24 +4,15 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
 
-
 body {
     background: #080808;
-
     color: #eeeeee;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
-
     overflow-x: hidden;
 }
 
@@ -32,74 +23,55 @@ body {
 
 .navbar {
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 70px;
 
     padding: 0 7%;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
-    background:
-        rgba(8, 8, 8, 0.82);
+    background: rgba(8, 8, 8, 0.82);
 
     backdrop-filter: blur(12px);
-
     -webkit-backdrop-filter: blur(12px);
 
-    border-bottom:
-        1px solid #1c1c1c;
+    border-bottom: 1px solid #1c1c1c;
 
     z-index: 1000;
 }
 
-
 .logo {
     color: #ffffff;
-
     text-decoration: none;
 
     font-size: 18px;
-
     font-weight: 900;
-
     letter-spacing: 3px;
 
-    transition:
-        color 0.2s ease;
+    transition: color 0.2s ease;
 }
-
 
 .logo:hover {
     color: #ff1616;
 }
 
-
 .navbar nav {
     display: flex;
-
     gap: 28px;
 }
 
-
 .navbar nav a {
     color: #777777;
-
     text-decoration: none;
 
     font-size: 13px;
 
-    transition:
-        color 0.2s ease;
+    transition: color 0.2s ease;
 }
-
 
 .navbar nav a:hover {
     color: #ffffff;
@@ -114,18 +86,14 @@ body {
     min-height: 100vh;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
 
     position: relative;
 
-    padding:
-        100px
-        20px;
+    padding: 100px 20px;
 
     background:
         radial-gradient(
@@ -136,19 +104,15 @@ body {
         );
 }
 
-
 .hero-content {
     width: 100%;
-
     max-width: 950px;
 }
-
 
 .eyebrow {
     color: #666666;
 
     font-size: 11px;
-
     font-weight: bold;
 
     letter-spacing: 5px;
@@ -166,12 +130,11 @@ body {
 
     color: #ff1616;
 
-    font-size:
-        clamp(
-            60px,
-            13vw,
-            150px
-        );
+    font-size: clamp(
+        60px,
+        13vw,
+        150px
+    );
 
     font-weight: 900;
 
@@ -184,87 +147,50 @@ body {
     white-space: nowrap;
 
     text-shadow:
-        0 0 10px
-        rgba(255, 0, 0, 0.3),
-
-        0 0 30px
-        rgba(255, 0, 0, 0.12);
+        0 0 10px rgba(255, 0, 0, 0.3),
+        0 0 30px rgba(255, 0, 0, 0.12);
 
     user-select: none;
 }
 
-
 #bacothn-title.glitch {
-
     animation:
         titleGlitch
         0.12s
         steps(2, end);
-
 }
-
 
 @keyframes titleGlitch {
 
     0% {
-
-        transform:
-            translate(0, 0);
-
+        transform: translate(0, 0);
         opacity: 1;
-
     }
-
 
     20% {
-
-        transform:
-            translate(-4px, 1px);
-
+        transform: translate(-4px, 1px);
         opacity: 0.75;
-
     }
-
 
     40% {
-
-        transform:
-            translate(3px, -2px);
-
+        transform: translate(3px, -2px);
         opacity: 1;
-
     }
-
 
     60% {
-
-        transform:
-            translate(-2px, 1px);
-
+        transform: translate(-2px, 1px);
         opacity: 0.8;
-
     }
-
 
     80% {
-
-        transform:
-            translate(3px, 0);
-
+        transform: translate(3px, 0);
         opacity: 0.9;
-
     }
-
 
     100% {
-
-        transform:
-            translate(0, 0);
-
+        transform: translate(0, 0);
         opacity: 1;
-
     }
-
 }
 
 
@@ -275,8 +201,7 @@ body {
 .subtitle {
     max-width: 550px;
 
-    margin:
-        30px auto;
+    margin: 30px auto;
 
     color: #888888;
 
@@ -300,11 +225,8 @@ body {
     margin-top: 35px;
 }
 
-
 .button {
-    padding:
-        14px
-        25px;
+    padding: 14px 25px;
 
     border-radius: 6px;
 
@@ -316,32 +238,22 @@ body {
 
     transition:
         transform 0.2s ease,
-
         background 0.2s ease,
-
         border-color 0.2s ease;
 }
 
-
 .button.secondary {
-
     color: #ffffff;
 
-    border:
-        1px solid #333333;
-
+    border: 1px solid #333333;
 }
 
-
 .button.secondary:hover {
-
     background: #151515;
 
     border-color: #555555;
 
-    transform:
-        translateY(-3px);
-
+    transform: translateY(-3px);
 }
 
 
@@ -350,7 +262,6 @@ body {
 ======================================== */
 
 .scroll-hint {
-
     position: absolute;
 
     bottom: 30px;
@@ -360,7 +271,6 @@ body {
     font-size: 10px;
 
     letter-spacing: 4px;
-
 }
 
 
@@ -369,31 +279,21 @@ body {
 ======================================== */
 
 .section {
-
     max-width: 1150px;
 
     margin: auto;
 
-    padding:
-        130px
-        7%;
-
+    padding: 130px 7%;
 }
-
 
 .section-heading {
-
     margin-bottom: 50px;
-
 }
 
-
 .section-heading h2 {
-
     font-size: 50px;
 
     letter-spacing: -2px;
-
 }
 
 
@@ -402,27 +302,22 @@ body {
 ======================================== */
 
 .quick-links {
-
     display: grid;
 
     grid-template-columns:
         repeat(3, 1fr);
 
     gap: 18px;
-
 }
 
-
 .quick-card {
-
     min-height: 230px;
 
     padding: 30px;
 
     background: #0d0d0d;
 
-    border:
-        1px solid #1c1c1c;
+    border: 1px solid #1c1c1c;
 
     border-radius: 10px;
 
@@ -430,39 +325,27 @@ body {
 
     transition:
         transform 0.25s ease,
-
         background 0.25s ease,
-
         border-color 0.25s ease;
-
 }
 
-
 .quick-card:hover {
-
-    transform:
-        translateY(-6px);
+    transform: translateY(-6px);
 
     background: #101010;
 
     border-color: #383838;
-
 }
 
-
 .quick-card span {
-
     color: #444444;
 
     font-size: 12px;
 
     font-weight: bold;
-
 }
 
-
 .quick-card h3 {
-
     color: #ffffff;
 
     font-size: 24px;
@@ -470,18 +353,14 @@ body {
     margin-top: 50px;
 
     margin-bottom: 12px;
-
 }
 
-
 .quick-card p {
-
     color: #777777;
 
     font-size: 14px;
 
     line-height: 1.6;
-
 }
 
 
@@ -490,22 +369,14 @@ body {
 ======================================== */
 
 footer {
+    padding: 70px 7% 40px;
 
-    padding:
-        70px
-        7%
-        40px;
-
-    border-top:
-        1px solid #1a1a1a;
+    border-top: 1px solid #1a1a1a;
 
     text-align: center;
-
 }
 
-
 .footer-logo {
-
     font-size: 30px;
 
     font-weight: 900;
@@ -513,21 +384,15 @@ footer {
     letter-spacing: 4px;
 
     margin-bottom: 15px;
-
 }
 
-
 footer p {
-
     color: #555555;
 
     font-size: 12px;
-
 }
 
-
 .footer-links {
-
     display: flex;
 
     justify-content: center;
@@ -535,35 +400,24 @@ footer p {
     gap: 25px;
 
     margin: 25px 0;
-
 }
 
-
 .footer-links a {
-
     color: #777777;
 
     text-decoration: none;
 
     font-size: 12px;
 
-    transition:
-        color 0.2s ease;
-
+    transition: color 0.2s ease;
 }
-
 
 .footer-links a:hover {
-
     color: #ffffff;
-
 }
 
-
 .copyright {
-
     margin-top: 30px;
-
 }
 
 
@@ -572,7 +426,6 @@ footer p {
 ======================================== */
 
 .links-header {
-
     position: fixed;
 
     top: 0;
@@ -591,37 +444,26 @@ footer p {
 
     align-items: center;
 
-    padding:
-        0
-        35px;
+    padding: 0 35px;
 
-    background:
-        rgba(8, 8, 8, 0.88);
+    background: rgba(8, 8, 8, 0.88);
 
     backdrop-filter: blur(14px);
 
     -webkit-backdrop-filter: blur(14px);
 
-    border-bottom:
-        1px solid #1c1c1c;
+    border-bottom: 1px solid #1c1c1c;
 
     z-index: 1000;
-
 }
-
 
 .links-header-left {
-
     display: flex;
 
-    justify-content:
-        flex-start;
-
+    justify-content: flex-start;
 }
 
-
 .links-logo {
-
     color: #ffffff;
 
     text-decoration: none;
@@ -632,21 +474,14 @@ footer p {
 
     letter-spacing: 3px;
 
-    transition:
-        color 0.2s ease;
-
+    transition: color 0.2s ease;
 }
-
 
 .links-logo:hover {
-
     color: #ff1616;
-
 }
 
-
 .links-header-title {
-
     color: #ffffff;
 
     font-size: 15px;
@@ -656,60 +491,39 @@ footer p {
     letter-spacing: 1px;
 
     text-align: center;
-
 }
-
 
 .links-header-right {
-
     display: none;
-
 }
-
 
 .menu-button {
-
     display: none;
-
 }
 
-
 .links-main {
-
     min-height: 100vh;
 
-    padding:
-        150px
-        25px
-        100px;
+    padding: 150px 25px 100px;
 
     display: flex;
 
     justify-content: center;
-
 }
 
-
 .links-content {
-
     width: 100%;
 
     max-width: 760px;
-
 }
 
-
 .links-intro {
-
     text-align: center;
 
     margin-bottom: 65px;
-
 }
 
-
 .links-small-title {
-
     color: #ff1616;
 
     font-size: 10px;
@@ -719,32 +533,25 @@ footer p {
     letter-spacing: 5px;
 
     margin-bottom: 18px;
-
 }
 
-
 .links-intro h1 {
-
     color: #ffffff;
 
-    font-size:
-        clamp(
-            34px,
-            6vw,
-            58px
-        );
+    font-size: clamp(
+        34px,
+        6vw,
+        58px
+    );
 
     font-weight: 900;
 
     letter-spacing: -2px;
 
     margin-bottom: 22px;
-
 }
 
-
 .links-description {
-
     max-width: 570px;
 
     margin: auto;
@@ -754,56 +561,40 @@ footer p {
     font-size: 15px;
 
     line-height: 1.8;
-
 }
 
-
 .social-links-list {
-
     display: flex;
 
     flex-direction: column;
 
     gap: 20px;
-
 }
 
-
 .social-link-item {
-
     padding: 30px;
 
     background: #0d0d0d;
 
-    border:
-        1px solid #202020;
+    border: 1px solid #202020;
 
     border-radius: 9px;
 
     transition:
         border-color 0.2s ease,
-
         background 0.2s ease,
-
         transform 0.2s ease;
-
 }
 
-
 .social-link-item:hover {
-
     background: #101010;
 
     border-color: #343434;
 
-    transform:
-        translateY(-2px);
-
+    transform: translateY(-2px);
 }
 
-
 .social-link-label {
-
     color: #555555;
 
     font-size: 9px;
@@ -813,12 +604,9 @@ footer p {
     letter-spacing: 3px;
 
     margin-bottom: 15px;
-
 }
 
-
 .social-link {
-
     display: inline-block;
 
     color: #ff2424;
@@ -830,19 +618,13 @@ footer p {
     font-weight: 700;
 
     word-break: break-word;
-
 }
-
 
 .social-link:hover {
-
     color: #ff4a4a;
-
 }
 
-
 .bot-note {
-
     max-width: 650px;
 
     margin-top: 18px;
@@ -852,54 +634,38 @@ footer p {
     font-size: 12px;
 
     line-height: 1.8;
-
 }
 
-
 .bot-note code {
-
     color: #bbbbbb;
 
     background: #171717;
 
-    border:
-        1px solid #252525;
+    border: 1px solid #252525;
 
     border-radius: 4px;
 
-    padding:
-        2px
-        6px;
+    padding: 2px 6px;
 
-    font-family:
-        monospace;
+    font-family: monospace;
 
     font-size: 11px;
-
 }
-
 
 .discord-username {
-
     text-decoration: none;
-
 }
 
-
 .copy-button {
-
     margin-top: 18px;
 
-    padding:
-        9px
-        13px;
+    padding: 9px 13px;
 
     background: transparent;
 
     color: #777777;
 
-    border:
-        1px solid #292929;
+    border: 1px solid #292929;
 
     border-radius: 5px;
 
@@ -910,45 +676,29 @@ footer p {
     font-weight: 700;
 
     cursor: pointer;
-
 }
 
-
 .copy-button:hover {
-
     color: #ffffff;
 
     background: #151515;
-
 }
 
-
 .copy-button.copied {
-
     color: #ff2424;
 
     border-color: #552020;
-
 }
 
-
 .links-footer {
-
-    padding:
-        30px
-        25px
-        45px;
+    padding: 30px 25px 45px;
 
     text-align: center;
 
-    border-top:
-        1px solid #171717;
-
+    border-top: 1px solid #171717;
 }
 
-
 .links-footer p {
-
     color: #444444;
 
     font-size: 12px;
@@ -956,12 +706,9 @@ footer p {
     font-weight: 900;
 
     letter-spacing: 3px;
-
 }
 
-
 .links-footer span {
-
     display: block;
 
     color: #333333;
@@ -969,7 +716,6 @@ footer p {
     font-size: 10px;
 
     margin-top: 9px;
-
 }
 
 
@@ -978,7 +724,6 @@ footer p {
 ======================================== */
 
 .profile-page-body {
-
     position: relative;
 
     min-height: 100vh;
@@ -986,12 +731,9 @@ footer p {
     background: #030303;
 
     overflow: hidden;
-
 }
 
-
 .falling-background {
-
     position: fixed;
 
     inset: 0;
@@ -1005,12 +747,9 @@ footer p {
     z-index: 0;
 
     pointer-events: none;
-
 }
 
-
 .falling-word {
-
     position: absolute;
 
     top: -80px;
@@ -1043,26 +782,22 @@ footer p {
         forwards;
 
     user-select: none;
-
 }
-
 
 @keyframes fallingWord {
 
     from {
-
         transform:
             translateY(-100px)
             rotate(var(--rotation));
-
     }
 
     to {
-
         transform:
-            translateY(calc(100vh + 150px))
+            translateY(
+                calc(100vh + 150px)
+            )
             rotate(var(--rotation));
-
     }
 
 }
@@ -1073,7 +808,6 @@ footer p {
 ======================================== */
 
 .profile-header {
-
     position: fixed;
 
     top: 0;
@@ -1092,9 +826,7 @@ footer p {
 
     align-items: center;
 
-    padding:
-        0
-        35px;
+    padding: 0 35px;
 
     background:
         rgba(3, 3, 3, 0.45);
@@ -1110,12 +842,9 @@ footer p {
         rgba(255, 255, 255, 0.06);
 
     z-index: 20;
-
 }
 
-
 .profile-header-logo {
-
     color: #ffffff;
 
     text-decoration: none;
@@ -1125,12 +854,9 @@ footer p {
     font-weight: 900;
 
     letter-spacing: 3px;
-
 }
 
-
 .profile-header-title {
-
     color: #eeeeee;
 
     font-size: 15px;
@@ -1138,7 +864,6 @@ footer p {
     font-weight: 700;
 
     letter-spacing: 1px;
-
 }
 
 
@@ -1147,7 +872,6 @@ footer p {
 ======================================== */
 
 .profile-main {
-
     position: relative;
 
     z-index: 5;
@@ -1155,16 +879,13 @@ footer p {
     min-height: 100vh;
 
     padding:
-        140px
-        25px
-        80px;
+        140px 25px 80px;
 
     display: flex;
 
     align-items: center;
 
     justify-content: center;
-
 }
 
 
@@ -1173,20 +894,15 @@ footer p {
 ======================================== */
 
 .profile-plate {
-
     position: relative;
 
     width: 100%;
 
     max-width: 900px;
 
-    padding:
-        65px;
+    padding: 65px;
 
-    /*
-        75% transparent.
-        25% dark glass remains.
-    */
+    /* 75% transparent */
 
     background:
         rgba(8, 8, 8, 0.25);
@@ -1197,9 +913,7 @@ footer p {
 
     border-radius: 28px;
 
-    /*
-        Exactly 30px background blur.
-    */
+    /* 30px background blur */
 
     backdrop-filter:
         blur(30px);
@@ -1208,20 +922,16 @@ footer p {
         blur(30px);
 
     box-shadow:
-
         0 30px 100px
         rgba(0, 0, 0, 0.45),
 
         inset 0 1px 0
         rgba(255, 255, 255, 0.05);
 
-    overflow: hidden;
-
+    overflow: visible;
 }
 
-
 .profile-plate::before {
-
     content: "";
 
     position: absolute;
@@ -1238,6 +948,7 @@ footer p {
             rgba(0, 60, 255, 0.04)
         );
 
+    border-radius: 28px;
 }
 
 
@@ -1246,16 +957,16 @@ footer p {
 ======================================== */
 
 .profile-content {
-
     position: relative;
 
     z-index: 2;
 
+    width: 100%;
+
+    min-width: 0;
 }
 
-
 .profile-eyebrow {
-
     color: #777777;
 
     font-size: 10px;
@@ -1265,7 +976,6 @@ footer p {
     letter-spacing: 5px;
 
     margin-bottom: 20px;
-
 }
 
 
@@ -1274,25 +984,44 @@ footer p {
 ======================================== */
 
 .profile-name {
+    display: block;
 
     width: 100%;
 
     max-width: 100%;
 
+    /*
+        Slightly smaller maximum size so the
+        final "s" cannot get clipped.
+    */
+
     font-size:
         clamp(
-            38px,
+            34px,
             7vw,
-            82px
+            76px
         );
 
     font-weight: 950;
 
     letter-spacing: -4px;
 
-    line-height: 1;
+    line-height: 1.05;
+
+    /*
+        Keeps the entire name on one line.
+    */
 
     white-space: nowrap;
+
+    /*
+        Prevents the final character from
+        being clipped.
+    */
+
+    overflow: visible;
+
+    padding-right: 12px;
 
     background:
         linear-gradient(
@@ -1304,48 +1033,33 @@ footer p {
             #5b0000 100%
         );
 
-    background-size:
-        300% 100%;
+    background-size: 300% 100%;
 
-    -webkit-background-clip:
-        text;
+    -webkit-background-clip: text;
 
-    background-clip:
-        text;
+    background-clip: text;
 
-    -webkit-text-fill-color:
-        transparent;
+    -webkit-text-fill-color: transparent;
 
     animation:
         profileNameColor
         4s
         ease-in-out
         infinite;
-
 }
-
 
 @keyframes profileNameColor {
 
     0% {
-
-        background-position:
-            0% 50%;
-
+        background-position: 0% 50%;
     }
 
     50% {
-
-        background-position:
-            100% 50%;
-
+        background-position: 100% 50%;
     }
 
     100% {
-
-        background-position:
-            0% 50%;
-
+        background-position: 0% 50%;
     }
 
 }
@@ -1356,14 +1070,12 @@ footer p {
 ======================================== */
 
 .profile-line {
-
     width: 100%;
 
     height: 1px;
 
     margin:
-        35px
-        0;
+        35px 0;
 
     background:
         linear-gradient(
@@ -1372,7 +1084,6 @@ footer p {
             rgba(255, 255, 255, 0.08),
             rgba(0, 60, 255, 0.5)
         );
-
 }
 
 
@@ -1381,7 +1092,6 @@ footer p {
 ======================================== */
 
 .profile-description {
-
     max-width: 780px;
 
     color: #b0b0b0;
@@ -1389,7 +1099,6 @@ footer p {
     font-size: 16px;
 
     line-height: 1.9;
-
 }
 
 
@@ -1398,7 +1107,6 @@ footer p {
 ======================================== */
 
 .profile-note {
-
     margin-top: 30px;
 
     color: #ff3030;
@@ -1408,7 +1116,6 @@ footer p {
     font-weight: 800;
 
     letter-spacing: 1px;
-
 }
 
 
@@ -1417,7 +1124,6 @@ footer p {
 ======================================== */
 
 .profile-music {
-
     display: flex;
 
     align-items: center;
@@ -1425,15 +1131,11 @@ footer p {
     gap: 15px;
 
     margin-top: 40px;
-
 }
 
-
 .music-button {
-
     padding:
-        11px
-        17px;
+        11px 17px;
 
     background:
         rgba(255, 0, 0, 0.08);
@@ -1455,29 +1157,21 @@ footer p {
     letter-spacing: 1px;
 
     cursor: pointer;
-
 }
 
-
 .music-button:hover {
-
     background:
         rgba(255, 0, 0, 0.16);
 
     color: #ffffff;
-
 }
 
-
 .music-status {
-
     color: #555555;
 
     font-size: 10px;
 
-    font-family:
-        monospace;
-
+    font-family: monospace;
 }
 
 
@@ -1487,78 +1181,49 @@ footer p {
 
 @media (max-width: 700px) {
 
-
     .navbar {
-
-        padding:
-            0
-            5%;
-
+        padding: 0 5%;
     }
-
 
     .navbar nav {
-
         gap: 12px;
-
     }
-
 
     .navbar nav a {
-
         font-size: 10px;
-
     }
-
 
     #bacothn-title {
-
         letter-spacing: -4px;
-
     }
-
 
     .quick-links {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     .section {
-
         padding:
-            100px
-            6%;
-
+            100px 6%;
     }
-
 
     .section-heading h2 {
-
         font-size: 40px;
-
     }
-
 
     .buttons {
-
-        flex-direction:
-            column;
-
+        flex-direction: column;
     }
-
 
     .button {
-
         width: 100%;
-
     }
 
+
+    /* ====================================
+       MOBILE LINKS
+    ==================================== */
 
     .links-header {
-
         height: 68px;
 
         grid-template-columns:
@@ -1566,62 +1231,41 @@ footer p {
             auto;
 
         padding:
-            0
-            16px;
-
+            0 16px;
     }
-
 
     .links-header-left {
-
         justify-content:
             flex-start;
-
     }
-
 
     .links-header-title {
-
         display: none;
-
     }
-
 
     .links-main {
-
         padding:
-            120px
-            18px
-            80px;
-
+            120px 18px 80px;
     }
-
 
     .links-intro {
-
         margin-bottom: 45px;
-
     }
-
 
     .links-intro h1 {
-
         letter-spacing: -1px;
-
     }
-
 
     .social-link-item {
-
         padding: 24px;
-
     }
 
 
-    /* PROFILE */
+    /* ====================================
+       MOBILE PROFILE
+    ==================================== */
 
     .profile-header {
-
         height: 68px;
 
         grid-template-columns:
@@ -1629,72 +1273,65 @@ footer p {
             auto;
 
         padding:
-            0
-            16px;
-
+            0 16px;
     }
-
 
     .profile-header-title {
-
         display: none;
-
     }
-
 
     .profile-main {
-
         padding:
-            110px
-            16px
-            60px;
-
+            110px 16px 60px;
     }
 
-
     .profile-plate {
-
         padding:
-            35px
-            25px;
+            35px 25px;
 
         border-radius: 20px;
 
+        overflow: visible;
     }
 
+    /*
+        Smaller mobile size specifically
+        so TheGodOfBacons INCLUDING THE S
+        fits inside the glass plate.
+    */
 
     .profile-name {
-
         font-size:
             clamp(
-                34px,
-                11vw,
-                70px
+                29px,
+                9.5vw,
+                68px
             );
 
         letter-spacing:
             -2px;
 
+        line-height: 1.08;
+
+        padding-right:
+            12px;
+
+        overflow:
+            visible;
     }
 
-
     .profile-description {
-
         font-size: 14px;
 
         line-height: 1.8;
-
     }
 
-
     .profile-music {
-
         align-items:
             flex-start;
 
         flex-direction:
             column;
-
     }
 
 }
