@@ -15,59 +15,116 @@ const glitchCharacters = [
     "!"
 ];
 
-const stepTime = 100;
-
-function randomCharacter() {
-    return glitchCharacters[
-        Math.floor(Math.random() * glitchCharacters.length)
-    ];
-}
+const totalAnimationTime = 2000;
+const stepTime = totalAnimationTime / word.length;
 
 
-async function glitchTitle() {
+/*
+    Creates the title.
 
-    // Start with exactly 7 characters.
-    title.textContent = "";
+    Example:
+
+    B$%#&¥€
+    BA%#&¥€
+    BAC#&¥€
+    BACO&¥€
+    BACOT¥€
+    BACOTH€
+    BACOTHN
+*/
+
+function createScrambledText(resolvedCount) {
+
+    let result = "";
 
     for (let i = 0; i < word.length; i++) {
 
-        // Show everything resolved so far + ONE scrambling character.
+        if (i < resolvedCount) {
+
+            result += word[i];
+
+        } else {
+
+            result += glitchCharacters[
+                Math.floor(
+                    Math.random() * glitchCharacters.length
+                )
+            ];
+
+        }
+
+    }
+
+    return result;
+}
+
+
+/*
+    Animate the title ONCE.
+
+    Every 0.2857 seconds another
+    letter becomes permanent.
+
+    7 letters × 0.2857 ≈ 2 seconds.
+*/
+
+async function animateTitle() {
+
+    title.textContent = createScrambledText(0);
+
+    for (
+        let resolved = 0;
+        resolved < word.length;
+        resolved++
+    ) {
+
+        await new Promise(resolve => {
+
+            setTimeout(
+                resolve,
+                stepTime
+            );
+
+        });
+
+
         title.textContent =
-            word.substring(0, i) +
-            randomCharacter();
+            createScrambledText(
+                resolved + 1
+            );
+
 
         title.classList.remove("glitch");
 
-        // Force the animation to restart.
         void title.offsetWidth;
 
         title.classList.add("glitch");
 
-        await new Promise(resolve => {
-            setTimeout(resolve, stepTime);
-        });
     }
 
-    // Final completed word.
+
     title.textContent = word;
 
     title.classList.remove("glitch");
-
-    // Stay completed before restarting.
-    await new Promise(resolve => {
-        setTimeout(resolve, 1800);
-    });
-
-    glitchTitle();
 }
 
 
-/* START */
+/*
+    Start animation once.
+*/
 
-glitchTitle();
+animateTitle();
 
 
-/* FOOTER YEAR */
+/*
+    Footer year.
+*/
 
-document.getElementById("year").textContent =
-    new Date().getFullYear();
+const yearElement = document.getElementById("year");
+
+if (yearElement) {
+
+    yearElement.textContent =
+        new Date().getFullYear();
+
+}
