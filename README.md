@@ -1,0 +1,2 @@
+# Bacothn
+Bacothn Discord Bot!
