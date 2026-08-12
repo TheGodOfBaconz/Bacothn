@@ -18,15 +18,9 @@ const glitchCharacters = [
 const totalAnimationTime = 2000;
 
 
-/*
-    BACOTHN has 7 letters.
-
-    2000ms / 7 = approximately
-    285.7ms per letter.
-*/
-
 const stepTime =
-    totalAnimationTime / word.length;
+    totalAnimationTime /
+    word.length;
 
 
 
@@ -71,37 +65,10 @@ function createScrambledText(
             i < resolvedCount
         ) {
 
-            /*
-                This letter is locked in.
-            */
-
             result += word[i];
 
 
         } else {
-
-            /*
-                This position is still
-                scrambling.
-
-                IMPORTANT:
-
-                Every unresolved position
-                receives a character.
-
-                Nothing disappears.
-
-                Example:
-
-                &%#¥£$€
-                B%#¥£$€
-                BA#¥£$€
-                BAC¥£$€
-                BACO£$€
-                BACOT$€
-                BACOTH€
-                BACOTHN
-            */
 
             result += randomCharacter();
 
@@ -119,11 +86,6 @@ function createScrambledText(
 async function animateTitle() {
 
 
-    /*
-        Do nothing on pages without
-        the BACOTHN title.
-    */
-
     if (!title) {
 
         return;
@@ -131,10 +93,9 @@ async function animateTitle() {
     }
 
 
-
     /*
-        Immediately display all 7
-        scrambled positions.
+        Start with all 7 positions
+        scrambled.
     */
 
     title.textContent =
@@ -143,10 +104,9 @@ async function animateTitle() {
 
 
     /*
-        Resolve one character at
-        each animation step.
+        Resolve one letter at a time.
 
-        Total duration:
+        Total:
         approximately 2 seconds.
     */
 
@@ -170,13 +130,6 @@ async function animateTitle() {
 
 
 
-        /*
-            Resolve the next letter.
-
-            All remaining letters
-            stay scrambled.
-        */
-
         title.textContent =
             createScrambledText(
                 resolved + 1
@@ -184,20 +137,10 @@ async function animateTitle() {
 
 
 
-        /*
-            Restart the CSS glitch
-            effect.
-        */
-
         title.classList.remove(
             "glitch"
         );
 
-
-        /*
-            Force browser reflow so
-            the animation can restart.
-        */
 
         void title.offsetWidth;
 
@@ -213,7 +156,7 @@ async function animateTitle() {
     /*
         Final state.
 
-        The animation does NOT loop.
+        Does not loop.
     */
 
     title.textContent =
@@ -226,11 +169,6 @@ async function animateTitle() {
 
 }
 
-
-
-/*
-    Start the title animation.
-*/
 
 animateTitle();
 
@@ -266,7 +204,6 @@ copyButtons.forEach(
                 }
 
 
-
                 try {
 
 
@@ -277,10 +214,8 @@ copyButtons.forEach(
                         );
 
 
-
                     const originalText =
                         button.textContent;
-
 
 
                     button.textContent =
@@ -290,7 +225,6 @@ copyButtons.forEach(
                     button.classList.add(
                         "copied"
                     );
-
 
 
                     setTimeout(
@@ -315,7 +249,6 @@ copyButtons.forEach(
                         "Copy failed";
 
 
-
                     setTimeout(
                         () => {
 
@@ -333,6 +266,299 @@ copyButtons.forEach(
 
     }
 );
+
+
+
+/* ========================================
+   FALLING PROFILE WORDS
+======================================== */
+
+const fallingBackground =
+    document.getElementById(
+        "falling-background"
+    );
+
+
+const fallingWords = [
+    "Bacothn",
+    "Bacon",
+    "GOD"
+];
+
+
+const totalFallingWords = 20;
+
+
+
+function randomFallingWord() {
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            fallingWords.length
+        );
+
+
+    return fallingWords[
+        randomIndex
+    ];
+
+}
+
+
+
+function createFallingWord() {
+
+
+    if (!fallingBackground) {
+
+        return;
+
+    }
+
+
+    const element =
+        document.createElement("span");
+
+
+    element.className =
+        "falling-word";
+
+
+    element.textContent =
+        randomFallingWord();
+
+
+
+    /*
+        Random horizontal position.
+    */
+
+    const left =
+        Math.random() * 100;
+
+
+    /*
+        Random fall duration.
+
+        This prevents all 20 words
+        from moving together.
+    */
+
+    const duration =
+        7 +
+        Math.random() * 9;
+
+
+    /*
+        Random starting delay.
+
+        Negative delay means the word
+        appears already somewhere
+        in its falling journey.
+
+        This lets all 20 exist on-screen
+        immediately.
+    */
+
+    const delay =
+        -(Math.random() * duration);
+
+
+    /*
+        Random rotation.
+    */
+
+    const rotation =
+        -12 +
+        Math.random() * 24;
+
+
+    /*
+        Random size.
+    */
+
+    const size =
+        10 +
+        Math.random() * 16;
+
+
+
+    element.style.left =
+        `${left}%`;
+
+
+    element.style.fontSize =
+        `${size}px`;
+
+
+    element.style.animationDuration =
+        `${duration}s`;
+
+
+    element.style.animationDelay =
+        `${delay}s`;
+
+
+    element.style.setProperty(
+        "--rotation",
+        `${rotation}deg`
+    );
+
+
+
+    fallingBackground.appendChild(
+        element
+    );
+
+
+    /*
+        When the animation finishes,
+        delete this word and create a
+        completely new random word.
+
+        This creates the recycling effect.
+    */
+
+    element.addEventListener(
+        "animationend",
+        () => {
+
+            element.remove();
+
+            createFallingWord();
+
+        }
+    );
+
+}
+
+
+
+if (fallingBackground) {
+
+
+    for (
+        let i = 0;
+        i < totalFallingWords;
+        i++
+    ) {
+
+        createFallingWord();
+
+    }
+
+}
+
+
+
+/* ========================================
+   PROFILE MUSIC
+======================================== */
+
+const music =
+    document.getElementById(
+        "profile-music"
+    );
+
+
+const musicButton =
+    document.getElementById(
+        "music-button"
+    );
+
+
+const musicStatus =
+    document.getElementById(
+        "music-status"
+    );
+
+
+if (
+    music &&
+    musicButton
+) {
+
+
+    musicButton.addEventListener(
+        "click",
+        async () => {
+
+
+            if (
+                music.paused
+            ) {
+
+
+                try {
+
+
+                    await music.play();
+
+
+                    musicButton.textContent =
+                        "Ⅱ PAUSE MUSIC";
+
+
+                    if (musicStatus) {
+
+                        musicStatus.textContent =
+                            "playing...";
+
+                    }
+
+
+                } catch (error) {
+
+
+                    musicButton.textContent =
+                        "MUSIC UNAVAILABLE";
+
+
+                    if (musicStatus) {
+
+                        musicStatus.textContent =
+                            "add music/profile.mp3";
+
+                    }
+
+                }
+
+
+            } else {
+
+
+                music.pause();
+
+
+                musicButton.textContent =
+                    "▶ PLAY MUSIC";
+
+
+                if (musicStatus) {
+
+                    musicStatus.textContent =
+                        "paused";
+
+                }
+
+            }
+
+        }
+    );
+
+
+    music.addEventListener(
+        "ended",
+        () => {
+
+            musicButton.textContent =
+                "▶ PLAY MUSIC";
+
+        }
+    );
+
+}
 
 
 
