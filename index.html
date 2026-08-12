@@ -28,60 +28,70 @@
 <body>
 
 
-    <!-- ==================================
-         NAVIGATION
-    =================================== -->
+    <!-- ========================================
+         MAIN NAVBAR
+    ========================================= -->
 
-    <header class="site-header">
+    <header class="navbar">
 
         <a
             href="index.html"
-            class="site-logo"
+            class="logo"
         >
             BACOTHN
         </a>
 
 
-        <div class="header-right">
+        <!-- Pages button only -->
+        <button
+            id="pagesButton"
+            class="page-menu-button"
+            type="button"
+        >
 
-            <button
-                id="pagesButton"
-                class="pages-button"
-                type="button"
-            >
-                <span class="pages-icon">☰</span>
-                <span>PAGES</span>
-            </button>
+            <span class="page-menu-button-icon">
+                ☰
+            </span>
 
-        </div>
+            <span>
+                PAGES
+            </span>
+
+        </button>
 
     </header>
 
 
 
-    <!-- ==================================
-         PAGE DRAWER
-         script.js controls this
-    =================================== -->
+    <!-- ========================================
+         PAGE MENU
+    ========================================= -->
 
     <div
         id="pagesDrawer"
-        class="pages-drawer"
+        class="page-menu"
     >
 
-        <div class="pages-drawer-inner">
+        <div class="page-menu-inner">
 
-            <div class="pages-drawer-title">
+            <div class="page-menu-label">
                 PAGES
             </div>
 
 
             <div
                 id="pagesList"
-                class="pages-list"
+                class="page-menu-scroll"
             >
 
-                <!-- script.js puts the page buttons here -->
+                <div class="page-menu-list">
+
+                    <!--
+                        script.js can insert page
+                        buttons here.
+                    -->
+
+                </div>
 
             </div>
 
@@ -91,60 +101,76 @@
 
 
 
-    <!-- ==================================
-         MAIN
-    =================================== -->
+    <!-- ========================================
+         HERO
+    ========================================= -->
 
-    <main class="home-main">
+    <main>
 
+        <section class="hero">
 
-        <section class="home-hero">
-
-
-            <div
-                id="glitchTitle"
-                class="glitch-title"
-            >
-                BACOTHN
-            </div>
+            <div class="hero-content">
 
 
-            <p class="home-description">
-                Projects, experiments, bots, games, and whatever
-                else I feel like making.
-            </p>
+                <div class="eyebrow">
+                    PERSONAL WEBSITE
+                </div>
 
 
-            <div class="home-links">
-
-
-                <a
-                    href="profile.html"
-                    class="home-link-button"
+                <div
+                    id="bacothn-title"
                 >
-                    My Profile
-                </a>
+                    BACOTHN
+                </div>
 
 
-                <a
-                    href="links.html"
-                    class="home-link-button"
-                >
-                    Social Links
-                </a>
+                <p class="subtitle">
+                    Projects, experiments, bots, games, and whatever
+                    else I feel like making.
+                </p>
+
+
+                <div class="buttons">
+
+
+                    <a
+                        href="profile.html"
+                        class="button secondary"
+                    >
+                        MY PROFILE
+                    </a>
+
+
+                    <a
+                        href="links.html"
+                        class="button secondary"
+                    >
+                        SOCIAL LINKS
+                    </a>
+
+
+                </div>
+
+
+                <div class="scroll-hint">
+                    SCROLL
+                </div>
 
 
             </div>
-
 
         </section>
-
 
     </main>
 
 
 
+    <!-- ========================================
+         SCRIPT
+    ========================================= -->
+
     <script src="script.js"></script>
+
 
 </body>
 
