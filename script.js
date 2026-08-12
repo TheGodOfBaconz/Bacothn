@@ -25,7 +25,7 @@ const stepTime =
 
 
 /* ========================================
-   BACOTHN TITLE GLITCH ANIMATION
+   BACOTHN TITLE GLITCH
 ======================================== */
 
 const title =
@@ -67,7 +67,6 @@ function createScrambledText(
 
             result += word[i];
 
-
         } else {
 
             result += randomCharacter();
@@ -93,22 +92,9 @@ async function animateTitle() {
     }
 
 
-    /*
-        Start with all 7 positions
-        scrambled.
-    */
-
     title.textContent =
         createScrambledText(0);
 
-
-
-    /*
-        Resolve one letter at a time.
-
-        Total:
-        approximately 2 seconds.
-    */
 
     for (
         let resolved = 0;
@@ -129,12 +115,10 @@ async function animateTitle() {
         );
 
 
-
         title.textContent =
             createScrambledText(
                 resolved + 1
             );
-
 
 
         title.classList.remove(
@@ -151,13 +135,6 @@ async function animateTitle() {
 
     }
 
-
-
-    /*
-        Final state.
-
-        Does not loop.
-    */
 
     title.textContent =
         word;
@@ -318,7 +295,9 @@ function createFallingWord() {
 
 
     const element =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
 
     element.className =
@@ -329,59 +308,27 @@ function createFallingWord() {
         randomFallingWord();
 
 
-
-    /*
-        Random horizontal position.
-    */
-
     const left =
         Math.random() * 100;
 
-
-    /*
-        Random fall duration.
-
-        This prevents all 20 words
-        from moving together.
-    */
 
     const duration =
         7 +
         Math.random() * 9;
 
 
-    /*
-        Random starting delay.
-
-        Negative delay means the word
-        appears already somewhere
-        in its falling journey.
-
-        This lets all 20 exist on-screen
-        immediately.
-    */
-
     const delay =
         -(Math.random() * duration);
 
-
-    /*
-        Random rotation.
-    */
 
     const rotation =
         -12 +
         Math.random() * 24;
 
 
-    /*
-        Random size.
-    */
-
     const size =
         10 +
         Math.random() * 16;
-
 
 
     element.style.left =
@@ -406,19 +353,10 @@ function createFallingWord() {
     );
 
 
-
     fallingBackground.appendChild(
         element
     );
 
-
-    /*
-        When the animation finishes,
-        delete this word and create a
-        completely new random word.
-
-        This creates the recycling effect.
-    */
 
     element.addEventListener(
         "animationend",
@@ -518,7 +456,7 @@ if (
                     if (musicStatus) {
 
                         musicStatus.textContent =
-                            "add music/profile.mp3";
+                            "check music/Var var Bradar.mp3";
 
                     }
 
