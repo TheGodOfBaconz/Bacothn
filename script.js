@@ -1,130 +1,42 @@
-const title = document.getElementById("bacothn-title");
+const copyButtons = document.querySelectorAll(".copy-button");
 
-const word = "BACOTHN";
+copyButtons.forEach((button) => {
 
-const glitchCharacters = [
-    "$",
-    "%",
-    "#",
-    "&",
-    "¥",
-    "£",
-    "€",
-    "@",
-    "*",
-    "!"
-];
+    button.addEventListener("click", async () => {
 
-const totalAnimationTime = 2000;
-const stepTime = totalAnimationTime / word.length;
+        const textToCopy = button.dataset.copy;
 
+        try {
 
-/*
-    Creates the title.
+            await navigator.clipboard.writeText(textToCopy);
 
-    Example:
+            const originalText = button.textContent;
 
-    B$%#&¥€
-    BA%#&¥€
-    BAC#&¥€
-    BACO&¥€
-    BACOT¥€
-    BACOTH€
-    BACOTHN
-*/
+            button.textContent = "Copied!";
 
-function createScrambledText(resolvedCount) {
+            button.classList.add("copied");
 
-    let result = "";
+            setTimeout(() => {
 
-    for (let i = 0; i < word.length; i++) {
+                button.textContent = originalText;
 
-        if (i < resolvedCount) {
+                button.classList.remove("copied");
 
-            result += word[i];
+            }, 1500);
 
-        } else {
+        } catch (error) {
 
-            result += glitchCharacters[
-                Math.floor(
-                    Math.random() * glitchCharacters.length
-                )
-            ];
+            button.textContent = "Copy failed";
+
+            setTimeout(() => {
+
+                button.textContent =
+                    "Copy Discord Username";
+
+            }, 1500);
 
         }
 
-    }
+    });
 
-    return result;
-}
-
-
-/*
-    Animate the title ONCE.
-
-    Every 0.2857 seconds another
-    letter becomes permanent.
-
-    7 letters × 0.2857 ≈ 2 seconds.
-*/
-
-async function animateTitle() {
-
-    title.textContent = createScrambledText(0);
-
-    for (
-        let resolved = 0;
-        resolved < word.length;
-        resolved++
-    ) {
-
-        await new Promise(resolve => {
-
-            setTimeout(
-                resolve,
-                stepTime
-            );
-
-        });
-
-
-        title.textContent =
-            createScrambledText(
-                resolved + 1
-            );
-
-
-        title.classList.remove("glitch");
-
-        void title.offsetWidth;
-
-        title.classList.add("glitch");
-
-    }
-
-
-    title.textContent = word;
-
-    title.classList.remove("glitch");
-}
-
-
-/*
-    Start animation once.
-*/
-
-animateTitle();
-
-
-/*
-    Footer year.
-*/
-
-const yearElement = document.getElementById("year");
-
-if (yearElement) {
-
-    yearElement.textContent =
-        new Date().getFullYear();
-
-}
+});
