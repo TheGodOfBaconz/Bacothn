@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Bacothn</title>
-    <meta name="description" content="The official Bacothn website. Projects, experiments, and random stuff.">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,38 +12,39 @@
 <body>
 
     <header class="navbar">
-        <a href="#" class="logo">BACOTHN</a>
+        <a href="index.html" class="logo">BACOTHN</a>
 
         <nav>
-            <a href="#home">Home</a>
-            <a href="#projects">Projects</a>
-            <a href="#about">About</a>
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="profile.html">Profile</a>
+            <a href="about.html">About</a>
+            <a href="links.html">Links</a>
         </nav>
     </header>
 
 
     <main>
 
-        <!-- HERO -->
-        <section id="home" class="hero">
+        <section class="hero">
 
             <div class="hero-content">
 
                 <p class="eyebrow">WELCOME TO</p>
 
-                <h1>BACOTHN<span>.</span></h1>
+                <h1 id="bacothn-title"></h1>
 
                 <p class="subtitle">
                     Projects, experiments, bots, games, and whatever else I feel like making.
                 </p>
 
                 <div class="buttons">
-                    <a href="#projects" class="button primary">
+                    <a href="projects.html" class="button primary">
                         View Projects
                     </a>
 
-                    <a href="https://github.com/" class="button secondary" target="_blank">
-                        GitHub
+                    <a href="links.html" class="button secondary">
+                        Links
                     </a>
                 </div>
 
@@ -57,109 +57,32 @@
         </section>
 
 
-        <!-- PROJECTS -->
-        <section id="projects" class="section">
+        <section class="section">
 
             <div class="section-heading">
-                <p class="eyebrow">WHAT I'M MAKING</p>
-                <h2>Projects</h2>
+                <p class="eyebrow">EXPLORE</p>
+                <h2>Bacothn.</h2>
             </div>
 
-            <div class="projects">
+            <div class="quick-links">
 
-                <article class="project-card">
+                <a href="profile.html" class="quick-card">
+                    <span>01</span>
+                    <h3>Profile</h3>
+                    <p>Who I am and what I'm doing.</p>
+                </a>
 
-                    <div class="project-number">01</div>
+                <a href="about.html" class="quick-card">
+                    <span>02</span>
+                    <h3>About Bacothn</h3>
+                    <p>What Bacothn is all about.</p>
+                </a>
 
-                    <h3>Bacothn Bot</h3>
-
-                    <p>
-                        A personal Discord bot packed with random commands,
-                        utilities, and whatever features get added next.
-                    </p>
-
-                    <div class="tags">
-                        <span>Python</span>
-                        <span>Discord</span>
-                    </div>
-
-                    <a href="#" class="project-link">
-                        View Project →
-                    </a>
-
-                </article>
-
-
-                <article class="project-card">
-
-                    <div class="project-number">02</div>
-
-                    <h3>Roblox Projects</h3>
-
-                    <p>
-                        Games, mechanics, scripts, experiments, and other
-                        Roblox stuff I'm working on.
-                    </p>
-
-                    <div class="tags">
-                        <span>Roblox</span>
-                        <span>Lua</span>
-                    </div>
-
-                    <a href="#" class="project-link">
-                        View Project →
-                    </a>
-
-                </article>
-
-
-                <article class="project-card">
-
-                    <div class="project-number">03</div>
-
-                    <h3>Random Stuff</h3>
-
-                    <p>
-                        Small tools, websites, experiments, and ideas that
-                        don't really belong anywhere else.
-                    </p>
-
-                    <div class="tags">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JS</span>
-                    </div>
-
-                    <a href="#" class="project-link">
-                        Explore →
-                    </a>
-
-                </article>
-
-            </div>
-
-        </section>
-
-
-        <!-- ABOUT -->
-        <section id="about" class="section about">
-
-            <div class="section-heading">
-                <p class="eyebrow">WHO IS BACOTHN?</p>
-                <h2>About</h2>
-            </div>
-
-            <div class="about-content">
-
-                <p>
-                    Bacothn is basically a place for my projects, experiments,
-                    and random things I decide to build.
-                </p>
-
-                <p>
-                    Some things are serious. Some things are completely stupid.
-                    That's kinda the point.
-                </p>
+                <a href="projects.html" class="quick-card">
+                    <span>03</span>
+                    <h3>Projects</h3>
+                    <p>Stuff I've built or am working on.</p>
+                </a>
 
             </div>
 
@@ -172,13 +95,11 @@
 
         <div class="footer-logo">BACOTHN.</div>
 
-        <p>
-            Built by Bacothn.
-        </p>
+        <p>Built by Bacothn.</p>
 
         <div class="footer-links">
-            <a href="https://github.com/" target="_blank">GitHub</a>
-            <a href="#">Discord</a>
+            <a href="links.html">Links</a>
+            <a href="projects.html">Projects</a>
         </div>
 
         <p class="copyright">
