@@ -22,6 +22,837 @@
         href="style.css"
     >
 
+
+    <!-- ========================================
+         BACON CLICKER STYLES
+    ========================================= -->
+
+    <style>
+
+        .bacon-launcher {
+            margin: 35px auto 0;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .bacon-play-button {
+            padding: 13px 22px;
+
+            color: #ff2424;
+            background: rgba(255, 0, 0, 0.05);
+
+            border: 1px solid rgba(255, 30, 30, 0.25);
+            border-radius: 6px;
+
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .bacon-play-button:hover {
+            color: #ffffff;
+
+            background: rgba(255, 0, 0, 0.1);
+
+            border-color: rgba(255, 40, 40, 0.5);
+
+            transform: translateY(-2px);
+        }
+
+        .bacon-play-button:active {
+            transform: scale(0.96);
+        }
+
+
+        /* ====================================
+           GAME WINDOW
+        ==================================== */
+
+        .bacon-game {
+            position: relative;
+
+            width: 100%;
+            max-width: 650px;
+
+            min-height: 480px;
+
+            margin: 25px auto 0;
+
+            padding: 30px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #171717 0%,
+                    #0b0b0b 55%,
+                    #050505 100%
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            opacity: 0;
+            transform: scale(0.7);
+
+            pointer-events: none;
+
+            display: none;
+
+            box-shadow:
+                0 25px 80px
+                rgba(0, 0, 0, 0.55),
+
+                inset 0 1px 0
+                rgba(255, 255, 255, 0.04);
+        }
+
+
+        /* ====================================
+           GAME OPEN ANIMATION
+        ==================================== */
+
+        .bacon-game.opening {
+            display: block;
+
+            animation:
+                baconGameOpen
+                0.8s
+                cubic-bezier(
+                    0.16,
+                    1,
+                    0.3,
+                    1
+                )
+                forwards;
+        }
+
+        @keyframes baconGameOpen {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    scale(0.55)
+                    rotate(-2deg);
+            }
+
+            35% {
+                opacity: 1;
+
+                transform:
+                    scale(1.03)
+                    rotate(1deg);
+            }
+
+            60% {
+                transform:
+                    scale(0.97)
+                    rotate(-0.5deg);
+            }
+
+            100% {
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    rotate(0);
+            }
+
+        }
+
+
+        /* ====================================
+           CRACK EFFECT
+        ==================================== */
+
+        .bacon-cracks {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 20;
+
+            pointer-events: none;
+
+            opacity: 0;
+
+            display: none;
+        }
+
+        .bacon-cracks.active {
+            display: block;
+
+            animation:
+                crackFlash
+                0.65s
+                ease-out
+                forwards;
+        }
+
+        .crack-line {
+            position: absolute;
+
+            width: 2px;
+
+            height: 150%;
+
+            top: -25%;
+
+            left: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.85);
+
+            box-shadow:
+                0 0 8px
+                rgba(255, 255, 255, 0.3);
+
+            transform-origin: center;
+        }
+
+        .crack-line:nth-child(1) {
+            transform: rotate(17deg);
+        }
+
+        .crack-line:nth-child(2) {
+            transform: rotate(-29deg);
+        }
+
+        .crack-line:nth-child(3) {
+            transform: rotate(63deg);
+        }
+
+        .crack-line:nth-child(4) {
+            transform: rotate(-66deg);
+        }
+
+        .crack-line:nth-child(5) {
+            transform: rotate(89deg);
+        }
+
+        @keyframes crackFlash {
+
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            45% {
+                opacity: 0.85;
+            }
+
+            100% {
+                opacity: 0;
+            }
+
+        }
+
+
+        /* ====================================
+           EXPLOSION
+        ==================================== */
+
+        .bacon-explosion {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            width: 20px;
+            height: 20px;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0);
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 20px #ffffff,
+                0 0 50px rgba(255, 40, 40, 0.8),
+                0 0 100px rgba(255, 0, 0, 0.4);
+
+            opacity: 0;
+
+            z-index: 25;
+
+            pointer-events: none;
+        }
+
+        .bacon-explosion.active {
+            animation:
+                baconExplosion
+                0.55s
+                ease-out
+                forwards;
+        }
+
+        @keyframes baconExplosion {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(0);
+            }
+
+            35% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(12);
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(18);
+            }
+
+        }
+
+
+        /* ====================================
+           GAME CONTENT
+        ==================================== */
+
+        .bacon-game-content {
+            position: relative;
+
+            z-index: 5;
+
+            opacity: 0;
+
+            animation:
+                none;
+        }
+
+        .bacon-game-content.visible {
+            animation:
+                baconContentReveal
+                0.9s
+                ease-out
+                0.45s
+                forwards;
+        }
+
+        @keyframes baconContentReveal {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    translateY(15px);
+            }
+
+            100% {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        /* ====================================
+           GAME HEADER
+        ==================================== */
+
+        .bacon-game-title {
+            color: #555555;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 4px;
+
+            text-align: center;
+
+            margin-bottom: 8px;
+        }
+
+        .bacon-score {
+            color: #ffffff;
+
+            font-size: 38px;
+
+            font-weight: 950;
+
+            letter-spacing: -2px;
+
+            text-align: center;
+        }
+
+        .bacon-score-label {
+            color: #444444;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            text-align: center;
+
+            margin-top: 5px;
+        }
+
+
+        /* ====================================
+           BACON BUTTON
+        ==================================== */
+
+        .bacon-click-area {
+            position: relative;
+
+            width: 220px;
+            height: 220px;
+
+            margin: 35px auto 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .bacon-button {
+            width: 180px;
+            height: 180px;
+
+            padding: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: transparent;
+
+            border: none;
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+
+            -webkit-tap-highlight-color: transparent;
+
+            user-select: none;
+
+            transition:
+                transform 0.08s
+                cubic-bezier(
+                    0.2,
+                    1.4,
+                    0.4,
+                    1
+                );
+        }
+
+        .bacon-button:active {
+            transform: scale(0.85);
+        }
+
+        .bacon-button img {
+            width: 160px;
+            height: 160px;
+
+            object-fit: contain;
+
+            pointer-events: none;
+
+            user-select: none;
+
+            -webkit-user-drag: none;
+
+            filter:
+                drop-shadow(
+                    0 12px 25px
+                    rgba(0, 0, 0, 0.5)
+                );
+        }
+
+        .bacon-button.bacon-pop {
+            animation:
+                baconPop
+                0.16s
+                cubic-bezier(
+                    0.2,
+                    1.5,
+                    0.4,
+                    1
+                );
+        }
+
+        @keyframes baconPop {
+
+            0% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(0.82);
+            }
+
+            75% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+
+        /* Initial bacon reveal */
+
+        .bacon-button.reveal img {
+            animation:
+                baconReveal
+                1s
+                cubic-bezier(
+                    0.16,
+                    1,
+                    0.3,
+                    1
+                )
+                forwards;
+        }
+
+        @keyframes baconReveal {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    scale(0.2)
+                    rotate(-220deg);
+            }
+
+            55% {
+                opacity: 1;
+
+                transform:
+                    scale(1.08)
+                    rotate(15deg);
+            }
+
+            100% {
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    rotate(0);
+            }
+
+        }
+
+
+        /* ====================================
+           FLOATING BACON NUMBER
+        ==================================== */
+
+        .bacon-float {
+            position: absolute;
+
+            color: #ff3030;
+
+            font-size: 14px;
+
+            font-weight: 950;
+
+            pointer-events: none;
+
+            z-index: 50;
+
+            animation:
+                baconFloat
+                0.8s
+                ease-out
+                forwards;
+        }
+
+        @keyframes baconFloat {
+
+            0% {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translateY(-65px)
+                    scale(1.15);
+            }
+
+        }
+
+
+        /* ====================================
+           COMBO
+        ==================================== */
+
+        .bacon-combo {
+            min-height: 20px;
+
+            color: #ff2424;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            text-align: center;
+        }
+
+
+        /* ====================================
+           STATS
+        ==================================== */
+
+        .bacon-stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+
+            margin-top: 25px;
+        }
+
+        .bacon-stat {
+            padding: 12px 8px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+
+            border-radius: 6px;
+
+            text-align: center;
+        }
+
+        .bacon-stat span {
+            display: block;
+
+            color: #444444;
+
+            font-size: 7px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 5px;
+        }
+
+        .bacon-stat b {
+            color: #bbbbbb;
+
+            font-size: 12px;
+        }
+
+
+        /* ====================================
+           SHOP
+        ==================================== */
+
+        .bacon-shop {
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+        }
+
+        .bacon-shop-title {
+            color: #555555;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 10px;
+        }
+
+        .bacon-upgrades {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+        }
+
+        .bacon-upgrade {
+            padding: 12px;
+
+            color: #aaaaaa;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            border-radius: 6px;
+
+            font-family: inherit;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.15s ease;
+        }
+
+        .bacon-upgrade:hover {
+            background:
+                rgba(255, 0, 0, 0.05);
+
+            border-color:
+                rgba(255, 30, 30, 0.3);
+        }
+
+        .bacon-upgrade:active {
+            transform: scale(0.97);
+        }
+
+        .bacon-upgrade:disabled {
+            opacity: 0.35;
+
+            cursor: not-allowed;
+        }
+
+        .bacon-upgrade-name {
+            display: block;
+
+            color: #eeeeee;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+        .bacon-upgrade-effect {
+            display: block;
+
+            color: #666666;
+
+            font-size: 8px;
+
+            margin-top: 4px;
+        }
+
+        .bacon-upgrade-cost {
+            display: block;
+
+            color: #ff2424;
+
+            font-size: 8px;
+
+            font-weight: 900;
+
+            margin-top: 7px;
+        }
+
+
+        /* ====================================
+           MOBILE
+        ==================================== */
+
+        @media (max-width: 700px) {
+
+            .bacon-game {
+                min-height: 450px;
+
+                padding: 25px 16px;
+
+                border-radius: 15px;
+            }
+
+            .bacon-score {
+                font-size: 32px;
+            }
+
+            .bacon-click-area {
+                width: 200px;
+                height: 200px;
+
+                margin-top: 25px;
+            }
+
+            .bacon-button {
+                width: 180px;
+                height: 180px;
+            }
+
+            .bacon-button img {
+                width: 160px;
+                height: 160px;
+            }
+
+            .bacon-upgrades {
+                grid-template-columns: 1fr;
+            }
+
+            .bacon-stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -42,7 +873,6 @@
         </a>
 
 
-        <!-- Pages button only -->
         <button
             id="pagesButton"
             class="page-menu-button"
@@ -79,17 +909,51 @@
             </div>
 
 
-            <div
-                id="pagesList"
-                class="page-menu-scroll"
-            >
+            <div class="page-menu-scroll">
 
-                <div class="page-menu-list">
+                <div
+                    id="pagesList"
+                    class="page-menu-list"
+                >
 
-                    <!--
-                        script.js can insert page
-                        buttons here.
-                    -->
+                    <a
+                        href="index.html"
+                        class="page-menu-link"
+                    >
+                        HOME
+                    </a>
+
+
+                    <a
+                        href="profile.html"
+                        class="page-menu-link"
+                    >
+                        PROFILE
+                    </a>
+
+
+                    <a
+                        href="about.html"
+                        class="page-menu-link"
+                    >
+                        ABOUT
+                    </a>
+
+
+                    <a
+                        href="projects.html"
+                        class="page-menu-link"
+                    >
+                        PROJECTS
+                    </a>
+
+
+                    <a
+                        href="links.html"
+                        class="page-menu-link"
+                    >
+                        LINKS
+                    </a>
 
                 </div>
 
@@ -130,24 +994,279 @@
                 </p>
 
 
-                <div class="buttons">
 
+                <!-- ====================================
+                     BACON CLICKER LAUNCHER
+                ===================================== -->
 
-                    <a
-                        href="profile.html"
-                        class="button secondary"
+                <div class="bacon-launcher">
+
+                    <button
+                        id="baconPlayButton"
+                        class="bacon-play-button"
+                        type="button"
                     >
-                        MY PROFILE
-                    </a>
+                        PLAY BACON CLICKER?
+                    </button>
 
 
-                    <a
-                        href="links.html"
-                        class="button secondary"
+                    <!-- =================================
+                         GAME
+                    ================================== -->
+
+                    <div
+                        id="baconGame"
+                        class="bacon-game"
                     >
-                        SOCIAL LINKS
-                    </a>
 
+
+                        <!-- CRACKS -->
+
+                        <div
+                            id="baconCracks"
+                            class="bacon-cracks"
+                        >
+
+                            <div class="crack-line"></div>
+                            <div class="crack-line"></div>
+                            <div class="crack-line"></div>
+                            <div class="crack-line"></div>
+                            <div class="crack-line"></div>
+
+                        </div>
+
+
+                        <!-- EXPLOSION -->
+
+                        <div
+                            id="baconExplosion"
+                            class="bacon-explosion"
+                        ></div>
+
+
+
+                        <!-- GAME CONTENT -->
+
+                        <div
+                            id="baconGameContent"
+                            class="bacon-game-content"
+                        >
+
+                            <div class="bacon-game-title">
+                                BACON TAPPER
+                            </div>
+
+
+                            <div
+                                id="baconScore"
+                                class="bacon-score"
+                            >
+                                0
+                            </div>
+
+
+                            <div class="bacon-score-label">
+                                BACON
+                            </div>
+
+
+
+                            <!-- BACON -->
+
+                            <div
+                                id="baconClickArea"
+                                class="bacon-click-area"
+                            >
+
+                                <button
+                                    id="baconButton"
+                                    class="bacon-button reveal"
+                                    type="button"
+                                    aria-label="Tap the bacon"
+                                >
+
+                                    <img
+                                        src="gallery/1498151896333160640.webp"
+                                        alt="Bacon"
+                                        draggable="false"
+                                    >
+
+                                </button>
+
+                            </div>
+
+
+
+                            <div
+                                id="baconCombo"
+                                class="bacon-combo"
+                            ></div>
+
+
+
+                            <!-- STATS -->
+
+                            <div class="bacon-stats">
+
+                                <div class="bacon-stat">
+
+                                    <span>
+                                        PER CLICK
+                                    </span>
+
+                                    <b id="baconPerClick">
+                                        +1
+                                    </b>
+
+                                </div>
+
+
+                                <div class="bacon-stat">
+
+                                    <span>
+                                        PER SECOND
+                                    </span>
+
+                                    <b id="baconPerSecond">
+                                        0
+                                    </b>
+
+                                </div>
+
+
+                                <div class="bacon-stat">
+
+                                    <span>
+                                        BEST
+                                    </span>
+
+                                    <b id="baconBest">
+                                        0
+                                    </b>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- UPGRADES -->
+
+                            <div class="bacon-shop">
+
+                                <div class="bacon-shop-title">
+                                    UPGRADES
+                                </div>
+
+
+                                <div class="bacon-upgrades">
+
+
+                                    <button
+                                        class="bacon-upgrade"
+                                        type="button"
+                                        data-upgrade="tiny"
+                                    >
+
+                                        <span class="bacon-upgrade-name">
+                                            TINY CLICKER
+                                        </span>
+
+                                        <span class="bacon-upgrade-effect">
+                                            +1 BACON / SEC
+                                        </span>
+
+                                        <span
+                                            class="bacon-upgrade-cost"
+                                            id="tinyCost"
+                                        >
+                                            50 BACON
+                                        </span>
+
+                                    </button>
+
+
+
+                                    <button
+                                        class="bacon-upgrade"
+                                        type="button"
+                                        data-upgrade="bot"
+                                    >
+
+                                        <span class="bacon-upgrade-name">
+                                            BACON BOT
+                                        </span>
+
+                                        <span class="bacon-upgrade-effect">
+                                            +5 BACON / SEC
+                                        </span>
+
+                                        <span
+                                            class="bacon-upgrade-cost"
+                                            id="botCost"
+                                        >
+                                            250 BACON
+                                        </span>
+
+                                    </button>
+
+
+
+                                    <button
+                                        class="bacon-upgrade"
+                                        type="button"
+                                        data-upgrade="supreme"
+                                    >
+
+                                        <span class="bacon-upgrade-name">
+                                            SUPREME CLICKER
+                                        </span>
+
+                                        <span class="bacon-upgrade-effect">
+                                            +20 BACON / SEC
+                                        </span>
+
+                                        <span
+                                            class="bacon-upgrade-cost"
+                                            id="supremeCost"
+                                        >
+                                            1,000 BACON
+                                        </span>
+
+                                    </button>
+
+
+
+                                    <button
+                                        class="bacon-upgrade"
+                                        type="button"
+                                        data-upgrade="mega"
+                                    >
+
+                                        <span class="bacon-upgrade-name">
+                                            SUPREME BACON
+                                        </span>
+
+                                        <span class="bacon-upgrade-effect">
+                                            +100 BACON / SEC
+                                        </span>
+
+                                        <span
+                                            class="bacon-upgrade-cost"
+                                            id="megaCost"
+                                        >
+                                            10,000 BACON
+                                        </span>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -166,7 +1285,705 @@
 
 
     <!-- ========================================
-         SCRIPT
+         BACON CLICKER SCRIPT
+    ========================================= -->
+
+    <script>
+
+        const baconPlayButton =
+            document.getElementById("baconPlayButton");
+
+        const baconGame =
+            document.getElementById("baconGame");
+
+        const baconCracks =
+            document.getElementById("baconCracks");
+
+        const baconExplosion =
+            document.getElementById("baconExplosion");
+
+        const baconGameContent =
+            document.getElementById("baconGameContent");
+
+        const baconButton =
+            document.getElementById("baconButton");
+
+        const baconClickArea =
+            document.getElementById("baconClickArea");
+
+        const baconScore =
+            document.getElementById("baconScore");
+
+        const baconBest =
+            document.getElementById("baconBest");
+
+        const baconPerClick =
+            document.getElementById("baconPerClick");
+
+        const baconPerSecond =
+            document.getElementById("baconPerSecond");
+
+        const baconCombo =
+            document.getElementById("baconCombo");
+
+
+        let bacon =
+            Number(
+                localStorage.getItem(
+                    "bacothn_bacon"
+                )
+            ) || 0;
+
+
+        let best =
+            Number(
+                localStorage.getItem(
+                    "bacothn_bacon_best"
+                )
+            ) || 0;
+
+
+        let totalBacon =
+            Number(
+                localStorage.getItem(
+                    "bacothn_total_bacon"
+                )
+            ) || 0;
+
+
+        let lastSeen =
+            Number(
+                localStorage.getItem(
+                    "bacothn_last_seen"
+                )
+            ) || Date.now();
+
+
+        let perClick = 1;
+
+        let combo = 0;
+
+        let comboTimer = null;
+
+        let gameStarted = false;
+
+
+        const upgrades = {
+
+            tiny: {
+                count: 0,
+                baseCost: 50,
+                production: 1
+            },
+
+            bot: {
+                count: 0,
+                baseCost: 250,
+                production: 5
+            },
+
+            supreme: {
+                count: 0,
+                baseCost: 1000,
+                production: 20
+            },
+
+            mega: {
+                count: 0,
+                baseCost: 10000,
+                production: 100
+            }
+
+        };
+
+
+        /* ====================================
+           LOAD UPGRADES
+        ==================================== */
+
+        Object.keys(upgrades).forEach(
+            function(key) {
+
+                upgrades[key].count =
+                    Number(
+                        localStorage.getItem(
+                            "bacothn_upgrade_" + key
+                        )
+                    ) || 0;
+
+            }
+        );
+
+
+        /* ====================================
+           FORMAT NUMBERS
+        ==================================== */
+
+        function formatNumber(number) {
+
+            return Math.floor(number)
+                .toLocaleString();
+
+        }
+
+
+        /* ====================================
+           TOTAL PRODUCTION
+        ==================================== */
+
+        function getPerSecond() {
+
+            let total = 0;
+
+            Object.keys(upgrades).forEach(
+                function(key) {
+
+                    total +=
+                        upgrades[key].count *
+                        upgrades[key].production;
+
+                }
+            );
+
+            return total;
+
+        }
+
+
+        /* ====================================
+           UPGRADE COST
+        ==================================== */
+
+        function getUpgradeCost(key) {
+
+            const upgrade =
+                upgrades[key];
+
+            return Math.floor(
+                upgrade.baseCost *
+                Math.pow(
+                    1.15,
+                    upgrade.count
+                )
+            );
+
+        }
+
+
+        /* ====================================
+           SAVE
+        ==================================== */
+
+        function saveGame() {
+
+            localStorage.setItem(
+                "bacothn_bacon",
+                bacon
+            );
+
+            localStorage.setItem(
+                "bacothn_bacon_best",
+                best
+            );
+
+            localStorage.setItem(
+                "bacothn_total_bacon",
+                totalBacon
+            );
+
+            localStorage.setItem(
+                "bacothn_last_seen",
+                Date.now()
+            );
+
+
+            Object.keys(upgrades).forEach(
+                function(key) {
+
+                    localStorage.setItem(
+                        "bacothn_upgrade_" + key,
+                        upgrades[key].count
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ====================================
+           UPDATE UI
+        ==================================== */
+
+        function updateUI() {
+
+            baconScore.textContent =
+                formatNumber(bacon);
+
+            baconBest.textContent =
+                formatNumber(best);
+
+            baconPerClick.textContent =
+                "+" + formatNumber(perClick);
+
+            baconPerSecond.textContent =
+                formatNumber(
+                    getPerSecond()
+                );
+
+
+            document.getElementById(
+                "tinyCost"
+            ).textContent =
+                formatNumber(
+                    getUpgradeCost("tiny")
+                ) + " BACON";
+
+
+            document.getElementById(
+                "botCost"
+            ).textContent =
+                formatNumber(
+                    getUpgradeCost("bot")
+                ) + " BACON";
+
+
+            document.getElementById(
+                "supremeCost"
+            ).textContent =
+                formatNumber(
+                    getUpgradeCost("supreme")
+                ) + " BACON";
+
+
+            document.getElementById(
+                "megaCost"
+            ).textContent =
+                formatNumber(
+                    getUpgradeCost("mega")
+                ) + " BACON";
+
+
+            document.querySelectorAll(
+                ".bacon-upgrade"
+            ).forEach(
+                function(button) {
+
+                    const key =
+                        button.dataset.upgrade;
+
+                    button.disabled =
+                        bacon <
+                        getUpgradeCost(key);
+
+                }
+            );
+
+        }
+
+
+        /* ====================================
+           AFK REWARDS
+        ==================================== */
+
+        function calculateAFK() {
+
+            const now =
+                Date.now();
+
+            const secondsAway =
+                Math.max(
+                    0,
+                    Math.floor(
+                        (now - lastSeen) / 1000
+                    )
+                );
+
+
+            const cappedSeconds =
+                Math.min(
+                    secondsAway,
+                    60 * 60 * 8
+                );
+
+
+            const production =
+                getPerSecond();
+
+
+            if (
+                production <= 0 ||
+                cappedSeconds <= 30
+            ) {
+
+                return 0;
+
+            }
+
+
+            return (
+                production *
+                cappedSeconds
+            );
+
+        }
+
+
+        const afkReward =
+            calculateAFK();
+
+
+        if (afkReward > 0) {
+
+            bacon += afkReward;
+
+            totalBacon += afkReward;
+
+            if (bacon > best) {
+                best = bacon;
+            }
+
+        }
+
+
+        /* ====================================
+           PLAY BUTTON
+        ==================================== */
+
+        baconPlayButton.addEventListener(
+            "click",
+            function() {
+
+                if (gameStarted) {
+                    return;
+                }
+
+                gameStarted = true;
+
+                baconPlayButton.style.display =
+                    "none";
+
+
+                baconGame.style.display =
+                    "block";
+
+
+                baconGame.classList.remove(
+                    "opening"
+                );
+
+                baconCracks.classList.remove(
+                    "active"
+                );
+
+                baconExplosion.classList.remove(
+                    "active"
+                );
+
+                baconGameContent.classList.remove(
+                    "visible"
+                );
+
+
+                void baconGame.offsetWidth;
+
+
+                baconGame.classList.add(
+                    "opening"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        baconCracks.classList.add(
+                            "active"
+                        );
+
+                    },
+                    150
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        baconExplosion.classList.add(
+                            "active"
+                        );
+
+                    },
+                    380
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        baconGameContent.classList.add(
+                            "visible"
+                        );
+
+                    },
+                    550
+                );
+
+
+                updateUI();
+
+            }
+        );
+
+
+        /* ====================================
+           BACON CLICK
+        ==================================== */
+
+        baconButton.addEventListener(
+            "click",
+            function(event) {
+
+                const rect =
+                    baconClickArea.getBoundingClientRect();
+
+
+                let amount =
+                    perClick;
+
+
+                /* Combo */
+
+                combo++;
+
+                clearTimeout(
+                    comboTimer
+                );
+
+
+                comboTimer =
+                    setTimeout(
+                        function() {
+
+                            combo = 0;
+
+                            baconCombo.textContent =
+                                "";
+
+                        },
+                        1200
+                    );
+
+
+                if (combo >= 2) {
+
+                    const comboBonus =
+                        Math.min(
+                            Math.floor(
+                                combo / 5
+                            ),
+                            10
+                        );
+
+                    amount += comboBonus;
+
+                    baconCombo.textContent =
+                        "COMBO ×" +
+                        combo;
+
+                }
+
+
+                /* Critical */
+
+                const critical =
+                    Math.random() < 0.01;
+
+
+                if (critical) {
+
+                    amount *= 10;
+
+                    baconCombo.textContent =
+                        "CRITICAL BACON! +" +
+                        formatNumber(amount);
+
+                }
+
+
+                bacon += amount;
+
+                totalBacon += amount;
+
+
+                if (bacon > best) {
+
+                    best = bacon;
+
+                }
+
+
+                /* Pop animation */
+
+                baconButton.classList.remove(
+                    "bacon-pop"
+                );
+
+                void baconButton.offsetWidth;
+
+                baconButton.classList.add(
+                    "bacon-pop"
+                );
+
+
+                /* Floating number */
+
+                const floating =
+                    document.createElement(
+                        "div"
+                    );
+
+                floating.className =
+                    "bacon-float";
+
+                floating.textContent =
+                    "+" +
+                    formatNumber(amount);
+
+
+                const x =
+                    event.clientX -
+                    rect.left;
+
+                const y =
+                    event.clientY -
+                    rect.top;
+
+
+                floating.style.left =
+                    x + "px";
+
+                floating.style.top =
+                    y + "px";
+
+
+                baconClickArea.appendChild(
+                    floating
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        floating.remove();
+
+                    },
+                    800
+                );
+
+
+                updateUI();
+
+                saveGame();
+
+            }
+        );
+
+
+        /* ====================================
+           UPGRADES
+        ==================================== */
+
+        document.querySelectorAll(
+            ".bacon-upgrade"
+        ).forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        const key =
+                            button.dataset.upgrade;
+
+                        const cost =
+                            getUpgradeCost(key);
+
+
+                        if (bacon < cost) {
+                            return;
+                        }
+
+
+                        bacon -= cost;
+
+                        upgrades[key].count++;
+
+
+                        saveGame();
+
+                        updateUI();
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ====================================
+           AUTOMATIC BACON
+        ==================================== */
+
+        setInterval(
+            function() {
+
+                if (!gameStarted) {
+                    return;
+                }
+
+
+                const production =
+                    getPerSecond();
+
+
+                if (production <= 0) {
+                    return;
+                }
+
+
+                bacon += production;
+
+                totalBacon += production;
+
+
+                if (bacon > best) {
+                    best = bacon;
+                }
+
+
+                updateUI();
+
+                saveGame();
+
+            },
+            1000
+        );
+
+
+        /* ====================================
+           INITIAL SAVE
+        ==================================== */
+
+        saveGame();
+
+        updateUI();
+
+    </script>
+
+
+
+    <!-- ========================================
+         MAIN SITE SCRIPT
     ========================================= -->
 
     <script src="script.js"></script>
