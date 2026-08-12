@@ -14,7 +14,7 @@
 
     <meta
         name="description"
-        content="The official Bacothn website."
+        content="Bacothn. Projects, experiments, bots, games, and whatever else I feel like making."
     >
 
     <link
@@ -28,66 +28,99 @@
 <body>
 
 
-<header class="navbar">
+    <!-- ==================================
+         NAVIGATION
+    =================================== -->
 
-    <a
-        href="index.html"
-        class="logo"
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="site-logo"
+        >
+            BACOTHN
+        </a>
+
+
+        <div class="header-right">
+
+            <button
+                id="pagesButton"
+                class="pages-button"
+                type="button"
+            >
+                <span class="pages-icon">☰</span>
+                <span>PAGES</span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================
+         PAGE DRAWER
+         script.js controls this
+    =================================== -->
+
+    <div
+        id="pagesDrawer"
+        class="pages-drawer"
     >
-        BACOTHN
-    </a>
+
+        <div class="pages-drawer-inner">
+
+            <div class="pages-drawer-title">
+                PAGES
+            </div>
 
 
-    <nav>
+            <div
+                id="pagesList"
+                class="pages-list"
+            >
 
-        <a href="index.html">
-            Home
-        </a>
+                <!-- script.js puts the page buttons here -->
 
-        <a href="profile.html">
-            Profile
-        </a>
+            </div>
 
-        <a href="links.html">
-            Links
-        </a>
+        </div>
 
-    </nav>
-
-</header>
+    </div>
 
 
 
-<main>
+    <!-- ==================================
+         MAIN
+    =================================== -->
+
+    <main class="home-main">
 
 
-    <section class="hero">
+        <section class="home-hero">
 
 
-        <div class="hero-content">
+            <div
+                id="glitchTitle"
+                class="glitch-title"
+            >
+                BACOTHN
+            </div>
 
 
-            <p class="eyebrow">
-                WELCOME TO
+            <p class="home-description">
+                Projects, experiments, bots, games, and whatever
+                else I feel like making.
             </p>
 
 
-            <h1 id="bacothn-title">
-                &amp;%#¥£$€
-            </h1>
+            <div class="home-links">
 
-
-            <p class="subtitle">
-                Projects, experiments, bots, games,
-                and whatever else I feel like making.
-            </p>
-
-
-            <div class="buttons">
 
                 <a
                     href="profile.html"
-                    class="button secondary"
+                    class="home-link-button"
                 >
                     My Profile
                 </a>
@@ -95,168 +128,23 @@
 
                 <a
                     href="links.html"
-                    class="button secondary"
+                    class="home-link-button"
                 >
                     Social Links
                 </a>
 
+
             </div>
 
 
-        </div>
+        </section>
 
 
-        <div class="scroll-hint">
-            ↓ SCROLL
-        </div>
+    </main>
 
 
-    </section>
 
-
-
-    <section class="section">
-
-
-        <div class="section-heading">
-
-            <p class="eyebrow">
-                EXPLORE
-            </p>
-
-            <h2>
-                Bacothn.
-            </h2>
-
-        </div>
-
-
-
-        <div class="quick-links">
-
-
-            <a
-                href="profile.html"
-                class="quick-card"
-            >
-
-                <span>
-                    01
-                </span>
-
-                <h3>
-                    Profile
-                </h3>
-
-                <p>
-                    Learn more about TheGodOfBacons
-                    and how Bacothn started.
-                </p>
-
-            </a>
-
-
-
-            <a
-                href="links.html"
-                class="quick-card"
-            >
-
-                <span>
-                    02
-                </span>
-
-                <h3>
-                    Social Links
-                </h3>
-
-                <p>
-                    Find my Discord server,
-                    bot authorization, and
-                    other links.
-                </p>
-
-            </a>
-
-
-
-            <a
-                href="#"
-                class="quick-card"
-            >
-
-                <span>
-                    03
-                </span>
-
-                <h3>
-                    More Coming
-                </h3>
-
-                <p>
-                    More Bacothn pages and
-                    projects will be added
-                    here later.
-                </p>
-
-            </a>
-
-
-        </div>
-
-
-    </section>
-
-
-</main>
-
-
-
-<footer>
-
-
-    <div class="footer-logo">
-        BACOTHN.
-    </div>
-
-
-    <p>
-        Built by Bacothn.
-    </p>
-
-
-    <div class="footer-links">
-
-        <a href="index.html">
-            Home
-        </a>
-
-        <a href="profile.html">
-            Profile
-        </a>
-
-        <a href="links.html">
-            Social Links
-        </a>
-
-    </div>
-
-
-    <p class="copyright">
-
-        ©
-        <span id="year"></span>
-        Bacothn
-
-    </p>
-
-
-</footer>
-
-
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 
 </body>
 
