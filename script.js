@@ -9,7 +9,7 @@ const glitchCharacters = [
     "£",
     "€",
     "@",
-    "*",
+    "⃁",
     "!"
 ];
 
@@ -149,25 +149,21 @@ animateTitle();
 const pageMenuPages = [
     {
         name: "My Profile",
-        url: "profile.html",
         file: "profile.html"
     },
 
     {
         name: "About",
-        url: "about.html",
         file: "about.html"
     },
 
     {
         name: "Links",
-        url: "links.html",
         file: "links.html"
     },
 
     {
         name: "Projects",
-        url: "projects.html",
         file: "projects.html"
     }
 ];
@@ -177,14 +173,12 @@ function getCurrentPage() {
 
     let currentPage =
         window.location.pathname
-        .split("/")
-        .pop()
-        .toLowerCase();
+            .split("/")
+            .pop()
+            .toLowerCase();
 
 
-    if (
-        currentPage === ""
-    ) {
+    if (!currentPage) {
 
         currentPage =
             "index.html";
@@ -199,10 +193,33 @@ function getCurrentPage() {
 
 function createPageMenu() {
 
-    if (
+    /*
+     * Use the menu that already exists
+     * inside the HTML.
+     */
+
+    const menuButton =
         document.getElementById(
-            "page-menu"
-        )
+            "pagesButton"
+        );
+
+
+    const menu =
+        document.getElementById(
+            "pagesDrawer"
+        );
+
+
+    const pageList =
+        document.querySelector(
+            ".page-menu-list"
+        );
+
+
+    if (
+        !menuButton ||
+        !menu ||
+        !pageList
     ) {
 
         return;
@@ -214,90 +231,24 @@ function createPageMenu() {
         getCurrentPage();
 
 
-    const menuButton =
-        document.createElement(
-            "button"
-        );
+    /*
+     * Remove any old buttons.
+     */
+
+    pageList.innerHTML = "";
 
 
-    menuButton.id =
-        "page-menu-button";
-
-
-    menuButton.type =
-        "button";
-
-
-    menuButton.className =
-        "page-menu-button";
-
-
-    menuButton.innerHTML = `
-        <span class="page-menu-button-icon">
-            ☰
-        </span>
-
-        <span class="page-menu-button-text">
-            PAGES
-        </span>
-    `;
-
-
-    const menu =
-        document.createElement(
-            "div"
-        );
-
-
-    menu.id =
-        "page-menu";
-
-
-    menu.className =
-        "page-menu";
-
-
-    menu.innerHTML = `
-        <div class="page-menu-inner">
-
-            <div class="page-menu-label">
-                EXPLORE
-            </div>
-
-            <div
-                class="page-menu-scroll"
-                id="page-menu-scroll"
-            >
-
-                <div
-                    class="page-menu-list"
-                    id="page-menu-list"
-                ></div>
-
-            </div>
-
-        </div>
-    `;
-
-
-    document.body.prepend(
-        menuButton
-    );
-
-
-    document.body.prepend(
-        menu
-    );
-
-
-    const pageList =
-        document.getElementById(
-            "page-menu-list"
-        );
-
+    /*
+     * Create the page buttons.
+     */
 
     pageMenuPages.forEach(
         (page) => {
+
+            /*
+             * Don't display the page
+             * we're currently viewing.
+             */
 
             if (
                 page.file.toLowerCase() ===
@@ -320,7 +271,7 @@ function createPageMenu() {
 
 
             link.href =
-                page.url;
+                page.file;
 
 
             link.textContent =
@@ -334,6 +285,12 @@ function createPageMenu() {
         }
     );
 
+
+    /*
+     * ====================================
+     * OPEN / CLOSE MENU
+     * ====================================
+     */
 
     let menuOpen =
         false;
@@ -360,7 +317,7 @@ function createPageMenu() {
                 ×
             </span>
 
-            <span class="page-menu-button-text">
+            <span>
                 CLOSE
             </span>
         `;
@@ -389,7 +346,7 @@ function createPageMenu() {
                 ☰
             </span>
 
-            <span class="page-menu-button-text">
+            <span>
                 PAGES
             </span>
         `;
@@ -401,9 +358,7 @@ function createPageMenu() {
         "click",
         () => {
 
-            if (
-                menuOpen
-            ) {
+            if (menuOpen) {
 
                 closeMenu();
 
@@ -417,13 +372,18 @@ function createPageMenu() {
     );
 
 
+    /*
+     * ====================================
+     * ESCAPE CLOSE
+     * ====================================
+     */
+
     document.addEventListener(
         "keydown",
         (event) => {
 
             if (
-                event.key ===
-                "Escape" &&
+                event.key === "Escape" &&
                 menuOpen
             ) {
 
@@ -435,10 +395,39 @@ function createPageMenu() {
     );
 
 
+    /*
+     * ====================================
+     * CLOSE AFTER PAGE CLICK
+     * ====================================
+     */
+
+    pageList.addEventListener(
+        "click",
+        () => {
+
+            closeMenu();
+
+        }
+    );
+
+
+    /*
+     * ====================================
+     * HORIZONTAL DRAG SCROLL
+     * ====================================
+     */
+
     const menuScroll =
-        document.getElementById(
-            "page-menu-scroll"
+        document.querySelector(
+            ".page-menu-scroll"
         );
+
+
+    if (!menuScroll) {
+
+        return;
+
+    }
 
 
     let isDragging =
@@ -472,9 +461,17 @@ function createPageMenu() {
             );
 
 
-            menuScroll.setPointerCapture(
-                event.pointerId
-            );
+            try {
+
+                menuScroll.setPointerCapture(
+                    event.pointerId
+                );
+
+            } catch (error) {
+
+                // Ignore unsupported pointer capture.
+
+            }
 
         }
     );
@@ -484,9 +481,7 @@ function createPageMenu() {
         "pointermove",
         (event) => {
 
-            if (
-                !isDragging
-            ) {
+            if (!isDragging) {
 
                 return;
 
@@ -535,9 +530,7 @@ function createPageMenu() {
         "pointerleave",
         () => {
 
-            if (
-                isDragging
-            ) {
+            if (isDragging) {
 
                 stopDragging();
 
