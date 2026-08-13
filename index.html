@@ -867,6 +867,12 @@
 
     <!-- ========================================
          NAVBAR
+         
+         IMPORTANT:
+         The Pages button/menu is NOT manually
+         created here anymore.
+
+         script.js creates it.
     ========================================= -->
 
     <header class="navbar">
@@ -878,92 +884,7 @@
             BACOTHN
         </a>
 
-
-        <button
-            id="pagesButton"
-            class="page-menu-button"
-            type="button"
-        >
-
-            <span class="page-menu-button-icon">
-                ☰
-            </span>
-
-            <span>
-                PAGES
-            </span>
-
-        </button>
-
     </header>
-
-
-
-    <!-- ========================================
-         PAGE MENU
-    ========================================= -->
-
-    <div
-        id="pagesDrawer"
-        class="page-menu"
-    >
-
-        <div class="page-menu-inner">
-
-            <div class="page-menu-label">
-                PAGES
-            </div>
-
-
-            <div class="page-menu-scroll">
-
-                <div
-                    id="pagesList"
-                    class="page-menu-list"
-                >
-
-                    <a
-                        href="index.html"
-                        class="page-menu-link"
-                    >
-                        HOME
-                    </a>
-
-                    <a
-                        href="profile.html"
-                        class="page-menu-link"
-                    >
-                        PROFILE
-                    </a>
-
-                    <a
-                        href="about.html"
-                        class="page-menu-link"
-                    >
-                        ABOUT
-                    </a>
-
-                    <a
-                        href="projects.html"
-                        class="page-menu-link"
-                    >
-                        PROJECTS
-                    </a>
-
-                    <a
-                        href="links.html"
-                        class="page-menu-link"
-                    >
-                        LINKS
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
 
 
 
@@ -1672,12 +1593,6 @@
                     "block";
 
 
-                /*
-                    Force browser to register
-                    the initial state before
-                    starting animation.
-                */
-
                 void game.offsetWidth;
 
 
@@ -1685,10 +1600,6 @@
                     "opening"
                 );
 
-
-                /*
-                    CRACK
-                */
 
                 setTimeout(
                     function() {
@@ -1702,10 +1613,6 @@
                 );
 
 
-                /*
-                    EXPLOSION
-                */
-
                 setTimeout(
                     function() {
 
@@ -1718,10 +1625,6 @@
                 );
 
 
-                /*
-                    Reveal the game content.
-                */
-
                 setTimeout(
                     function() {
 
@@ -1729,11 +1632,6 @@
                             "visible"
                         );
 
-
-                        /*
-                            Start bacon animation
-                            ONLY NOW.
-                        */
 
                         baconButton.classList.remove(
                             "bacon-reveal"
@@ -1745,12 +1643,6 @@
                             "bacon-reveal"
                         );
 
-
-                        /*
-                            Make absolutely sure
-                            the bacon can receive
-                            touches.
-                        */
 
                         baconButton.style.pointerEvents =
                             "auto";
@@ -1780,8 +1672,6 @@
                 let amount =
                     perClick;
 
-
-                /* COMBO */
 
                 combo++;
 
@@ -1823,8 +1713,6 @@
                 }
 
 
-                /* CRITICAL */
-
                 const critical =
                     Math.random() <
                     0.01;
@@ -1851,8 +1739,6 @@
                 }
 
 
-                /* POP */
-
                 baconButton.classList.remove(
                     "bacon-pop"
                 );
@@ -1863,8 +1749,6 @@
                     "bacon-pop"
                 );
 
-
-                /* FLOATING NUMBER */
 
                 const floating =
                     document.createElement(
