@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>GIF Creator — Bacothn</title>
+
+    <meta
+        name="description"
+        content="Create customizable GIFs directly in your browser."
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* ========================================
+           GIF CREATOR
+        ======================================== */
+
+        .gif-page {
+            width: min(1050px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 70px 0 80px;
+        }
+
+
+        .gif-hero {
+            margin-bottom: 30px;
+        }
+
+        .gif-eyebrow {
+            color: #555;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .gif-hero h1 {
+            margin: 0;
+            color: #fff;
+            font-size: clamp(32px, 7vw, 64px);
+            font-weight: 950;
+            letter-spacing: -3px;
+            line-height: .95;
+        }
+
+        .gif-hero p {
+            max-width: 650px;
+            margin-top: 18px;
+            color: #777;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        /* ========================================
+           NOTICE
+        ======================================== */
+
+        .gif-notice {
+            padding: 13px 15px;
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 8px;
+
+            background: rgba(255, 255, 255, .025);
+
+            color: #777;
+            font-size: 9px;
+            line-height: 1.6;
+            letter-spacing: .5px;
+        }
+
+        .gif-notice strong {
+            color: #aaa;
+        }
+
+
+        /* ========================================
+           MAIN PANEL
+        ======================================== */
+
+        .gif-panel {
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, .035),
+                    rgba(255, 255, 255, .012)
+                );
+
+            overflow: hidden;
+        }
+
+
+        .gif-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 17px 20px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .gif-panel-title {
+            color: #aaa;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .gif-status {
+            color: #555;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .gif-status.ready {
+            color: #777;
+        }
+
+        .gif-status.working {
+            color: #ff3030;
+        }
+
+        .gif-status.success {
+            color: #aaa;
+        }
+
+
+        /* ========================================
+           UPLOAD
+        ======================================== */
+
+        .gif-upload {
+            padding: 25px 20px;
+        }
+
+        .gif-dropzone {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            min-height: 170px;
+            padding: 25px;
+
+            border: 1px dashed rgba(255, 255, 255, .14);
+            border-radius: 10px;
+
+            background: rgba(0, 0, 0, .18);
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                transform .2s ease;
+        }
+
+        .gif-dropzone:hover,
+        .gif-dropzone.dragging {
+            border-color: rgba(255, 40, 40, .55);
+            background: rgba(255, 0, 0, .035);
+            transform: translateY(-1px);
+        }
+
+        .gif-dropzone-icon {
+            color: #555;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .gif-dropzone-title {
+            color: #ddd;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .gif-dropzone-subtitle {
+            margin-top: 8px;
+            color: #555;
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        #gifFileInput {
+            display: none;
+        }
+
+
+        /* ========================================
+           WORKSPACE
+        ======================================== */
+
+        .gif-workspace {
+            display: none;
+            padding: 20px;
+
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .gif-workspace.visible {
+            display: block;
+        }
+
+
+        .gif-preview-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
+            gap: 20px;
+        }
+
+
+        /* ========================================
+           PREVIEW
+        ======================================== */
+
+        .gif-preview-box {
+            min-height: 430px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .07);
+
+            border-radius: 9px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #151515,
+                    #070707 70%
+                );
+
+            overflow: hidden;
+        }
+
+        #gifPreviewCanvas {
+            display: block;
+
+            max-width: 100%;
+            max-height: 520px;
+
+            width: auto;
+            height: auto;
+
+            image-rendering: auto;
+
+            background:
+                repeating-conic-gradient(
+                    #151515 0% 25%,
+                    #101010 0% 50%
+                )
+                50% / 16px 16px;
+        }
+
+
+        /* ========================================
+           CONTROLS
+        ======================================== */
+
+        .gif-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .gif-control-section {
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .06);
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 255, 255, .018);
+        }
+
+        .gif-control-title {
+            margin-bottom: 12px;
+
+            color: #555;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+
+        .gif-field {
+            margin-bottom: 11px;
+        }
+
+        .gif-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .gif-field label {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-bottom: 6px;
+
+            color: #777;
+
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .gif-field label span {
+            color: #aaa;
+        }
+
+
+        .gif-input,
+        .gif-select {
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 10px 11px;
+
+            color: #ddd;
+            background: #0b0b0b;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .08);
+
+            border-radius: 5px;
+
+            outline: none;
+
+            font-family: inherit;
+            font-size: 10px;
+
+            transition:
+                border-color .2s ease;
+        }
+
+        .gif-input:focus,
+        .gif-select:focus {
+            border-color: rgba(255, 40, 40, .45);
+        }
+
+        .gif-select option {
+            background: #0b0b0b;
+        }
+
+
+        .gif-range {
+            width: 100%;
+            accent-color: #ff3030;
+            cursor: pointer;
+        }
+
+
+        .gif-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: #888;
+            font-size: 9px;
+
+            cursor: pointer;
+        }
+
+        .gif-checkbox input {
+            accent-color: #ff3030;
+        }
+
+
+        /* ========================================
+           TRIM
+        ======================================== */
+
+        .gif-trim {
+            margin-top: 20px;
+        }
+
+        .gif-trim-labels {
+            display: flex;
+            justify-content: space-between;
+
+            color: #666;
+            font-size: 8px;
+            font-weight: 900;
+        }
+
+        .gif-trim-track {
+            position: relative;
+
+            height: 30px;
+
+            margin: 7px 0 4px;
+
+            border-radius: 5px;
+
+            background: #0b0b0b;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .06);
+        }
+
+        .gif-trim-selection {
+            position: absolute;
+
+            top: 0;
+            bottom: 0;
+
+            background:
+                rgba(255, 35, 35, .13);
+
+            border-left:
+                1px solid
+                rgba(255, 50, 50, .5);
+
+            border-right:
+                1px solid
+                rgba(255, 50, 50, .5);
+
+            pointer-events: none;
+        }
+
+        .gif-trim-handle {
+            position: absolute;
+
+            top: -5px;
+
+            width: 14px;
+            height: 40px;
+
+            padding: 0;
+
+            border: 0;
+            border-radius: 4px;
+
+            background: #ddd;
+
+            cursor: ew-resize;
+
+            z-index: 5;
+
+            transform: translateX(-50%);
+
+            box-shadow:
+                0 0 0 2px rgba(0, 0, 0, .6);
+        }
+
+        .gif-trim-handle:hover {
+            background: #fff;
+        }
+
+
+        /* ========================================
+           BUTTONS
+        ======================================== */
+
+        .gif-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .gif-button {
+            min-height: 40px;
+
+            padding: 10px 13px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .08);
+
+            border-radius: 6px;
+
+            color: #aaa;
+            background: rgba(255, 255, 255, .025);
+
+            font-family: inherit;
+
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+
+            cursor: pointer;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                color .2s ease,
+                transform .15s ease;
+        }
+
+        .gif-button:hover {
+            color: #fff;
+
+            background: rgba(255, 255, 255, .05);
+
+            border-color:
+                rgba(255, 255, 255, .16);
+        }
+
+        .gif-button:active {
+            transform: scale(.97);
+        }
+
+        .gif-button.primary {
+            color: #ff3030;
+
+            border-color:
+                rgba(255, 35, 35, .25);
+
+            background:
+                rgba(255, 0, 0, .04);
+        }
+
+        .gif-button.primary:hover {
+            color: #fff;
+
+            border-color:
+                rgba(255, 40, 40, .55);
+
+            background:
+                rgba(255, 0, 0, .09);
+        }
+
+        .gif-button:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .gif-button.full {
+            grid-column: 1 / -1;
+        }
+
+
+        /* ========================================
+           INFO
+        ======================================== */
+
+        .gif-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+
+            margin-top: 20px;
+        }
+
+        .gif-info-card {
+            padding: 11px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .05);
+
+            border-radius: 6px;
+
+            background:
+                rgba(255, 255, 255, .018);
+        }
+
+        .gif-info-card span {
+            display: block;
+
+            color: #444;
+
+            font-size: 7px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .gif-info-card b {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #aaa;
+
+            font-size: 10px;
+        }
+
+
+        /* ========================================
+           PROGRESS
+        ======================================== */
+
+        .gif-progress {
+            display: none;
+
+            margin-top: 15px;
+        }
+
+        .gif-progress.visible {
+            display: block;
+        }
+
+        .gif-progress-label {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+
+            color: #666;
+
+            font-size: 8px;
+            font-weight: 900;
+        }
+
+        .gif-progress-track {
+            height: 4px;
+
+            overflow: hidden;
+
+            border-radius: 99px;
+
+            background: #111;
+        }
+
+        .gif-progress-bar {
+            width: 0%;
+            height: 100%;
+
+            background: #ff3030;
+
+            transition: width .1s linear;
+        }
+
+
+        /* ========================================
+           OUTPUT
+        ======================================== */
+
+        .gif-output {
+            display: none;
+
+            margin-top: 20px;
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, .06);
+        }
+
+        .gif-output.visible {
+            display: block;
+        }
+
+        .gif-output img {
+            display: block;
+
+            max-width: 100%;
+            max-height: 450px;
+
+            margin: 0 auto;
+
+            border-radius: 5px;
+        }
+
+        .gif-output-actions {
+            display: flex;
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        .gif-output-actions .gif-button {
+            flex: 1;
+        }
+
+
+        /* ========================================
+           MOBILE
+        ======================================== */
+
+        @media (max-width: 800px) {
+
+            .gif-preview-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .gif-preview-box {
+                min-height: 300px;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .gif-page {
+                width: min(100% - 20px, 1050px);
+                padding-top: 45px;
+            }
+
+            .gif-panel-header {
+                padding: 14px;
+            }
+
+            .gif-upload,
+            .gif-workspace {
+                padding: 14px;
+            }
+
+            .gif-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gif-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .gif-button.full {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================
+         NAVBAR
+    ========================================= -->
+
+    <header class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            BACOTHN
+        </a>
+
+        <button
+            id="pagesButton"
+            class="page-menu-button"
+            type="button"
+        >
+
+            <span class="page-menu-button-icon">
+                ☰
+            </span>
+
+            <span>
+                PAGES
+            </span>
+
+        </button>
+
+    </header>
+
+
+    <!-- ========================================
+         PAGE MENU
+    ========================================= -->
+
+    <div
+        id="pagesDrawer"
+        class="page-menu"
+    >
+
+        <div class="page-menu-inner">
+
+            <div class="page-menu-label">
+                PAGES
+            </div>
+
+            <div
+                id="pagesList"
+                class="page-menu-scroll"
+            >
+
+                <div class="page-menu-list">
+
+                    <a
+                        href="index.html"
+                        class="page-menu-link"
+                    >
+                        HOME
+                    </a>
+
+                    <a
+                        href="profile.html"
+                        class="page-menu-link"
+                    >
+                        PROFILE
+                    </a>
+
+                    <a
+                        href="about.html"
+                        class="page-menu-link"
+                    >
+                        ABOUT
+                    </a>
+
+                    <a
+                        href="projects.html"
+                        class="page-menu-link"
+                    >
+                        PROJECTS
+                    </a>
+
+                    <a
+                        href="links.html"
+                        class="page-menu-link"
+                    >
+                        LINKS
+                    </a>
+
+                    <a
+                        href="gif-creator.html"
+                        class="page-menu-link"
+                    >
+                        GIF CREATOR
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================
+         PAGE
+    ========================================= -->
+
+    <main class="gif-page">
+
+
+        <section class="gif-hero">
+
+            <div class="gif-eyebrow">
+                BACOTHN / TOOLS
+            </div>
+
+            <h1>
+                GIF CREATOR.
+            </h1>
+
+            <p>
+                Turn images or video into customizable GIFs.
+                Trim the exact section you want, adjust the
+                output, preview it, and export it.
+            </p>
+
+        </section>
+
+
+        <section class="gif-panel">
+
+
+            <div class="gif-panel-header">
+
+                <div class="gif-panel-title">
+                    GIF WORKSHOP
+                </div>
+
+                <div
+                    id="gifStatus"
+                    class="gif-status"
+                >
+                    WAITING FOR FILE
+                </div>
+
+            </div>
+
+
+            <!-- ====================================
+                 UPLOAD
+            ===================================== -->
+
+            <div class="gif-upload">
+
+                <label
+                    id="gifDropzone"
+                    class="gif-dropzone"
+                    for="gifFileInput"
+                >
+
+                    <div class="gif-dropzone-icon">
+                        +
+                    </div>
+
+                    <div class="gif-dropzone-title">
+                        DROP IMAGE / VIDEO HERE
+                    </div>
+
+                    <div class="gif-dropzone-subtitle">
+                        OR TAP TO CHOOSE A FILE
+                    </div>
+
+                    <input
+                        id="gifFileInput"
+                        type="file"
+                        accept="image/*,video/*"
+                    >
+
+                </label>
+
+            </div>
+
+
+            <!-- ====================================
+                 WORKSPACE
+            ===================================== -->
+
+            <div
+                id="gifWorkspace"
+                class="gif-workspace"
+            >
+
+                <div class="gif-preview-layout">
+
+
+                    <!-- PREVIEW -->
+
+                    <div>
+
+                        <div class="gif-preview-box">
+
+                            <canvas
+                                id="gifPreviewCanvas"
+                            ></canvas>
+
+                        </div>
+
+
+                        <!-- TRIM -->
+
+                        <div class="gif-trim">
+
+                            <div class="gif-trim-labels">
+
+                                <span>
+                                    START
+                                    <b id="trimStartText">
+                                        0.00s
+                                    </b>
+                                </span>
+
+                                <span>
+                                    END
+                                    <b id="trimEndText">
+                                        0.00s
+                                    </b>
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                id="gifTrimTrack"
+                                class="gif-trim-track"
+                            >
+
+                                <div
+                                    id="gifTrimSelection"
+                                    class="gif-trim-selection"
+                                ></div>
+
+                                <button
+                                    id="gifStartHandle"
+                                    class="gif-trim-handle"
+                                    type="button"
+                                    aria-label="GIF start"
+                                ></button>
+
+                                <button
+                                    id="gifEndHandle"
+                                    class="gif-trim-handle"
+                                    type="button"
+                                    aria-label="GIF end"
+                                ></button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- INFO -->
+
+                        <div class="gif-info">
+
+                            <div class="gif-info-card">
+
+                                <span>
+                                    SOURCE
+                                </span>
+
+                                <b id="gifSourceType">
+                                    —
+                                </b>
+
+                            </div>
+
+                            <div class="gif-info-card">
+
+                                <span>
+                                    DURATION
+                                </span>
+
+                                <b id="gifDuration">
+                                    —
+                                </b>
+
+                            </div>
+
+                            <div class="gif-info-card">
+
+                                <span>
+                                    FRAMES
+                                </span>
+
+                                <b id="gifFrameCount">
+                                    —
+                                </b>
+
+                            </div>
+
+                            <div class="gif-info-card">
+
+                                <span>
+                                    OUTPUT
+                                </span>
+
+                                <b id="gifOutputSize">
+                                    —
+                                </b>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTROLS -->
+
+                    <div class="gif-controls">
+
+
+                        <div class="gif-control-section">
+
+                            <div class="gif-control-title">
+                                FILE
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    FILENAME
+                                </label>
+
+                                <input
+                                    id="gifFilename"
+                                    class="gif-input"
+                                    type="text"
+                                    value="bacothn-gif"
+                                    maxlength="80"
+                                >
+
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    FORMAT
+                                </label>
+
+                                <select
+                                    id="gifFormat"
+                                    class="gif-select"
+                                >
+
+                                    <option value="gif">
+                                        GIF
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="gif-control-section">
+
+                            <div class="gif-control-title">
+                                OUTPUT
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    WIDTH
+                                    <span id="gifWidthValue">
+                                        480
+                                    </span>
+                                </label>
+
+                                <input
+                                    id="gifWidth"
+                                    class="gif-range"
+                                    type="range"
+                                    min="64"
+                                    max="1000"
+                                    step="8"
+                                    value="480"
+                                >
+
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    HEIGHT
+                                    <span id="gifHeightValue">
+                                        AUTO
+                                    </span>
+                                </label>
+
+                                <input
+                                    id="gifHeight"
+                                    class="gif-range"
+                                    type="range"
+                                    min="64"
+                                    max="1000"
+                                    step="8"
+                                    value="480"
+                                >
+
+                            </div>
+
+
+                            <label class="gif-checkbox">
+
+                                <input
+                                    id="gifKeepAspect"
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                KEEP ASPECT RATIO
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="gif-control-section">
+
+                            <div class="gif-control-title">
+                                TIMING
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    FPS
+                                    <span id="gifFpsValue">
+                                        15
+                                    </span>
+                                </label>
+
+                                <input
+                                    id="gifFps"
+                                    class="gif-range"
+                                    type="range"
+                                    min="1"
+                                    max="30"
+                                    step="1"
+                                    value="15"
+                                >
+
+                            </div>
+
+
+                            <div class="gif-field">
+
+                                <label>
+                                    QUALITY
+                                    <span id="gifQualityValue">
+                                        10
+                                    </span>
+                                </label>
+
+                                <input
+                                    id="gifQuality"
+                                    class="gif-range"
+                                    type="range"
+                                    min="1"
+                                    max="20"
+                                    step="1"
+                                    value="10"
+                                >
+
+                            </div>
+
+
+                            <label class="gif-checkbox">
+
+                                <input
+                                    id="gifReverse"
+                                    type="checkbox"
+                                >
+
+                                REVERSE PLAYBACK
+
+                            </label>
+
+
+                            <label class="gif-checkbox">
+
+                                <input
+                                    id="gifLoop"
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                LOOP GIF
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="gif-actions">
+
+                            <button
+                                id="gifPreviewButton"
+                                class="gif-button"
+                                type="button"
+                            >
+                                PREVIEW
+                            </button>
+
+                            <button
+                                id="gifResetButton"
+                                class="gif-button"
+                                type="button"
+                            >
+                                RESET
+                            </button>
+
+                            <button
+                                id="gifCreateButton"
+                                class="gif-button primary full"
+                                type="button"
+                            >
+                                CREATE GIF
+                            </button>
+
+                        </div>
+
+
+                        <!-- PROGRESS -->
+
+                        <div
+                            id="gifProgress"
+                            class="gif-progress"
+                        >
+
+                            <div class="gif-progress-label">
+
+                                <span id="gifProgressText">
+                                    ENCODING...
+                                </span>
+
+                                <span id="gifProgressPercent">
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div class="gif-progress-track">
+
+                                <div
+                                    id="gifProgressBar"
+                                    class="gif-progress-bar"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OUTPUT -->
+
+                <div
+                    id="gifOutput"
+                    class="gif-output"
+                >
+
+                    <img
+                        id="gifOutputImage"
+                        alt="Generated GIF"
+                    >
+
+                    <div class="gif-output-actions">
+
+                        <button
+                            id="gifDownloadButton"
+                            class="gif-button primary"
+                            type="button"
+                        >
+                            DOWNLOAD GIF
+                        </button>
+
+                        <button
+                            id="gifSendButton"
+                            class="gif-button"
+                            type="button"
+                        >
+                            CREATE & SHARE
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="about-footer">
+
+        <strong>
+            BACOTHN
+        </strong>
+
+        <span>
+            GIF CREATOR / TOOLS
+        </span>
+
+    </footer>
+
+
+    <!-- GIF ENCODER -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"
+    ></script>
+
+
+    <!-- SITE MENU -->
+
+    <script src="script.js"></script>
+
+    <!-- GIF CREATOR SCRIPT -->
+
+    <script src="gifgol.js"></script>
+
+</body>
+
+</html>
