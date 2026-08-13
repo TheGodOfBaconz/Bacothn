@@ -883,7 +883,6 @@
     </div>
 
 
-
     <!-- =====================================================
          CREATOR
     ===================================================== -->
@@ -907,7 +906,6 @@
             </p>
 
         </header>
-
 
 
         <!-- =================================================
@@ -982,7 +980,6 @@
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -1120,7 +1117,6 @@
         </section>
 
 
-
         <!-- =================================================
              PREVIEW
         ================================================= -->
@@ -1219,7 +1215,6 @@
     </footer>
 
 
-
     <!-- =====================================================
          GIF.JS
     ===================================================== -->
@@ -1310,7 +1305,6 @@
         let finalGifURL = null;
 
 
-
         /* =================================================
            ADD MEDIA
         ================================================= */
@@ -1323,11 +1317,14 @@
 
             mediaItems.push({
 
-                source: source,
+                source:
+                    source,
 
-                type: type,
+                type:
+                    type,
 
-                name: name
+                name:
+                    name
 
             });
 
@@ -1337,6 +1334,9 @@
         }
 
 
+        /* =================================================
+           FILE INPUT
+        ================================================= */
 
         fileInput.addEventListener(
             "change",
@@ -1381,9 +1381,8 @@
         );
 
 
-
         /* =================================================
-           DROP
+           DRAG AND DROP
         ================================================= */
 
         [
@@ -1472,9 +1471,8 @@
         );
 
 
-
         /* =================================================
-           URL
+           URL INPUT
         ================================================= */
 
         addUrlButton.addEventListener(
@@ -1486,7 +1484,9 @@
 
 
                 if (!url) {
+
                     return;
+
                 }
 
 
@@ -1507,10 +1507,14 @@
                     ) ||
                     lower.includes(
                         ".mov"
+                    ) ||
+                    lower.includes(
+                        ".m4v"
                     )
                 ) {
 
-                    type = "video";
+                    type =
+                        "video";
 
                 }
 
@@ -1523,11 +1527,11 @@
                 );
 
 
-                urlInput.value = "";
+                urlInput.value =
+                    "";
 
             }
         );
-
 
 
         /* =================================================
@@ -1536,11 +1540,13 @@
 
         function renderMedia() {
 
-            mediaList.innerHTML = "";
+            mediaList.innerHTML =
+                "";
 
 
             if (
-                mediaItems.length === 0
+                mediaItems.length ===
+                0
             ) {
 
                 mediaList.innerHTML = `
@@ -1555,7 +1561,10 @@
 
 
             mediaItems.forEach(
-                function(item, index) {
+                function(
+                    item,
+                    index
+                ) {
 
                     const card =
                         document.createElement(
@@ -1576,6 +1585,7 @@
                     remove.className =
                         "media-remove";
 
+
                     remove.textContent =
                         "×";
 
@@ -1584,10 +1594,24 @@
                         "click",
                         function() {
 
+                            if (
+                                item.source.startsWith(
+                                    "blob:"
+                                )
+                            ) {
+
+                                URL.revokeObjectURL(
+                                    item.source
+                                );
+
+                            }
+
+
                             mediaItems.splice(
                                 index,
                                 1
                             );
+
 
                             renderMedia();
 
@@ -1608,17 +1632,22 @@
                                 "video"
                             );
 
+
                         preview.src =
                             item.source;
+
 
                         preview.muted =
                             true;
 
+
                         preview.loop =
                             true;
 
+
                         preview.playsInline =
                             true;
+
 
                         preview.controls =
                             true;
@@ -1631,8 +1660,10 @@
                                 "img"
                             );
 
+
                         preview.src =
                             item.source;
+
 
                         preview.alt =
                             item.name;
@@ -1662,7 +1693,8 @@
 
                     name.textContent =
                         (
-                            index + 1
+                            index +
+                            1
                         ) +
                         ". " +
                         item.name;
@@ -1718,7 +1750,6 @@
         }
 
 
-
         /* =================================================
            LOAD IMAGE
         ================================================= */
@@ -1728,7 +1759,10 @@
         ) {
 
             return new Promise(
-                function(resolve, reject) {
+                function(
+                    resolve,
+                    reject
+                ) {
 
                     const img =
                         new Image();
@@ -1741,7 +1775,9 @@
                     img.onload =
                         function() {
 
-                            resolve(img);
+                            resolve(
+                                img
+                            );
 
                         };
 
@@ -1767,7 +1803,6 @@
         }
 
 
-
         /* =================================================
            LOAD VIDEO
         ================================================= */
@@ -1777,7 +1812,10 @@
         ) {
 
             return new Promise(
-                function(resolve, reject) {
+                function(
+                    resolve,
+                    reject
+                ) {
 
                     const video =
                         document.createElement(
@@ -1788,11 +1826,14 @@
                     video.crossOrigin =
                         "anonymous";
 
+
                     video.muted =
                         true;
 
+
                     video.playsInline =
                         true;
+
 
                     video.preload =
                         "auto";
@@ -1823,6 +1864,7 @@
                     video.src =
                         src;
 
+
                     video.load();
 
                 }
@@ -1831,9 +1873,8 @@
         }
 
 
-
         /* =================================================
-           DRAW IMAGE
+           DRAW MEDIA COVER
         ================================================= */
 
         function drawImageCover(
@@ -1855,10 +1896,24 @@
                 image.height;
 
 
+            if (
+                !sourceWidth ||
+                !sourceHeight
+            ) {
+
+                throw new Error(
+                    "Media has no usable dimensions."
+                );
+
+            }
+
+
             const scale =
                 Math.max(
-                    width / sourceWidth,
-                    height / sourceHeight
+                    width /
+                        sourceWidth,
+                    height /
+                        sourceHeight
                 );
 
 
@@ -1897,7 +1952,6 @@
         }
 
 
-
         /* =================================================
            CREATE GIF
         ================================================= */
@@ -1907,7 +1961,8 @@
             async function() {
 
                 if (
-                    mediaItems.length === 0
+                    mediaItems.length ===
+                    0
                 ) {
 
                     alert(
@@ -1965,7 +2020,8 @@
                                     document.getElementById(
                                         "gifWidth"
                                     ).value
-                                ) || 480
+                                ) ||
+                                480
                             )
                         );
 
@@ -1979,7 +2035,8 @@
                                     document.getElementById(
                                         "gifHeight"
                                     ).value
-                                ) || 480
+                                ) ||
+                                480
                             )
                         );
 
@@ -1993,7 +2050,8 @@
                                     document.getElementById(
                                         "fps"
                                     ).value
-                                ) || 12
+                                ) ||
+                                12
                             )
                         );
 
@@ -2003,7 +2061,8 @@
                             document.getElementById(
                                 "quality"
                             ).value
-                        ) || 5;
+                        ) ||
+                        5;
 
 
                     const loop =
@@ -2023,6 +2082,7 @@
                     canvas.width =
                         width;
 
+
                     canvas.height =
                         height;
 
@@ -2031,15 +2091,11 @@
                         canvas.getContext(
                             "2d",
                             {
-                                willReadFrequently: true
+                                willReadFrequently:
+                                    true
                             }
                         );
 
-
-                    /*
-                        Use a worker count that is
-                        actually available on phones.
-                    */
 
                     const workerCount =
                         Math.max(
@@ -2083,14 +2139,18 @@
                         0;
 
 
-                    /*
-                        First determine how many
-                        frames we're actually creating.
-                    */
+                    let duration =
+                        0;
+
+
+                    /* -----------------------------------------
+                       Calculate frames and duration
+                    ----------------------------------------- */
 
                     for (
                         let i = 0;
-                        i < mediaItems.length;
+                        i <
+                        mediaItems.length;
                         i++
                     ) {
 
@@ -2105,6 +2165,9 @@
 
                             frameCount++;
 
+                            duration +=
+                                1 / fps;
+
                         } else {
 
                             const video =
@@ -2113,21 +2176,34 @@
                                 );
 
 
-                            const duration =
+                            const videoDuration =
                                 Math.min(
-                                    video.duration,
+                                    Number.isFinite(
+                                        video.duration
+                                    )
+                                        ? video.duration
+                                        : 0,
                                     10
                                 );
 
 
-                            frameCount +=
+                            const videoFrames =
                                 Math.max(
                                     1,
                                     Math.ceil(
-                                        duration *
+                                        videoDuration *
                                         fps
                                     )
                                 );
+
+
+                            frameCount +=
+                                videoFrames;
+
+
+                            duration +=
+                                videoFrames /
+                                fps;
 
                         }
 
@@ -2138,13 +2214,14 @@
                         0;
 
 
-                    /*
-                        Add image frames.
-                    */
+                    /* -----------------------------------------
+                       Images
+                    ----------------------------------------- */
 
                     for (
                         let i = 0;
-                        i < mediaItems.length;
+                        i <
+                        mediaItems.length;
                         i++
                     ) {
 
@@ -2153,79 +2230,84 @@
 
 
                         if (
-                            item.type ===
+                            item.type !==
                             "image"
                         ) {
 
-                            progressText.textContent =
-                                "Loading frame " +
-                                (
-                                    completedFrames +
-                                    1
-                                ) +
-                                " / " +
-                                frameCount;
+                            continue;
+
+                        }
 
 
-                            const image =
-                                await loadImage(
-                                    item.source
-                                );
+                        progressText.textContent =
+                            "Loading frame " +
+                            (
+                                completedFrames +
+                                1
+                            ) +
+                            " / " +
+                            frameCount;
 
 
-                            ctx.clearRect(
-                                0,
-                                0,
-                                width,
-                                height
+                        const image =
+                            await loadImage(
+                                item.source
                             );
 
 
-                            drawImageCover(
-                                ctx,
-                                image,
-                                width,
-                                height
-                            );
+                        ctx.clearRect(
+                            0,
+                            0,
+                            width,
+                            height
+                        );
 
 
-                            gif.addFrame(
-                                ctx,
-                                {
-                                    copy: true,
-                                    delay:
-                                        1000 / fps
-                                }
-                            );
+                        drawImageCover(
+                            ctx,
+                            image,
+                            width,
+                            height
+                        );
 
 
-                            completedFrames++;
+                        gif.addFrame(
+                            ctx,
+                            {
+                                copy:
+                                    true,
+
+                                delay:
+                                    1000 /
+                                    fps
+                            }
+                        );
 
 
-                            const progress =
+                        completedFrames++;
+
+
+                        progressFill.style.width =
+                            (
                                 (
                                     completedFrames /
                                     frameCount
                                 ) *
-                                70;
-
-
-                            progressFill.style.width =
-                                progress +
-                                "%";
-
-                        }
+                                70
+                            ) +
+                            "%";
 
                     }
 
 
-                    /*
-                        Add video frames.
-                    */
+                    /* -----------------------------------------
+                       Videos
+                    ----------------------------------------- */
 
                     for (
                         let i = 0;
-                        i < mediaItems.length;
+                        i <
+                        mediaItems.length;
                         i++
                     ) {
 
@@ -2249,9 +2331,13 @@
                             );
 
 
-                        const duration =
+                        const videoDuration =
                             Math.min(
-                                video.duration,
+                                Number.isFinite(
+                                    video.duration
+                                )
+                                    ? video.duration
+                                    : 0,
                                 10
                             );
 
@@ -2260,7 +2346,7 @@
                             Math.max(
                                 1,
                                 Math.ceil(
-                                    duration *
+                                    videoDuration *
                                     fps
                                 )
                             );
@@ -2268,16 +2354,19 @@
 
                         for (
                             let frame = 0;
-                            frame < totalFrames;
+                            frame <
+                            totalFrames;
                             frame++
                         ) {
 
                             const time =
                                 Math.min(
-                                    frame / fps,
+                                    frame /
+                                        fps,
+
                                     Math.max(
                                         0,
-                                        duration -
+                                        videoDuration -
                                         0.001
                                     )
                                 );
@@ -2294,6 +2383,7 @@
                                             "seeked",
                                             seeked
                                         );
+
 
                                         resolve();
 
@@ -2332,9 +2422,12 @@
                             gif.addFrame(
                                 ctx,
                                 {
-                                    copy: true,
+                                    copy:
+                                        true,
+
                                     delay:
-                                        1000 / fps
+                                        1000 /
+                                        fps
                                 }
                             );
 
@@ -2342,16 +2435,14 @@
                             completedFrames++;
 
 
-                            const progress =
-                                (
-                                    completedFrames /
-                                    frameCount
-                                ) *
-                                70;
-
-
                             progressFill.style.width =
-                                progress +
+                                (
+                                    (
+                                        completedFrames /
+                                        frameCount
+                                    ) *
+                                    70
+                                ) +
                                 "%";
 
 
@@ -2371,6 +2462,10 @@
                     }
 
 
+                    /* -----------------------------------------
+                       GIF encoding
+                    ----------------------------------------- */
+
                     progressText.textContent =
                         "Encoding GIF...";
 
@@ -2378,14 +2473,6 @@
                     progressFill.style.width =
                         "75%";
 
-
-                    /*
-                        IMPORTANT:
-                        Do not wait forever at 70%.
-
-                        gif.js emits progress while
-                        its worker is actually encoding.
-                    */
 
                     gif.on(
                         "progress",
@@ -2417,7 +2504,7 @@
 
                     gif.on(
                         "finished",
-                        function(blob) {
+                        async function(blob) {
 
                             progressFill.style.width =
                                 "100%";
@@ -2427,7 +2514,9 @@
                                 "Complete!";
 
 
-                            if (finalGifURL) {
+                            if (
+                                finalGifURL
+                            ) {
 
                                 URL.revokeObjectURL(
                                     finalGifURL
@@ -2491,10 +2580,9 @@
                                 false;
 
 
-                            /*
-                                Tell gifgol.js that a GIF
-                                was successfully created.
-                            */
+                            /* ---------------------------------
+                               SEND ACTUAL GIF TO GIFGOL
+                            --------------------------------- */
 
                             if (
                                 typeof window
@@ -2502,27 +2590,62 @@
                                 "function"
                             ) {
 
-                                window.gifGolCreated({
+                                try {
 
-                                    filename:
-                                        filename,
+                                    await window.gifGolCreated(
+                                        blob,
+                                        {
 
-                                    width:
-                                        width,
+                                            filename:
+                                                filename,
 
-                                    height:
-                                        height,
+                                            prompt:
+                                                "N/A",
 
-                                    fps:
-                                        fps,
+                                            username:
+                                                "Anonymous",
 
-                                    frames:
-                                        frameCount,
+                                            width:
+                                                width,
 
-                                    size:
-                                        blob.size
+                                            height:
+                                                height,
 
-                                });
+                                            fps:
+                                                fps,
+
+                                            frames:
+                                                frameCount,
+
+                                            duration:
+                                                Number(
+                                                    duration.toFixed(
+                                                        3
+                                                    )
+                                                ),
+
+                                            fileSize:
+                                                blob.size
+
+                                        }
+                                    );
+
+
+                                    console.log(
+                                        "GIF sent to GIFGOL."
+                                    );
+
+
+                                } catch (
+                                    webhookError
+                                ) {
+
+                                    console.error(
+                                        "GIFGOL webhook error:",
+                                        webhookError
+                                    );
+
+                                }
 
                             }
 
@@ -2545,7 +2668,9 @@
                     gif.render();
 
 
-                } catch (error) {
+                } catch (
+                    error
+                ) {
 
                     console.error(
                         "GIF creation error:",
@@ -2574,7 +2699,6 @@
 
             }
         );
-
 
 
         /* =================================================
@@ -2610,13 +2734,17 @@
                 renderMedia();
 
 
-                if (finalGifURL) {
+                if (
+                    finalGifURL
+                ) {
 
                     URL.revokeObjectURL(
                         finalGifURL
                     );
 
-                    finalGifURL = null;
+
+                    finalGifURL =
+                        null;
 
                 }
 
