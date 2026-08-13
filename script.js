@@ -1,5 +1,5 @@
 /* =========================================================
-   BACOTHN — SITE SCRIPT
+   BACOTHN SITE SCRIPT
    ========================================================= */
 
 
@@ -23,23 +23,31 @@ const glitchCharacters = [
 ];
 
 const totalAnimationTime = 2000;
-const stepTime = totalAnimationTime / word.length;
 
-const title = document.getElementById("bacothn-title");
+const stepTime =
+    totalAnimationTime / word.length;
+
+const title =
+    document.getElementById(
+        "bacothn-title"
+    );
 
 
 function randomCharacter() {
 
     return glitchCharacters[
         Math.floor(
-            Math.random() * glitchCharacters.length
+            Math.random() *
+            glitchCharacters.length
         )
     ];
 
 }
 
 
-function createScrambledText(resolvedCount) {
+function createScrambledText(
+    resolvedCount
+) {
 
     let result = "";
 
@@ -49,7 +57,9 @@ function createScrambledText(resolvedCount) {
         i++
     ) {
 
-        if (i < resolvedCount) {
+        if (
+            i < resolvedCount
+        ) {
 
             result += word[i];
 
@@ -125,26 +135,9 @@ animateTitle();
 
 /* =========================================================
    PAGE MENU
-   Uses the HTML menu already present on the page.
    ========================================================= */
 
-const pagesButton =
-    document.getElementById(
-        "pagesButton"
-    );
-
-const pagesDrawer =
-    document.getElementById(
-        "pagesDrawer"
-    );
-
-const pagesList =
-    document.getElementById(
-        "pagesList"
-    );
-
-
-const sitePages = [
+const pageMenuPages = [
     {
         name: "HOME",
         url: "index.html"
@@ -179,32 +172,104 @@ const sitePages = [
 
 function getCurrentPage() {
 
-    let page =
+    let current =
         window.location.pathname
             .split("/")
             .pop()
             .toLowerCase();
 
-    if (
-        !page ||
-        page === "/"
-    ) {
-
-        page =
-            "index.html";
-
+    if (!current) {
+        current = "index.html";
     }
 
-    return page;
+    return current;
 
 }
 
 
-function initializePageMenu() {
+function getPageButton() {
+
+    /*
+        First use the button already written
+        inside the HTML.
+
+        This prevents script.js from creating
+        duplicate buttons.
+    */
+
+    const existing =
+        document.getElementById(
+            "pagesButton"
+        );
+
+    if (existing) {
+        return existing;
+    }
+
+
+    /*
+        Compatibility with older pages.
+    */
+
+    const oldButton =
+        document.getElementById(
+            "page-menu-button"
+        );
+
+    if (oldButton) {
+        return oldButton;
+    }
+
+
+    return null;
+
+}
+
+
+function getPageDrawer() {
+
+    const existing =
+        document.getElementById(
+            "pagesDrawer"
+        );
+
+    if (existing) {
+        return existing;
+    }
+
+
+    const oldDrawer =
+        document.getElementById(
+            "page-menu"
+        );
+
+    if (oldDrawer) {
+        return oldDrawer;
+    }
+
+
+    return null;
+
+}
+
+
+function setupPageMenu() {
+
+    const button =
+        getPageButton();
+
+    const drawer =
+        getPageDrawer();
+
+
+    /*
+        If this page doesn't have the menu,
+        don't break the rest of the site.
+    */
 
     if (
-        !pagesButton ||
-        !pagesDrawer
+        !button ||
+        !drawer
     ) {
 
         return;
@@ -212,140 +277,139 @@ function initializePageMenu() {
     }
 
 
-    /*
-        Make sure the drawer starts closed.
-    */
-
-    pagesDrawer.classList.remove(
-        "open"
-    );
+    const currentPage =
+        getCurrentPage();
 
 
-    pagesDrawer.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    pagesButton.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-
-    /*
-        Fill the page list if one exists.
-    */
-
-    if (pagesList) {
-
-        const listContainer =
-            pagesList.querySelector(
-                ".page-menu-list"
-            ) || pagesList;
-
-
-        listContainer.innerHTML = "";
-
-
-        const currentPage =
-            getCurrentPage();
-
-
-        sitePages.forEach(
-            function(page) {
-
-                /*
-                    Don't add the current page.
-                */
-
-                if (
-                    page.url.toLowerCase() ===
-                    currentPage
-                ) {
-
-                    return;
-
-                }
-
-
-                const link =
-                    document.createElement(
-                        "a"
-                    );
-
-
-                link.href =
-                    page.url;
-
-
-                link.className =
-                    "page-menu-link";
-
-
-                link.textContent =
-                    page.name;
-
-
-                listContainer.appendChild(
-                    link
-                );
-
-            }
+    const list =
+        drawer.querySelector(
+            "#pagesList, .page-menu-list"
         );
 
+
+    if (!list) {
+        return;
     }
 
 
-    let menuOpen = false;
+    /*
+        Clear dynamically-created links.
+
+        This is safe because the navigation is
+        controlled by this script.
+    */
+
+    list.innerHTML = "";
+
+
+    pageMenuPages.forEach(
+        function(page) {
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+            link.className =
+                "page-menu-link";
+
+            link.href =
+                page.url;
+
+            link.textContent =
+                page.name;
+
+
+            if (
+                page.url.toLowerCase() ===
+                currentPage
+            ) {
+
+                link.classList.add(
+                    "current"
+                );
+
+            }
+
+
+            list.appendChild(
+                link
+            );
+
+        }
+    );
+
+
+    /*
+        Remove old event handlers by cloning
+        the button.
+
+        This prevents multiple listeners if
+        the script is loaded more than once.
+    */
+
+    const cleanButton =
+        button.cloneNode(true);
+
+    button.replaceWith(
+        cleanButton
+    );
+
+
+    let menuOpen =
+        false;
+
+
+    function setButton(
+        open
+    ) {
+
+        if (open) {
+
+            cleanButton.innerHTML = `
+                <span class="page-menu-button-icon">
+                    ×
+                </span>
+
+                <span>
+                    CLOSE
+                </span>
+            `;
+
+        } else {
+
+            cleanButton.innerHTML = `
+                <span class="page-menu-button-icon">
+                    ☰
+                </span>
+
+                <span>
+                    PAGES
+                </span>
+            `;
+
+        }
+
+    }
 
 
     function openMenu() {
 
         menuOpen = true;
 
-
-        pagesDrawer.classList.add(
+        drawer.classList.add(
             "open"
         );
-
-
-        pagesDrawer.classList.add(
-            "active"
-        );
-
 
         document.body.classList.add(
             "page-menu-open"
         );
 
-
-        pagesButton.classList.add(
+        cleanButton.classList.add(
             "active"
         );
 
-
-        pagesButton.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-
-        pagesDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
-        pagesButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ×
-            </span>
-
-            <span>
-                CLOSE
-            </span>
-        `;
+        setButton(true);
 
     }
 
@@ -354,69 +418,33 @@ function initializePageMenu() {
 
         menuOpen = false;
 
-
-        pagesDrawer.classList.remove(
+        drawer.classList.remove(
             "open"
         );
-
-
-        pagesDrawer.classList.remove(
-            "active"
-        );
-
 
         document.body.classList.remove(
             "page-menu-open"
         );
 
-
-        pagesButton.classList.remove(
+        cleanButton.classList.remove(
             "active"
         );
 
-
-        pagesButton.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-
-        pagesDrawer.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        pagesButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ☰
-            </span>
-
-            <span>
-                PAGES
-            </span>
-        `;
+        setButton(false);
 
     }
 
 
-    pagesButton.addEventListener(
+    cleanButton.addEventListener(
         "click",
         function(event) {
 
             event.preventDefault();
 
-            event.stopPropagation();
-
-
             if (menuOpen) {
-
                 closeMenu();
-
             } else {
-
                 openMenu();
-
             }
 
         }
@@ -441,62 +469,66 @@ function initializePageMenu() {
 
 
     /*
-        Don't close when clicking inside
-        the actual drawer.
+        Clicking outside the drawer closes it.
     */
 
-    pagesDrawer.addEventListener(
+    document.addEventListener(
         "click",
         function(event) {
 
-            event.stopPropagation();
-
-        }
-    );
-
-
-    /*
-        Clicking a page closes the drawer.
-    */
-
-    pagesDrawer.addEventListener(
-        "click",
-        function(event) {
-
-            const link =
-                event.target.closest(
-                    "a"
-                );
+            if (!menuOpen) {
+                return;
+            }
 
 
-            if (link) {
+            if (
+                cleanButton.contains(
+                    event.target
+                )
+            ) {
 
-                closeMenu();
+                return;
 
             }
 
+
+            if (
+                drawer.contains(
+                    event.target
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            closeMenu();
+
         }
     );
 
 
     /*
-        Horizontal drag scrolling.
+        Drag scrolling for the menu.
     */
 
-    const scrollContainer =
-        pagesDrawer.querySelector(
+    const scrollArea =
+        drawer.querySelector(
             ".page-menu-scroll"
         );
 
 
-    if (scrollContainer) {
+    if (scrollArea) {
 
         let dragging = false;
+
         let startX = 0;
-        let startScrollLeft = 0;
+
+        let startScroll = 0;
 
 
-        scrollContainer.addEventListener(
+        scrollArea.addEventListener(
             "pointerdown",
             function(event) {
 
@@ -505,30 +537,27 @@ function initializePageMenu() {
                 startX =
                     event.clientX;
 
-                startScrollLeft =
-                    scrollContainer.scrollLeft;
+                startScroll =
+                    scrollArea.scrollLeft;
 
-
-                scrollContainer.classList.add(
+                scrollArea.classList.add(
                     "dragging"
                 );
 
 
                 try {
 
-                    scrollContainer.setPointerCapture(
+                    scrollArea.setPointerCapture(
                         event.pointerId
                     );
 
-                } catch (error) {
-                    /* Ignore unsupported pointer capture. */
-                }
+                } catch (error) {}
 
             }
         );
 
 
-        scrollContainer.addEventListener(
+        scrollArea.addEventListener(
             "pointermove",
             function(event) {
 
@@ -542,8 +571,8 @@ function initializePageMenu() {
                     startX;
 
 
-                scrollContainer.scrollLeft =
-                    startScrollLeft -
+                scrollArea.scrollLeft =
+                    startScroll -
                     distance;
 
             }
@@ -554,20 +583,20 @@ function initializePageMenu() {
 
             dragging = false;
 
-            scrollContainer.classList.remove(
+            scrollArea.classList.remove(
                 "dragging"
             );
 
         }
 
 
-        scrollContainer.addEventListener(
+        scrollArea.addEventListener(
             "pointerup",
             stopDragging
         );
 
 
-        scrollContainer.addEventListener(
+        scrollArea.addEventListener(
             "pointercancel",
             stopDragging
         );
@@ -577,12 +606,12 @@ function initializePageMenu() {
 }
 
 
-initializePageMenu();
+setupPageMenu();
 
 
 
 /* =========================================================
-   COPY DISCORD USERNAME
+   COPY BUTTONS
    ========================================================= */
 
 const copyButtons =
@@ -598,29 +627,28 @@ copyButtons.forEach(
             "click",
             async function() {
 
-                const textToCopy =
+                const text =
                     button.dataset.copy;
 
 
-                if (!textToCopy) {
+                if (!text) {
                     return;
                 }
 
 
+                const original =
+                    button.textContent;
+
+
                 try {
 
-                    await navigator.clipboard.writeText(
-                        textToCopy
-                    );
-
-
-                    const originalText =
-                        button.textContent;
+                    await navigator
+                        .clipboard
+                        .writeText(text);
 
 
                     button.textContent =
                         "Copied!";
-
 
                     button.classList.add(
                         "copied"
@@ -631,7 +659,7 @@ copyButtons.forEach(
                         function() {
 
                             button.textContent =
-                                originalText;
+                                original;
 
                             button.classList.remove(
                                 "copied"
@@ -652,7 +680,7 @@ copyButtons.forEach(
                         function() {
 
                             button.textContent =
-                                "Copy Discord Username";
+                                original;
 
                         },
                         1500
@@ -690,15 +718,11 @@ const totalFallingWords = 20;
 
 function randomFallingWord() {
 
-    const randomIndex =
+    return fallingWords[
         Math.floor(
             Math.random() *
             fallingWords.length
-        );
-
-
-    return fallingWords[
-        randomIndex
+        )
     ];
 
 }
@@ -725,8 +749,10 @@ function createFallingWord() {
         randomFallingWord();
 
 
-    const left =
-        Math.random() * 100;
+    element.style.left =
+        (
+            Math.random() * 100
+        ) + "%";
 
 
     const duration =
@@ -734,39 +760,29 @@ function createFallingWord() {
         Math.random() * 9;
 
 
-    const delay =
-        -(Math.random() * duration);
-
-
-    const rotation =
-        -12 +
-        Math.random() * 24;
-
-
-    const size =
-        10 +
-        Math.random() * 16;
-
-
-    element.style.left =
-        `${left}%`;
-
-
     element.style.fontSize =
-        `${size}px`;
+        (
+            10 +
+            Math.random() * 16
+        ) + "px";
 
 
     element.style.animationDuration =
-        `${duration}s`;
+        duration + "s";
 
 
     element.style.animationDelay =
-        `${delay}s`;
+        (
+            -(Math.random() * duration)
+        ) + "s";
 
 
     element.style.setProperty(
         "--rotation",
-        `${rotation}deg`
+        (
+            -12 +
+            Math.random() * 24
+        ) + "deg"
     );
 
 
@@ -842,7 +858,6 @@ if (
 
                     await music.play();
 
-
                     musicButton.textContent =
                         "Ⅱ PAUSE MUSIC";
 
@@ -864,7 +879,7 @@ if (
                     if (musicStatus) {
 
                         musicStatus.textContent =
-                            "check music file";
+                            "check the music file";
 
                     }
 
@@ -874,7 +889,6 @@ if (
             } else {
 
                 music.pause();
-
 
                 musicButton.textContent =
                     "▶ PLAY MUSIC";
