@@ -1,11 +1,11 @@
-/* ========================================
-   BACOTHN WEBSITE SCRIPT
-======================================== */
+/* =========================================================
+   BACOTHN — SITE SCRIPT
+   ========================================================= */
 
 
-/* ========================================
+/* =========================================================
    BACOTHN TITLE GLITCH
-======================================== */
+   ========================================================= */
 
 const word = "BACOTHN";
 
@@ -23,36 +23,25 @@ const glitchCharacters = [
 ];
 
 const totalAnimationTime = 2000;
+const stepTime = totalAnimationTime / word.length;
 
-const stepTime =
-    totalAnimationTime /
-    word.length;
-
-
-const title =
-    document.getElementById(
-        "bacothn-title"
-    );
+const title = document.getElementById("bacothn-title");
 
 
 function randomCharacter() {
 
     return glitchCharacters[
         Math.floor(
-            Math.random() *
-            glitchCharacters.length
+            Math.random() * glitchCharacters.length
         )
     ];
 
 }
 
 
-function createScrambledText(
-    resolvedCount
-) {
+function createScrambledText(resolvedCount) {
 
     let result = "";
-
 
     for (
         let i = 0;
@@ -60,9 +49,7 @@ function createScrambledText(
         i++
     ) {
 
-        if (
-            i < resolvedCount
-        ) {
+        if (i < resolvedCount) {
 
             result += word[i];
 
@@ -74,7 +61,6 @@ function createScrambledText(
 
     }
 
-
     return result;
 
 }
@@ -83,15 +69,11 @@ function createScrambledText(
 async function animateTitle() {
 
     if (!title) {
-
         return;
-
     }
-
 
     title.textContent =
         createScrambledText(0);
-
 
     for (
         let resolved = 0;
@@ -100,7 +82,7 @@ async function animateTitle() {
     ) {
 
         await new Promise(
-            (resolve) => {
+            function(resolve) {
 
                 setTimeout(
                     resolve,
@@ -110,20 +92,16 @@ async function animateTitle() {
             }
         );
 
-
         title.textContent =
             createScrambledText(
                 resolved + 1
             );
 
-
         title.classList.remove(
             "glitch"
         );
 
-
         void title.offsetWidth;
-
 
         title.classList.add(
             "glitch"
@@ -131,10 +109,8 @@ async function animateTitle() {
 
     }
 
-
     title.textContent =
         word;
-
 
     title.classList.remove(
         "glitch"
@@ -147,128 +123,196 @@ animateTitle();
 
 
 
-/* ========================================
+/* =========================================================
    PAGE MENU
-======================================== */
+   Uses the HTML menu already present on the page.
+   ========================================================= */
 
-/*
-    IMPORTANT:
+const pagesButton =
+    document.getElementById(
+        "pagesButton"
+    );
 
-    index.html already contains its own
-    page menu:
+const pagesDrawer =
+    document.getElementById(
+        "pagesDrawer"
+    );
 
-        #pagesButton
-        #pagesDrawer
-        #pagesList
-
-    Older versions of this script tried to
-    create another menu, which caused the
-    menu to duplicate/disappear/break.
-
-    This version first looks for the existing
-    menu and uses it.
-
-    If a page doesn't have the existing menu,
-    it creates the original dynamic menu.
-*/
+const pagesList =
+    document.getElementById(
+        "pagesList"
+    );
 
 
-const pageMenuPages = [
-
+const sitePages = [
     {
         name: "HOME",
-        url: "index.html",
-        file: "index.html"
+        url: "index.html"
     },
 
     {
         name: "PROFILE",
-        url: "profile.html",
-        file: "profile.html"
+        url: "profile.html"
     },
 
     {
         name: "ABOUT",
-        url: "about.html",
-        file: "about.html"
+        url: "about.html"
     },
 
     {
         name: "PROJECTS",
-        url: "projects.html",
-        file: "projects.html"
+        url: "projects.html"
     },
 
     {
         name: "LINKS",
-        url: "links.html",
-        file: "links.html"
-    }
+        url: "links.html"
+    },
 
+    {
+        name: "GIF CREATOR",
+        url: "gif-creator.html"
+    }
 ];
 
 
 function getCurrentPage() {
 
-    let currentPage =
+    let page =
         window.location.pathname
             .split("/")
             .pop()
             .toLowerCase();
 
-
     if (
-        currentPage === ""
+        !page ||
+        page === "/"
     ) {
 
-        currentPage =
+        page =
             "index.html";
 
     }
 
-
-    return currentPage;
+    return page;
 
 }
 
 
-
-/* ========================================
-   EXISTING HTML MENU
-======================================== */
-
-function setupExistingPageMenu() {
-
-    const menuButton =
-        document.getElementById(
-            "pagesButton"
-        );
-
-
-    const menu =
-        document.getElementById(
-            "pagesDrawer"
-        );
-
+function initializePageMenu() {
 
     if (
-        !menuButton ||
-        !menu
+        !pagesButton ||
+        !pagesDrawer
     ) {
 
-        return false;
+        return;
 
     }
 
 
-    let menuOpen =
-        false;
+    /*
+        Make sure the drawer starts closed.
+    */
+
+    pagesDrawer.classList.remove(
+        "open"
+    );
+
+
+    pagesDrawer.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    pagesButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+
+    /*
+        Fill the page list if one exists.
+    */
+
+    if (pagesList) {
+
+        const listContainer =
+            pagesList.querySelector(
+                ".page-menu-list"
+            ) || pagesList;
+
+
+        listContainer.innerHTML = "";
+
+
+        const currentPage =
+            getCurrentPage();
+
+
+        sitePages.forEach(
+            function(page) {
+
+                /*
+                    Don't add the current page.
+                */
+
+                if (
+                    page.url.toLowerCase() ===
+                    currentPage
+                ) {
+
+                    return;
+
+                }
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    page.url;
+
+
+                link.className =
+                    "page-menu-link";
+
+
+                link.textContent =
+                    page.name;
+
+
+                listContainer.appendChild(
+                    link
+                );
+
+            }
+        );
+
+    }
+
+
+    let menuOpen = false;
 
 
     function openMenu() {
 
-        menuOpen =
-            true;
+        menuOpen = true;
+
+
+        pagesDrawer.classList.add(
+            "open"
+        );
+
+
+        pagesDrawer.classList.add(
+            "active"
+        );
 
 
         document.body.classList.add(
@@ -276,12 +320,24 @@ function setupExistingPageMenu() {
         );
 
 
-        menuButton.classList.add(
+        pagesButton.classList.add(
             "active"
         );
 
 
-        menuButton.innerHTML = `
+        pagesButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+
+        pagesDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        pagesButton.innerHTML = `
             <span class="page-menu-button-icon">
                 ×
             </span>
@@ -296,8 +352,17 @@ function setupExistingPageMenu() {
 
     function closeMenu() {
 
-        menuOpen =
-            false;
+        menuOpen = false;
+
+
+        pagesDrawer.classList.remove(
+            "open"
+        );
+
+
+        pagesDrawer.classList.remove(
+            "active"
+        );
 
 
         document.body.classList.remove(
@@ -305,12 +370,24 @@ function setupExistingPageMenu() {
         );
 
 
-        menuButton.classList.remove(
+        pagesButton.classList.remove(
             "active"
         );
 
 
-        menuButton.innerHTML = `
+        pagesButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        pagesDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        pagesButton.innerHTML = `
             <span class="page-menu-button-icon">
                 ☰
             </span>
@@ -323,13 +400,16 @@ function setupExistingPageMenu() {
     }
 
 
-    menuButton.addEventListener(
+    pagesButton.addEventListener(
         "click",
-        function() {
+        function(event) {
 
-            if (
-                menuOpen
-            ) {
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            if (menuOpen) {
 
                 closeMenu();
 
@@ -361,431 +441,35 @@ function setupExistingPageMenu() {
 
 
     /*
-        Close menu when clicking a page link.
+        Don't close when clicking inside
+        the actual drawer.
     */
 
-    menu.querySelectorAll(
-        "a"
-    ).forEach(
-        function(link) {
-
-            link.addEventListener(
-                "click",
-                function() {
-
-                    closeMenu();
-
-                }
-            );
-
-        }
-    );
-
-
-    /*
-        Drag-to-scroll support.
-    */
-
-    const menuScroll =
-        menu.querySelector(
-            ".page-menu-scroll"
-        );
-
-
-    if (
-        !menuScroll
-    ) {
-
-        return true;
-
-    }
-
-
-    let isDragging =
-        false;
-
-    let startX =
-        0;
-
-    let startScrollLeft =
-        0;
-
-
-    menuScroll.addEventListener(
-        "pointerdown",
+    pagesDrawer.addEventListener(
+        "click",
         function(event) {
 
-            isDragging =
-                true;
-
-
-            startX =
-                event.clientX;
-
-
-            startScrollLeft =
-                menuScroll.scrollLeft;
-
-
-            menuScroll.classList.add(
-                "dragging"
-            );
-
-
-            try {
-
-                menuScroll.setPointerCapture(
-                    event.pointerId
-                );
-
-            } catch (
-                error
-            ) {
-
-                /*
-                    Some browsers/devices may
-                    reject pointer capture.
-                    It isn't required for the
-                    menu to function.
-                */
-
-            }
+            event.stopPropagation();
 
         }
     );
 
 
-    menuScroll.addEventListener(
-        "pointermove",
+    /*
+        Clicking a page closes the drawer.
+    */
+
+    pagesDrawer.addEventListener(
+        "click",
         function(event) {
-
-            if (
-                !isDragging
-            ) {
-
-                return;
-
-            }
-
-
-            const distance =
-                event.clientX -
-                startX;
-
-
-            menuScroll.scrollLeft =
-                startScrollLeft -
-                distance;
-
-        }
-    );
-
-
-    function stopDragging() {
-
-        if (
-            !isDragging
-        ) {
-
-            return;
-
-        }
-
-
-        isDragging =
-            false;
-
-
-        menuScroll.classList.remove(
-            "dragging"
-        );
-
-    }
-
-
-    menuScroll.addEventListener(
-        "pointerup",
-        stopDragging
-    );
-
-
-    menuScroll.addEventListener(
-        "pointercancel",
-        stopDragging
-    );
-
-
-    menuScroll.addEventListener(
-        "pointerleave",
-        function() {
-
-            /*
-                Don't stop dragging just because
-                the pointer temporarily leaves.
-                Pointer capture normally handles
-                this on supported browsers.
-            */
-
-        }
-    );
-
-
-    return true;
-
-}
-
-
-
-/* ========================================
-   CREATE MENU FOR PAGES WITHOUT ONE
-======================================== */
-
-function createPageMenu() {
-
-    /*
-        If the current page already has the
-        HTML menu, use that instead.
-    */
-
-    if (
-        setupExistingPageMenu()
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-        Don't create a second dynamic menu.
-    */
-
-    if (
-        document.getElementById(
-            "page-menu"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    const currentPage =
-        getCurrentPage();
-
-
-    const menuButton =
-        document.createElement(
-            "button"
-        );
-
-
-    menuButton.id =
-        "page-menu-button";
-
-
-    menuButton.type =
-        "button";
-
-
-    menuButton.className =
-        "page-menu-button";
-
-
-    menuButton.innerHTML = `
-        <span class="page-menu-button-icon">
-            ☰
-        </span>
-
-        <span class="page-menu-button-text">
-            PAGES
-        </span>
-    `;
-
-
-    const menu =
-        document.createElement(
-            "div"
-        );
-
-
-    menu.id =
-        "page-menu";
-
-
-    menu.className =
-        "page-menu";
-
-
-    menu.innerHTML = `
-        <div class="page-menu-inner">
-
-            <div class="page-menu-label">
-                PAGES
-            </div>
-
-            <div
-                class="page-menu-scroll"
-                id="page-menu-scroll"
-            >
-
-                <div
-                    class="page-menu-list"
-                    id="page-menu-list"
-                ></div>
-
-            </div>
-
-        </div>
-    `;
-
-
-    document.body.prepend(
-        menuButton
-    );
-
-
-    document.body.prepend(
-        menu
-    );
-
-
-    const pageList =
-        document.getElementById(
-            "page-menu-list"
-        );
-
-
-    pageMenuPages.forEach(
-        function(page) {
-
-            if (
-                page.file.toLowerCase() ===
-                currentPage
-            ) {
-
-                return;
-
-            }
-
 
             const link =
-                document.createElement(
+                event.target.closest(
                     "a"
                 );
 
 
-            link.className =
-                "page-menu-link";
-
-
-            link.href =
-                page.url;
-
-
-            link.textContent =
-                page.name;
-
-
-            pageList.appendChild(
-                link
-            );
-
-        }
-    );
-
-
-    let menuOpen =
-        false;
-
-
-    function openMenu() {
-
-        menuOpen =
-            true;
-
-
-        document.body.classList.add(
-            "page-menu-open"
-        );
-
-
-        menuButton.classList.add(
-            "active"
-        );
-
-
-        menuButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ×
-            </span>
-
-            <span class="page-menu-button-text">
-                CLOSE
-            </span>
-        `;
-
-    }
-
-
-    function closeMenu() {
-
-        menuOpen =
-            false;
-
-
-        document.body.classList.remove(
-            "page-menu-open"
-        );
-
-
-        menuButton.classList.remove(
-            "active"
-        );
-
-
-        menuButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ☰
-            </span>
-
-            <span class="page-menu-button-text">
-                PAGES
-            </span>
-        `;
-
-    }
-
-
-    menuButton.addEventListener(
-        "click",
-        function() {
-
-            if (
-                menuOpen
-            ) {
-
-                closeMenu();
-
-            } else {
-
-                openMenu();
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Escape" &&
-                menuOpen
-            ) {
+            if (link) {
 
                 closeMenu();
 
@@ -795,71 +479,61 @@ function createPageMenu() {
     );
 
 
-    const menuScroll =
-        document.getElementById(
-            "page-menu-scroll"
+    /*
+        Horizontal drag scrolling.
+    */
+
+    const scrollContainer =
+        pagesDrawer.querySelector(
+            ".page-menu-scroll"
         );
 
 
-    if (
-        menuScroll
-    ) {
+    if (scrollContainer) {
 
-        let isDragging =
-            false;
-
-        let startX =
-            0;
-
-        let startScrollLeft =
-            0;
+        let dragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
 
 
-        menuScroll.addEventListener(
+        scrollContainer.addEventListener(
             "pointerdown",
             function(event) {
 
-                isDragging =
-                    true;
-
+                dragging = true;
 
                 startX =
                     event.clientX;
 
-
                 startScrollLeft =
-                    menuScroll.scrollLeft;
+                    scrollContainer.scrollLeft;
 
 
-                menuScroll.classList.add(
+                scrollContainer.classList.add(
                     "dragging"
                 );
 
 
                 try {
 
-                    menuScroll.setPointerCapture(
+                    scrollContainer.setPointerCapture(
                         event.pointerId
                     );
 
-                } catch (
-                    error
-                ) {}
+                } catch (error) {
+                    /* Ignore unsupported pointer capture. */
+                }
 
             }
         );
 
 
-        menuScroll.addEventListener(
+        scrollContainer.addEventListener(
             "pointermove",
             function(event) {
 
-                if (
-                    !isDragging
-                ) {
-
+                if (!dragging) {
                     return;
-
                 }
 
 
@@ -868,7 +542,7 @@ function createPageMenu() {
                     startX;
 
 
-                menuScroll.scrollLeft =
+                scrollContainer.scrollLeft =
                     startScrollLeft -
                     distance;
 
@@ -878,24 +552,22 @@ function createPageMenu() {
 
         function stopDragging() {
 
-            isDragging =
-                false;
+            dragging = false;
 
-
-            menuScroll.classList.remove(
+            scrollContainer.classList.remove(
                 "dragging"
             );
 
         }
 
 
-        menuScroll.addEventListener(
+        scrollContainer.addEventListener(
             "pointerup",
             stopDragging
         );
 
 
-        menuScroll.addEventListener(
+        scrollContainer.addEventListener(
             "pointercancel",
             stopDragging
         );
@@ -905,13 +577,13 @@ function createPageMenu() {
 }
 
 
-createPageMenu();
+initializePageMenu();
 
 
 
-/* ========================================
+/* =========================================================
    COPY DISCORD USERNAME
-======================================== */
+   ========================================================= */
 
 const copyButtons =
     document.querySelectorAll(
@@ -930,22 +602,16 @@ copyButtons.forEach(
                     button.dataset.copy;
 
 
-                if (
-                    !textToCopy
-                ) {
-
+                if (!textToCopy) {
                     return;
-
                 }
 
 
                 try {
 
-                    await navigator
-                        .clipboard
-                        .writeText(
-                            textToCopy
-                        );
+                    await navigator.clipboard.writeText(
+                        textToCopy
+                    );
 
 
                     const originalText =
@@ -967,7 +633,6 @@ copyButtons.forEach(
                             button.textContent =
                                 originalText;
 
-
                             button.classList.remove(
                                 "copied"
                             );
@@ -977,9 +642,7 @@ copyButtons.forEach(
                     );
 
 
-                } catch (
-                    error
-                ) {
+                } catch (error) {
 
                     button.textContent =
                         "Copy failed";
@@ -1005,9 +668,9 @@ copyButtons.forEach(
 
 
 
-/* ========================================
+/* =========================================================
    FALLING PROFILE WORDS
-======================================== */
+   ========================================================= */
 
 const fallingBackground =
     document.getElementById(
@@ -1022,8 +685,7 @@ const fallingWords = [
 ];
 
 
-const totalFallingWords =
-    20;
+const totalFallingWords = 20;
 
 
 function randomFallingWord() {
@@ -1044,12 +706,8 @@ function randomFallingWord() {
 
 function createFallingWord() {
 
-    if (
-        !fallingBackground
-    ) {
-
+    if (!fallingBackground) {
         return;
-
     }
 
 
@@ -1131,9 +789,7 @@ function createFallingWord() {
 }
 
 
-if (
-    fallingBackground
-) {
+if (fallingBackground) {
 
     for (
         let i = 0;
@@ -1149,9 +805,9 @@ if (
 
 
 
-/* ========================================
+/* =========================================================
    PROFILE MUSIC
-======================================== */
+   ========================================================= */
 
 const music =
     document.getElementById(
@@ -1180,9 +836,7 @@ if (
         "click",
         async function() {
 
-            if (
-                music.paused
-            ) {
+            if (music.paused) {
 
                 try {
 
@@ -1193,9 +847,7 @@ if (
                         "Ⅱ PAUSE MUSIC";
 
 
-                    if (
-                        musicStatus
-                    ) {
+                    if (musicStatus) {
 
                         musicStatus.textContent =
                             "playing...";
@@ -1203,20 +855,16 @@ if (
                     }
 
 
-                } catch (
-                    error
-                ) {
+                } catch (error) {
 
                     musicButton.textContent =
                         "MUSIC UNAVAILABLE";
 
 
-                    if (
-                        musicStatus
-                    ) {
+                    if (musicStatus) {
 
                         musicStatus.textContent =
-                            "check music/Var var Bradar.mp3";
+                            "check music file";
 
                     }
 
@@ -1232,9 +880,7 @@ if (
                     "▶ PLAY MUSIC";
 
 
-                if (
-                    musicStatus
-                ) {
+                if (musicStatus) {
 
                     musicStatus.textContent =
                         "paused";
@@ -1254,16 +900,6 @@ if (
             musicButton.textContent =
                 "▶ PLAY MUSIC";
 
-
-            if (
-                musicStatus
-            ) {
-
-                musicStatus.textContent =
-                    "ended";
-
-            }
-
         }
     );
 
@@ -1271,9 +907,9 @@ if (
 
 
 
-/* ========================================
+/* =========================================================
    FOOTER YEAR
-======================================== */
+   ========================================================= */
 
 const yearElement =
     document.getElementById(
@@ -1281,9 +917,7 @@ const yearElement =
     );
 
 
-if (
-    yearElement
-) {
+if (yearElement) {
 
     yearElement.textContent =
         new Date().getFullYear();
