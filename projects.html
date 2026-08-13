@@ -30,12 +30,6 @@
 
     <!-- ========================================
          NAVBAR
-         
-         The Pages button is intentionally NOT
-         hardcoded here.
-
-         script.js creates the menu so there
-         is only ONE page-menu system.
     ========================================= -->
 
     <header class="navbar">
@@ -47,7 +41,62 @@
             BACOTHN
         </a>
 
+
+        <button
+            id="pagesButton"
+            class="page-menu-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="pagesDrawer"
+        >
+
+            <span class="page-menu-button-icon">
+                ☰
+            </span>
+
+            <span>
+                PAGES
+            </span>
+
+        </button>
+
     </header>
+
+
+
+    <!-- ========================================
+         PAGE MENU
+    ========================================= -->
+
+    <div
+        id="pagesDrawer"
+        class="page-menu"
+        aria-hidden="true"
+    >
+
+        <div class="page-menu-inner">
+
+            <div class="page-menu-label">
+                PAGES
+            </div>
+
+
+            <div
+                id="pagesList"
+                class="page-menu-scroll"
+            >
+
+                <div class="page-menu-list">
+
+                    <!-- script.js fills this -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 
@@ -63,9 +112,11 @@
                 BACOTHN / PROJECTS
             </div>
 
+
             <h1>
                 THINGS I'VE MADE.
             </h1>
+
 
             <p>
                 A collection of projects, experiments, games,
@@ -195,6 +246,35 @@
             </article>
 
 
+            <!-- PROJECT 05 -->
+
+            <article class="project-card">
+
+                <div class="project-number">
+                    05
+                </div>
+
+                <div class="project-status">
+                    ACTIVE
+                </div>
+
+                <h2>
+                    GIF CREATOR
+                </h2>
+
+                <p>
+                    An advanced browser-based GIF creator with
+                    multiple images, frame ordering, timing,
+                    cropping, resizing, and GIF export.
+                </p>
+
+                <span class="project-tag">
+                    HTML / JS
+                </span>
+
+            </article>
+
+
         </section>
 
 
@@ -216,10 +296,6 @@
 
 
 
-    <!-- ========================================
-         FOOTER
-    ========================================= -->
-
     <footer class="about-footer">
 
         <strong>
@@ -233,10 +309,6 @@
     </footer>
 
 
-
-    <!-- ========================================
-         SITE SCRIPT
-    ========================================= -->
 
     <script src="script.js"></script>
 
