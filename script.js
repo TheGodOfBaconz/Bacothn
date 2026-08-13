@@ -1,8 +1,25 @@
-/* ========================================
-   BACOTHN TITLE GLITCH
-======================================== */
+/* =========================================================
+   BACOTHN WEBSITE SCRIPT
+   =========================================================
 
-const word = "BACOTHN";
+   This file is shared by:
+   - index.html
+   - profile.html
+   - about.html
+   - projects.html
+   - links.html
+
+   IMPORTANT:
+   The page menu already exists in the HTML.
+   We DO NOT create another menu here.
+========================================================= */
+
+
+/* =========================================================
+   BACOTHN TITLE GLITCH
+========================================================= */
+
+const BACOTHN_WORD = "BACOTHN";
 
 const glitchCharacters = [
     "$",
@@ -17,52 +34,50 @@ const glitchCharacters = [
     "!"
 ];
 
-const totalAnimationTime = 2000;
+const titleAnimationTime = 2000;
 
-const stepTime =
-    totalAnimationTime /
-    word.length;
-
-
-const title =
+const titleElement =
     document.getElementById(
         "bacothn-title"
     );
 
 
-function randomCharacter() {
+function getRandomGlitchCharacter() {
 
-    return glitchCharacters[
+    const index =
         Math.floor(
             Math.random() *
             glitchCharacters.length
-        )
-    ];
+        );
+
+    return glitchCharacters[index];
 
 }
 
 
-function createScrambledText(
-    resolvedCount
+function createScrambledTitle(
+    resolvedCharacters
 ) {
 
     let result = "";
 
     for (
         let i = 0;
-        i < word.length;
+        i < BACOTHN_WORD.length;
         i++
     ) {
 
         if (
-            i < resolvedCount
+            i < resolvedCharacters
         ) {
 
-            result += word[i];
+            result +=
+                BACOTHN_WORD[i];
 
         } else {
 
-            result += randomCharacter();
+            result +=
+                getRandomGlitchCharacter();
 
         }
 
@@ -73,19 +88,25 @@ function createScrambledText(
 }
 
 
-async function animateTitle() {
+async function animateBacothnTitle() {
 
-    if (!title) {
+    if (!titleElement) {
         return;
     }
 
-    title.textContent =
-        createScrambledText(0);
+
+    const stepTime =
+        titleAnimationTime /
+        BACOTHN_WORD.length;
+
+
+    titleElement.textContent =
+        createScrambledTitle(0);
 
 
     for (
         let resolved = 0;
-        resolved < word.length;
+        resolved < BACOTHN_WORD.length;
         resolved++
     ) {
 
@@ -101,53 +122,62 @@ async function animateTitle() {
         );
 
 
-        title.textContent =
-            createScrambledText(
+        titleElement.textContent =
+            createScrambledTitle(
                 resolved + 1
             );
 
 
-        title.classList.remove(
+        /*
+            Restart the CSS glitch animation.
+        */
+
+        titleElement.classList.remove(
             "glitch"
         );
 
 
-        void title.offsetWidth;
+        void titleElement.offsetWidth;
 
 
-        title.classList.add(
+        titleElement.classList.add(
             "glitch"
         );
 
     }
 
 
-    title.textContent =
-        word;
+    titleElement.textContent =
+        BACOTHN_WORD;
 
 
-    title.classList.remove(
+    titleElement.classList.remove(
         "glitch"
     );
 
 }
 
 
-animateTitle();
+animateBacothnTitle();
 
 
 
-/* ========================================
-   EXISTING PAGE MENU
-========================================
-   IMPORTANT:
-   index.html ALREADY contains:
-   #pagesButton
-   #pagesDrawer
-   #pagesList
+/* =========================================================
+   PAGE MENU
+=========================================================
 
-   We DO NOT create another menu.
-======================================== */
+   Your index.html already contains:
+
+   <button id="pagesButton">
+   <div id="pagesDrawer">
+
+   The CSS is controlled by:
+
+   body.page-menu-open
+
+   Therefore we use THAT class instead of inventing
+   a new ".open" class.
+========================================================= */
 
 const pagesButton =
     document.getElementById(
@@ -161,98 +191,175 @@ const pagesDrawer =
     );
 
 
+function setPagesButtonClosed() {
+
+    if (!pagesButton) {
+        return;
+    }
+
+
+    pagesButton.classList.remove(
+        "active"
+    );
+
+
+    pagesButton.innerHTML = `
+        <span class="page-menu-button-icon">
+            ☰
+        </span>
+
+        <span>
+            PAGES
+        </span>
+    `;
+
+}
+
+
+function setPagesButtonOpen() {
+
+    if (!pagesButton) {
+        return;
+    }
+
+
+    pagesButton.classList.add(
+        "active"
+    );
+
+
+    pagesButton.innerHTML = `
+        <span class="page-menu-button-icon">
+            ×
+        </span>
+
+        <span>
+            CLOSE
+        </span>
+    `;
+
+}
+
+
+function openPageMenu() {
+
+    if (
+        !pagesButton ||
+        !pagesDrawer
+    ) {
+
+        return;
+
+    }
+
+
+    document.body.classList.add(
+        "page-menu-open"
+    );
+
+
+    setPagesButtonOpen();
+
+}
+
+
+function closePageMenu() {
+
+    if (
+        !pagesButton ||
+        !pagesDrawer
+    ) {
+
+        return;
+
+    }
+
+
+    document.body.classList.remove(
+        "page-menu-open"
+    );
+
+
+    setPagesButtonClosed();
+
+}
+
+
+function togglePageMenu() {
+
+    if (
+        document.body.classList.contains(
+            "page-menu-open"
+        )
+    ) {
+
+        closePageMenu();
+
+    } else {
+
+        openPageMenu();
+
+    }
+
+}
+
+
+/*
+    Only run menu code if the page actually
+    contains the menu.
+*/
+
 if (
     pagesButton &&
     pagesDrawer
 ) {
 
-    let pagesOpen = false;
+    /*
+        Make sure the menu starts closed.
+    */
+
+    closePageMenu();
 
 
-    function openPages() {
-
-        pagesOpen = true;
-
-
-        pagesDrawer.classList.add(
-            "open"
-        );
-
-
-        pagesButton.classList.add(
-            "active"
-        );
-
-
-        pagesButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ×
-            </span>
-
-            <span>
-                CLOSE
-            </span>
-        `;
-
-    }
-
-
-    function closePages() {
-
-        pagesOpen = false;
-
-
-        pagesDrawer.classList.remove(
-            "open"
-        );
-
-
-        pagesButton.classList.remove(
-            "active"
-        );
-
-
-        pagesButton.innerHTML = `
-            <span class="page-menu-button-icon">
-                ☰
-            </span>
-
-            <span>
-                PAGES
-            </span>
-        `;
-
-    }
-
+    /*
+        Main button.
+    */
 
     pagesButton.addEventListener(
         "click",
-        function() {
+        function(event) {
 
-            if (pagesOpen) {
+            event.preventDefault();
 
-                closePages();
+            event.stopPropagation();
 
-            } else {
-
-                openPages();
-
-            }
+            togglePageMenu();
 
         }
     );
 
+
+    /*
+        Escape closes the menu.
+    */
 
     document.addEventListener(
         "keydown",
         function(event) {
 
             if (
-                event.key === "Escape" &&
-                pagesOpen
+                event.key === "Escape"
             ) {
 
-                closePages();
+                if (
+                    document.body.classList.contains(
+                        "page-menu-open"
+                    )
+                ) {
+
+                    closePageMenu();
+
+                }
 
             }
 
@@ -261,34 +368,82 @@ if (
 
 
     /*
-        Close the menu when clicking
-        a page link.
+        Close after selecting a page.
     */
 
-    pagesDrawer
-        .querySelectorAll(
+    const pageLinks =
+        pagesDrawer.querySelectorAll(
             ".page-menu-link"
-        )
-        .forEach(
-            function(link) {
-
-                link.addEventListener(
-                    "click",
-                    function() {
-
-                        closePages();
-
-                    }
-                );
-
-            }
         );
 
 
+    pageLinks.forEach(
+        function(link) {
+
+            link.addEventListener(
+                "click",
+                function() {
+
+                    closePageMenu();
+
+                }
+            );
+
+        }
+    );
+
+
     /*
-        Touch / mouse dragging
-        for the horizontal page list.
+        Optional:
+        Clicking outside the drawer closes it.
+
+        We deliberately ignore the page button
+        itself because it has its own click handler.
     */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                !document.body.classList.contains(
+                    "page-menu-open"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const clickedInsideDrawer =
+                pagesDrawer.contains(
+                    event.target
+                );
+
+
+            const clickedButton =
+                pagesButton.contains(
+                    event.target
+                );
+
+
+            if (
+                !clickedInsideDrawer &&
+                !clickedButton
+            ) {
+
+                closePageMenu();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       HORIZONTAL PAGE LIST DRAGGING
+    ===================================================== */
 
     const menuScroll =
         pagesDrawer.querySelector(
@@ -309,10 +464,27 @@ if (
             "pointerdown",
             function(event) {
 
+                /*
+                    Only left mouse button for mouse input.
+                    Touch and pen are allowed.
+                */
+
+                if (
+                    event.pointerType === "mouse" &&
+                    event.button !== 0
+                ) {
+
+                    return;
+
+                }
+
+
                 isDragging = true;
+
 
                 startX =
                     event.clientX;
+
 
                 startScrollLeft =
                     menuScroll.scrollLeft;
@@ -331,7 +503,10 @@ if (
 
                 } catch (error) {
 
-                    /* Ignore unsupported pointer capture */
+                    /*
+                        Some browsers may not support
+                        pointer capture.
+                    */
 
                 }
 
@@ -361,7 +536,12 @@ if (
         );
 
 
-        function stopDragging() {
+        function stopMenuDragging() {
+
+            if (!isDragging) {
+                return;
+            }
+
 
             isDragging = false;
 
@@ -375,13 +555,19 @@ if (
 
         menuScroll.addEventListener(
             "pointerup",
-            stopDragging
+            stopMenuDragging
         );
 
 
         menuScroll.addEventListener(
             "pointercancel",
-            stopDragging
+            stopMenuDragging
+        );
+
+
+        menuScroll.addEventListener(
+            "lostpointercapture",
+            stopMenuDragging
         );
 
     }
@@ -390,9 +576,9 @@ if (
 
 
 
-/* ========================================
+/* =========================================================
    COPY DISCORD USERNAME
-======================================== */
+========================================================= */
 
 const copyButtons =
     document.querySelectorAll(
@@ -416,17 +602,70 @@ copyButtons.forEach(
                 }
 
 
+                const originalText =
+                    button.textContent;
+
+
                 try {
 
-                    await navigator
-                        .clipboard
-                        .writeText(
+                    /*
+                        Modern clipboard API.
+                    */
+
+                    if (
+                        navigator.clipboard &&
+                        navigator.clipboard.writeText
+                    ) {
+
+                        await navigator.clipboard.writeText(
                             textToCopy
                         );
 
+                    } else {
 
-                    const originalText =
-                        button.textContent;
+                        /*
+                            Fallback for browsers where
+                            navigator.clipboard isn't available.
+                        */
+
+                        const temporaryInput =
+                            document.createElement(
+                                "textarea"
+                            );
+
+
+                        temporaryInput.value =
+                            textToCopy;
+
+
+                        temporaryInput.style.position =
+                            "fixed";
+
+                        temporaryInput.style.opacity =
+                            "0";
+
+                        temporaryInput.style.pointerEvents =
+                            "none";
+
+
+                        document.body.appendChild(
+                            temporaryInput
+                        );
+
+
+                        temporaryInput.focus();
+
+                        temporaryInput.select();
+
+
+                        document.execCommand(
+                            "copy"
+                        );
+
+
+                        temporaryInput.remove();
+
+                    }
 
 
                     button.textContent =
@@ -456,6 +695,12 @@ copyButtons.forEach(
 
                 } catch (error) {
 
+                    console.error(
+                        "Clipboard error:",
+                        error
+                    );
+
+
                     button.textContent =
                         "Copy failed";
 
@@ -464,7 +709,7 @@ copyButtons.forEach(
                         function() {
 
                             button.textContent =
-                                "Copy Discord Username";
+                                originalText;
 
                         },
                         1500
@@ -480,9 +725,9 @@ copyButtons.forEach(
 
 
 
-/* ========================================
+/* =========================================================
    FALLING PROFILE WORDS
-======================================== */
+========================================================= */
 
 const fallingBackground =
     document.getElementById(
@@ -500,18 +745,16 @@ const fallingWords = [
 const totalFallingWords = 20;
 
 
-function randomFallingWord() {
+function getRandomFallingWord() {
 
-    const randomIndex =
+    const index =
         Math.floor(
             Math.random() *
             fallingWords.length
         );
 
 
-    return fallingWords[
-        randomIndex
-    ];
+    return fallingWords[index];
 
 }
 
@@ -534,7 +777,7 @@ function createFallingWord() {
 
 
     element.textContent =
-        randomFallingWord();
+        getRandomFallingWord();
 
 
     const left =
@@ -617,9 +860,9 @@ if (fallingBackground) {
 
 
 
-/* ========================================
+/* =========================================================
    PROFILE MUSIC
-======================================== */
+========================================================= */
 
 const music =
     document.getElementById(
@@ -668,6 +911,12 @@ if (
 
 
                 } catch (error) {
+
+                    console.error(
+                        "Music playback error:",
+                        error
+                    );
+
 
                     musicButton.textContent =
                         "MUSIC UNAVAILABLE";
@@ -727,9 +976,9 @@ if (
 
 
 
-/* ========================================
+/* =========================================================
    FOOTER YEAR
-======================================== */
+========================================================= */
 
 const yearElement =
     document.getElementById(
