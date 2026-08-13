@@ -1,3 +1,7 @@
+/* ========================================
+   BACOTHN TITLE GLITCH
+======================================== */
+
 const word = "BACOTHN";
 
 const glitchCharacters = [
@@ -19,10 +23,6 @@ const stepTime =
     totalAnimationTime /
     word.length;
 
-
-/* ========================================
-   BACOTHN TITLE GLITCH
-======================================== */
 
 const title =
     document.getElementById(
@@ -48,7 +48,6 @@ function createScrambledText(
 
     let result = "";
 
-
     for (
         let i = 0;
         i < word.length;
@@ -69,7 +68,6 @@ function createScrambledText(
 
     }
 
-
     return result;
 
 }
@@ -78,11 +76,8 @@ function createScrambledText(
 async function animateTitle() {
 
     if (!title) {
-
         return;
-
     }
-
 
     title.textContent =
         createScrambledText(0);
@@ -95,7 +90,7 @@ async function animateTitle() {
     ) {
 
         await new Promise(
-            (resolve) => {
+            function(resolve) {
 
                 setTimeout(
                     resolve,
@@ -143,176 +138,53 @@ animateTitle();
 
 
 /* ========================================
-   PAGE SLIDE MENU
+   EXISTING PAGE MENU
+========================================
+   IMPORTANT:
+   index.html ALREADY contains:
+   #pagesButton
+   #pagesDrawer
+   #pagesList
+
+   We DO NOT create another menu.
 ======================================== */
 
-const pageMenuPages = [
-    {
-        name: "My Profile",
-        file: "profile.html"
-    },
-
-    {
-        name: "About",
-        file: "about.html"
-    },
-
-    {
-        name: "Links",
-        file: "links.html"
-    },
-
-    {
-        name: "Projects",
-        file: "projects.html"
-    }
-];
-
-
-function getCurrentPage() {
-
-    let currentPage =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-
-
-    if (!currentPage) {
-
-        currentPage =
-            "index.html";
-
-    }
-
-
-    return currentPage;
-
-}
-
-
-function createPageMenu() {
-
-    /*
-     * Use the menu that already exists
-     * inside the HTML.
-     */
-
-    const menuButton =
-        document.getElementById(
-            "pagesButton"
-        );
-
-
-    const menu =
-        document.getElementById(
-            "pagesDrawer"
-        );
-
-
-    const pageList =
-        document.querySelector(
-            ".page-menu-list"
-        );
-
-
-    if (
-        !menuButton ||
-        !menu ||
-        !pageList
-    ) {
-
-        return;
-
-    }
-
-
-    const currentPage =
-        getCurrentPage();
-
-
-    /*
-     * Remove any old buttons.
-     */
-
-    pageList.innerHTML = "";
-
-
-    /*
-     * Create the page buttons.
-     */
-
-    pageMenuPages.forEach(
-        (page) => {
-
-            /*
-             * Don't display the page
-             * we're currently viewing.
-             */
-
-            if (
-                page.file.toLowerCase() ===
-                currentPage
-            ) {
-
-                return;
-
-            }
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.className =
-                "page-menu-link";
-
-
-            link.href =
-                page.file;
-
-
-            link.textContent =
-                page.name;
-
-
-            pageList.appendChild(
-                link
-            );
-
-        }
+const pagesButton =
+    document.getElementById(
+        "pagesButton"
     );
 
 
-    /*
-     * ====================================
-     * OPEN / CLOSE MENU
-     * ====================================
-     */
-
-    let menuOpen =
-        false;
+const pagesDrawer =
+    document.getElementById(
+        "pagesDrawer"
+    );
 
 
-    function openMenu() {
+if (
+    pagesButton &&
+    pagesDrawer
+) {
 
-        menuOpen =
-            true;
+    let pagesOpen = false;
 
 
-        document.body.classList.add(
-            "page-menu-open"
+    function openPages() {
+
+        pagesOpen = true;
+
+
+        pagesDrawer.classList.add(
+            "open"
         );
 
 
-        menuButton.classList.add(
+        pagesButton.classList.add(
             "active"
         );
 
 
-        menuButton.innerHTML = `
+        pagesButton.innerHTML = `
             <span class="page-menu-button-icon">
                 ×
             </span>
@@ -325,23 +197,22 @@ function createPageMenu() {
     }
 
 
-    function closeMenu() {
+    function closePages() {
 
-        menuOpen =
-            false;
+        pagesOpen = false;
 
 
-        document.body.classList.remove(
-            "page-menu-open"
+        pagesDrawer.classList.remove(
+            "open"
         );
 
 
-        menuButton.classList.remove(
+        pagesButton.classList.remove(
             "active"
         );
 
 
-        menuButton.innerHTML = `
+        pagesButton.innerHTML = `
             <span class="page-menu-button-icon">
                 ☰
             </span>
@@ -354,40 +225,34 @@ function createPageMenu() {
     }
 
 
-    menuButton.addEventListener(
+    pagesButton.addEventListener(
         "click",
-        () => {
+        function() {
 
-            if (menuOpen) {
+            if (pagesOpen) {
 
-                closeMenu();
+                closePages();
 
             } else {
 
-                openMenu();
+                openPages();
 
             }
 
         }
     );
 
-
-    /*
-     * ====================================
-     * ESCAPE CLOSE
-     * ====================================
-     */
 
     document.addEventListener(
         "keydown",
-        (event) => {
+        function(event) {
 
             if (
                 event.key === "Escape" &&
-                menuOpen
+                pagesOpen
             ) {
 
-                closeMenu();
+                closePages();
 
             }
 
@@ -396,153 +261,132 @@ function createPageMenu() {
 
 
     /*
-     * ====================================
-     * CLOSE AFTER PAGE CLICK
-     * ====================================
-     */
+        Close the menu when clicking
+        a page link.
+    */
 
-    pageList.addEventListener(
-        "click",
-        () => {
+    pagesDrawer
+        .querySelectorAll(
+            ".page-menu-link"
+        )
+        .forEach(
+            function(link) {
 
-            closeMenu();
+                link.addEventListener(
+                    "click",
+                    function() {
 
-        }
-    );
+                        closePages();
+
+                    }
+                );
+
+            }
+        );
 
 
     /*
-     * ====================================
-     * HORIZONTAL DRAG SCROLL
-     * ====================================
-     */
+        Touch / mouse dragging
+        for the horizontal page list.
+    */
 
     const menuScroll =
-        document.querySelector(
+        pagesDrawer.querySelector(
             ".page-menu-scroll"
         );
 
 
-    if (!menuScroll) {
+    if (menuScroll) {
 
-        return;
+        let isDragging = false;
 
-    }
+        let startX = 0;
 
-
-    let isDragging =
-        false;
-
-    let startX =
-        0;
-
-    let startScrollLeft =
-        0;
+        let startScrollLeft = 0;
 
 
-    menuScroll.addEventListener(
-        "pointerdown",
-        (event) => {
+        menuScroll.addEventListener(
+            "pointerdown",
+            function(event) {
 
-            isDragging =
-                true;
+                isDragging = true;
 
+                startX =
+                    event.clientX;
 
-            startX =
-                event.clientX;
-
-
-            startScrollLeft =
-                menuScroll.scrollLeft;
+                startScrollLeft =
+                    menuScroll.scrollLeft;
 
 
-            menuScroll.classList.add(
+                menuScroll.classList.add(
+                    "dragging"
+                );
+
+
+                try {
+
+                    menuScroll.setPointerCapture(
+                        event.pointerId
+                    );
+
+                } catch (error) {
+
+                    /* Ignore unsupported pointer capture */
+
+                }
+
+            }
+        );
+
+
+        menuScroll.addEventListener(
+            "pointermove",
+            function(event) {
+
+                if (!isDragging) {
+                    return;
+                }
+
+
+                const distance =
+                    event.clientX -
+                    startX;
+
+
+                menuScroll.scrollLeft =
+                    startScrollLeft -
+                    distance;
+
+            }
+        );
+
+
+        function stopDragging() {
+
+            isDragging = false;
+
+
+            menuScroll.classList.remove(
                 "dragging"
             );
 
-
-            try {
-
-                menuScroll.setPointerCapture(
-                    event.pointerId
-                );
-
-            } catch (error) {
-
-                // Ignore unsupported pointer capture.
-
-            }
-
         }
-    );
 
 
-    menuScroll.addEventListener(
-        "pointermove",
-        (event) => {
-
-            if (!isDragging) {
-
-                return;
-
-            }
+        menuScroll.addEventListener(
+            "pointerup",
+            stopDragging
+        );
 
 
-            const distance =
-                event.clientX -
-                startX;
-
-
-            menuScroll.scrollLeft =
-                startScrollLeft -
-                distance;
-
-        }
-    );
-
-
-    function stopDragging() {
-
-        isDragging =
-            false;
-
-
-        menuScroll.classList.remove(
-            "dragging"
+        menuScroll.addEventListener(
+            "pointercancel",
+            stopDragging
         );
 
     }
 
-
-    menuScroll.addEventListener(
-        "pointerup",
-        stopDragging
-    );
-
-
-    menuScroll.addEventListener(
-        "pointercancel",
-        stopDragging
-    );
-
-
-    menuScroll.addEventListener(
-        "pointerleave",
-        () => {
-
-            if (isDragging) {
-
-                stopDragging();
-
-            }
-
-        }
-    );
-
 }
-
-
-createPageMenu();
 
 
 
@@ -557,22 +401,18 @@ const copyButtons =
 
 
 copyButtons.forEach(
-    (button) => {
+    function(button) {
 
         button.addEventListener(
             "click",
-            async () => {
+            async function() {
 
                 const textToCopy =
                     button.dataset.copy;
 
 
-                if (
-                    !textToCopy
-                ) {
-
+                if (!textToCopy) {
                     return;
-
                 }
 
 
@@ -599,7 +439,7 @@ copyButtons.forEach(
 
 
                     setTimeout(
-                        () => {
+                        function() {
 
                             button.textContent =
                                 originalText;
@@ -614,16 +454,14 @@ copyButtons.forEach(
                     );
 
 
-                } catch (
-                    error
-                ) {
+                } catch (error) {
 
                     button.textContent =
                         "Copy failed";
 
 
                     setTimeout(
-                        () => {
+                        function() {
 
                             button.textContent =
                                 "Copy Discord Username";
@@ -659,8 +497,7 @@ const fallingWords = [
 ];
 
 
-const totalFallingWords =
-    20;
+const totalFallingWords = 20;
 
 
 function randomFallingWord() {
@@ -681,12 +518,8 @@ function randomFallingWord() {
 
 function createFallingWord() {
 
-    if (
-        !fallingBackground
-    ) {
-
+    if (!fallingBackground) {
         return;
-
     }
 
 
@@ -756,7 +589,7 @@ function createFallingWord() {
 
     element.addEventListener(
         "animationend",
-        () => {
+        function() {
 
             element.remove();
 
@@ -768,9 +601,7 @@ function createFallingWord() {
 }
 
 
-if (
-    fallingBackground
-) {
+if (fallingBackground) {
 
     for (
         let i = 0;
@@ -815,11 +646,9 @@ if (
 
     musicButton.addEventListener(
         "click",
-        async () => {
+        async function() {
 
-            if (
-                music.paused
-            ) {
+            if (music.paused) {
 
                 try {
 
@@ -830,9 +659,7 @@ if (
                         "Ⅱ PAUSE MUSIC";
 
 
-                    if (
-                        musicStatus
-                    ) {
+                    if (musicStatus) {
 
                         musicStatus.textContent =
                             "playing...";
@@ -840,17 +667,13 @@ if (
                     }
 
 
-                } catch (
-                    error
-                ) {
+                } catch (error) {
 
                     musicButton.textContent =
                         "MUSIC UNAVAILABLE";
 
 
-                    if (
-                        musicStatus
-                    ) {
+                    if (musicStatus) {
 
                         musicStatus.textContent =
                             "check music/Var var Bradar.mp3";
@@ -869,9 +692,7 @@ if (
                     "▶ PLAY MUSIC";
 
 
-                if (
-                    musicStatus
-                ) {
+                if (musicStatus) {
 
                     musicStatus.textContent =
                         "paused";
@@ -886,10 +707,18 @@ if (
 
     music.addEventListener(
         "ended",
-        () => {
+        function() {
 
             musicButton.textContent =
                 "▶ PLAY MUSIC";
+
+
+            if (musicStatus) {
+
+                musicStatus.textContent =
+                    "ended";
+
+            }
 
         }
     );
@@ -908,9 +737,7 @@ const yearElement =
     );
 
 
-if (
-    yearElement
-) {
+if (yearElement) {
 
     yearElement.textContent =
         new Date().getFullYear();
