@@ -1,3 +1,11 @@
+/* =========================================================
+   BACOTHN — FULL SITE CSS
+   ========================================================= */
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -16,10 +24,26 @@ body {
     overflow-x: hidden;
 }
 
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
 
-/* ========================================
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* =========================================================
    MAIN NAVBAR
-======================================== */
+   ========================================================= */
 
 .navbar {
     position: fixed;
@@ -78,9 +102,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    HERO
-======================================== */
+   ========================================================= */
 
 .hero {
     min-height: 100vh;
@@ -121,20 +145,16 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    BACOTHN TITLE
-======================================== */
+   ========================================================= */
 
 #bacothn-title {
     position: relative;
 
     color: #ff1616;
 
-    font-size: clamp(
-        60px,
-        13vw,
-        150px
-    );
+    font-size: clamp(60px, 13vw, 150px);
 
     font-weight: 900;
 
@@ -194,9 +214,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    HERO SUBTITLE
-======================================== */
+   ========================================================= */
 
 .subtitle {
     max-width: 550px;
@@ -211,9 +231,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    BUTTONS
-======================================== */
+   ========================================================= */
 
 .buttons {
     display: flex;
@@ -257,9 +277,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    SCROLL HINT
-======================================== */
+   ========================================================= */
 
 .scroll-hint {
     position: absolute;
@@ -274,9 +294,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    GENERAL SECTIONS
-======================================== */
+   ========================================================= */
 
 .section {
     max-width: 1150px;
@@ -297,9 +317,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    QUICK CARDS
-======================================== */
+   ========================================================= */
 
 .quick-links {
     display: grid;
@@ -364,9 +384,9 @@ body {
 }
 
 
-/* ========================================
+/* =========================================================
    FOOTER
-======================================== */
+   ========================================================= */
 
 footer {
     padding: 70px 7% 40px;
@@ -421,9 +441,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    LINKS PAGE
-======================================== */
+   ========================================================= */
 
 .links-header {
     position: fixed;
@@ -538,11 +558,7 @@ footer p {
 .links-intro h1 {
     color: #ffffff;
 
-    font-size: clamp(
-        34px,
-        6vw,
-        58px
-    );
+    font-size: clamp(34px, 6vw, 58px);
 
     font-weight: 900;
 
@@ -719,9 +735,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE BACKGROUND
-======================================== */
+   ========================================================= */
 
 .profile-page-body {
     position: relative;
@@ -799,13 +815,12 @@ footer p {
             )
             rotate(var(--rotation));
     }
-
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE HEADER
-======================================== */
+   ========================================================= */
 
 .profile-header {
     position: fixed;
@@ -867,9 +882,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE MAIN
-======================================== */
+   ========================================================= */
 
 .profile-main {
     position: relative;
@@ -889,9 +904,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE GLASS PLATE
-======================================== */
+   ========================================================= */
 
 .profile-plate {
     position: relative;
@@ -902,8 +917,6 @@ footer p {
 
     padding: 65px;
 
-    /* 75% transparent */
-
     background:
         rgba(8, 8, 8, 0.25);
 
@@ -912,8 +925,6 @@ footer p {
         rgba(255, 255, 255, 0.12);
 
     border-radius: 28px;
-
-    /* 30px background blur */
 
     backdrop-filter:
         blur(30px);
@@ -952,9 +963,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE CONTENT
-======================================== */
+   ========================================================= */
 
 .profile-content {
     position: relative;
@@ -979,9 +990,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE NAME
-======================================== */
+   ========================================================= */
 
 .profile-name {
     display: block;
@@ -989,11 +1000,6 @@ footer p {
     width: 100%;
 
     max-width: 100%;
-
-    /*
-        Slightly smaller maximum size so the
-        final "s" cannot get clipped.
-    */
 
     font-size:
         clamp(
@@ -1008,16 +1014,7 @@ footer p {
 
     line-height: 1.05;
 
-    /*
-        Keeps the entire name on one line.
-    */
-
     white-space: nowrap;
-
-    /*
-        Prevents the final character from
-        being clipped.
-    */
 
     overflow: visible;
 
@@ -1061,13 +1058,12 @@ footer p {
     100% {
         background-position: 0% 50%;
     }
-
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE LINE
-======================================== */
+   ========================================================= */
 
 .profile-line {
     width: 100%;
@@ -1087,9 +1083,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE DESCRIPTION
-======================================== */
+   ========================================================= */
 
 .profile-description {
     max-width: 780px;
@@ -1102,9 +1098,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE NOTE
-======================================== */
+   ========================================================= */
 
 .profile-note {
     margin-top: 30px;
@@ -1119,9 +1115,9 @@ footer p {
 }
 
 
-/* ========================================
+/* =========================================================
    PROFILE MUSIC
-======================================== */
+   ========================================================= */
 
 .profile-music {
     display: flex;
@@ -1175,169 +1171,9 @@ footer p {
 }
 
 
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width: 700px) {
-
-    .navbar {
-        padding: 0 5%;
-    }
-
-    .navbar nav {
-        gap: 12px;
-    }
-
-    .navbar nav a {
-        font-size: 10px;
-    }
-
-    #bacothn-title {
-        letter-spacing: -4px;
-    }
-
-    .quick-links {
-        grid-template-columns: 1fr;
-    }
-
-    .section {
-        padding:
-            100px 6%;
-    }
-
-    .section-heading h2 {
-        font-size: 40px;
-    }
-
-    .buttons {
-        flex-direction: column;
-    }
-
-    .button {
-        width: 100%;
-    }
-
-
-    /* ====================================
-       MOBILE LINKS
-    ==================================== */
-
-    .links-header {
-        height: 68px;
-
-        grid-template-columns:
-            1fr
-            auto;
-
-        padding:
-            0 16px;
-    }
-
-    .links-header-left {
-        justify-content:
-            flex-start;
-    }
-
-    .links-header-title {
-        display: none;
-    }
-
-    .links-main {
-        padding:
-            120px 18px 80px;
-    }
-
-    .links-intro {
-        margin-bottom: 45px;
-    }
-
-    .links-intro h1 {
-        letter-spacing: -1px;
-    }
-
-    .social-link-item {
-        padding: 24px;
-    }
-
-
-    /* ====================================
-       MOBILE PROFILE
-    ==================================== */
-
-    .profile-header {
-        height: 68px;
-
-        grid-template-columns:
-            1fr
-            auto;
-
-        padding:
-            0 16px;
-    }
-
-    .profile-header-title {
-        display: none;
-    }
-
-    .profile-main {
-        padding:
-            110px 16px 60px;
-    }
-
-    .profile-plate {
-        padding:
-            35px 25px;
-
-        border-radius: 20px;
-
-        overflow: visible;
-    }
-
-    /*
-        Smaller mobile size specifically
-        so TheGodOfBacons INCLUDING THE S
-        fits inside the glass plate.
-    */
-
-    .profile-name {
-        font-size:
-            clamp(
-                29px,
-                9.5vw,
-                68px
-            );
-
-        letter-spacing:
-            -2px;
-
-        line-height: 1.08;
-
-        padding-right:
-            12px;
-
-        overflow:
-            visible;
-    }
-
-    .profile-description {
-        font-size: 14px;
-
-        line-height: 1.8;
-    }
-
-    .profile-music {
-        align-items:
-            flex-start;
-
-        flex-direction:
-            column;
-    }
-
-}
-/* ========================================
-   SLIDE DOWN PAGE MENU
-======================================== */
+/* =========================================================
+   SLIDE-DOWN PAGE MENU
+   ========================================================= */
 
 body {
     transition:
@@ -1351,9 +1187,12 @@ body {
 }
 
 
-/* The actual menu */
+/* =========================================================
+   PAGE MENU
+   ========================================================= */
 
-.page-menu {
+.page-menu,
+#pagesDrawer {
     position: fixed;
 
     top: 0;
@@ -1391,19 +1230,35 @@ body {
 }
 
 
-/* When open */
+/* =========================================================
+   OPEN MENU STATES
+   ========================================================= */
+
+body.page-menu-open .page-menu {
+    height: 145px;
+}
+
+body.page-menu-open #pagesDrawer {
+    height: 145px;
+}
+
+#pagesDrawer.open {
+    height: 145px;
+}
+
+
+/* =========================================================
+   BODY OPEN STATE
+   ========================================================= */
 
 body.page-menu-open {
     padding-top: 145px;
 }
 
 
-body.page-menu-open .page-menu {
-    height: 145px;
-}
-
-
-/* Menu contents */
+/* =========================================================
+   MENU CONTENT
+   ========================================================= */
 
 .page-menu-inner {
     width: 100%;
@@ -1422,7 +1277,6 @@ body.page-menu-open .page-menu {
         20px 70px;
 }
 
-
 .page-menu-label {
     color: #555555;
 
@@ -1436,7 +1290,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* Horizontal scrolling area */
+/* =========================================================
+   MENU SCROLL
+   ========================================================= */
 
 .page-menu-scroll {
     width: 100%;
@@ -1454,18 +1310,18 @@ body.page-menu-open .page-menu {
     user-select: none;
 }
 
-
 .page-menu-scroll::-webkit-scrollbar {
     display: none;
 }
-
 
 .page-menu-scroll.dragging {
     cursor: grabbing;
 }
 
 
-/* Buttons */
+/* =========================================================
+   MENU LIST
+   ========================================================= */
 
 .page-menu-list {
     display: flex;
@@ -1475,6 +1331,10 @@ body.page-menu-open .page-menu {
     gap: 12px;
 }
 
+
+/* =========================================================
+   MENU LINKS
+   ========================================================= */
 
 .page-menu-link {
     display: flex;
@@ -1516,7 +1376,6 @@ body.page-menu-open .page-menu {
         transform 0.2s ease;
 }
 
-
 .page-menu-link:hover {
     color: #ffffff;
 
@@ -1530,32 +1389,31 @@ body.page-menu-open .page-menu {
         translateY(-2px);
 }
 
-
 .page-menu-link:active {
     transform:
         scale(0.97);
 }
 
 
-/* ========================================
-   PAGE MENU BUTTON
-======================================== */
+/* =========================================================
+   PAGES BUTTON — FINAL
+   ========================================================= */
 
+#pagesButton,
 .page-menu-button {
-    position: fixed;
+    position: fixed !important;
 
-    top: 18px;
-
-    right: 28px;
+    top: 18px !important;
+    right: 28px !important;
 
     height: 34px;
 
-    padding:
-        0 12px;
+    padding: 0 12px;
 
-    display: flex;
+    display: flex !important;
 
     align-items: center;
+    justify-content: center;
 
     gap: 7px;
 
@@ -1580,7 +1438,7 @@ body.page-menu-open .page-menu {
 
     cursor: pointer;
 
-    z-index: 3000;
+    z-index: 3000 !important;
 
     backdrop-filter:
         blur(12px);
@@ -1594,7 +1452,7 @@ body.page-menu-open .page-menu {
         background 0.2s ease;
 }
 
-
+#pagesButton:hover,
 .page-menu-button:hover {
     color: #ffffff;
 
@@ -1605,14 +1463,16 @@ body.page-menu-open .page-menu {
         rgba(255, 30, 30, 0.4);
 }
 
-
+#pagesButton.active,
 .page-menu-button.active {
     color: #ff2424;
+
+    background:
+        rgba(8, 8, 8, 0.65);
 
     border-color:
         rgba(255, 30, 30, 0.4);
 }
-
 
 .page-menu-button-icon {
     font-size: 14px;
@@ -1621,52 +1481,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   MOBILE PAGE MENU
-======================================== */
-
-@media (max-width: 700px) {
-
-    body.page-menu-open {
-        padding-top: 155px;
-    }
-
-
-    body.page-menu-open .page-menu {
-        height: 155px;
-    }
-
-
-    .page-menu-inner {
-        height: 155px;
-
-        padding:
-            18px 16px;
-    }
-
-
-    .page-menu-button {
-        top: 17px;
-
-        right: 16px;
-
-        height: 32px;
-    }
-
-
-    .page-menu-link {
-        min-width: 135px;
-
-        height: 46px;
-
-        padding:
-            0 20px;
-    }
-
-}
-/* ========================================
+/* =========================================================
    ABOUT PAGE
-======================================== */
+   ========================================================= */
 
 .about-page {
     min-height: 100vh;
@@ -1681,9 +1498,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   HEADER
-======================================== */
+/* =========================================================
+   ABOUT HEADER
+   ========================================================= */
 
 .about-header {
     position: fixed;
@@ -1716,7 +1533,6 @@ body.page-menu-open .page-menu {
     z-index: 1000;
 }
 
-
 .about-logo {
     color: #ffffff;
 
@@ -1732,15 +1548,14 @@ body.page-menu-open .page-menu {
         color 0.2s ease;
 }
 
-
 .about-logo:hover {
     color: #ff1616;
 }
 
 
-/* ========================================
-   MAIN
-======================================== */
+/* =========================================================
+   ABOUT MAIN
+   ========================================================= */
 
 .about-main {
     width: 100%;
@@ -1754,9 +1569,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   HERO
-======================================== */
+/* =========================================================
+   ABOUT HERO
+   ========================================================= */
 
 .about-hero {
     max-width: 850px;
@@ -1766,7 +1581,6 @@ body.page-menu-open .page-menu {
 
     text-align: center;
 }
-
 
 .about-eyebrow {
     color: #ff2424;
@@ -1779,7 +1593,6 @@ body.page-menu-open .page-menu {
 
     margin-bottom: 22px;
 }
-
 
 .about-hero h1 {
     color: #ffffff;
@@ -1800,7 +1613,6 @@ body.page-menu-open .page-menu {
     margin-bottom: 30px;
 }
 
-
 .about-intro {
     max-width: 650px;
 
@@ -1814,9 +1626,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   STORY SECTIONS
-======================================== */
+/* =========================================================
+   STORY
+   ========================================================= */
 
 .about-story {
     display: grid;
@@ -1834,12 +1646,10 @@ body.page-menu-open .page-menu {
         rgba(255, 255, 255, 0.07);
 }
 
-
 .about-story.reverse {
     grid-template-columns:
         90px 1fr;
 }
-
 
 .story-number {
     color: #ff1616;
@@ -1853,16 +1663,13 @@ body.page-menu-open .page-menu {
     padding-top: 8px;
 }
 
-
 .story-content {
     max-width: 720px;
 }
 
-
 .story-content.wide {
     max-width: 100%;
 }
-
 
 .story-label {
     color: #555555;
@@ -1875,7 +1682,6 @@ body.page-menu-open .page-menu {
 
     margin-bottom: 18px;
 }
-
 
 .story-content h2 {
     color: #ffffff;
@@ -1896,7 +1702,6 @@ body.page-menu-open .page-menu {
     margin-bottom: 30px;
 }
 
-
 .story-content > p {
     max-width: 680px;
 
@@ -1909,15 +1714,14 @@ body.page-menu-open .page-menu {
     margin-bottom: 20px;
 }
 
-
 .story-content strong {
     color: #ff2424;
 }
 
 
-/* ========================================
+/* =========================================================
    STORY QUOTE
-======================================== */
+   ========================================================= */
 
 .story-quote {
     display: inline-block;
@@ -1949,7 +1753,6 @@ body.page-menu-open .page-menu {
         rotate(-1deg);
 }
 
-
 .big-quote {
     margin:
         10px 0 35px;
@@ -1977,9 +1780,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    STATUS
-======================================== */
+   ========================================================= */
 
 .story-status {
     display: inline-block;
@@ -1998,7 +1801,6 @@ body.page-menu-open .page-menu {
     letter-spacing: 2px;
 }
 
-
 .story-status.active {
     color: #ff3030;
 
@@ -2009,7 +1811,6 @@ body.page-menu-open .page-menu {
         1px solid
         rgba(255, 30, 30, 0.2);
 }
-
 
 .story-status.archived {
     color: #555555;
@@ -2023,9 +1824,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    BOT CARDS
-======================================== */
+   ========================================================= */
 
 .bot-split {
     display: grid;
@@ -2037,7 +1838,6 @@ body.page-menu-open .page-menu {
 
     margin-top: 40px;
 }
-
 
 .bot-card {
     padding: 30px;
@@ -2059,7 +1859,6 @@ body.page-menu-open .page-menu {
         background 0.25s ease;
 }
 
-
 .bot-card:hover {
     transform:
         translateY(-5px);
@@ -2070,7 +1869,6 @@ body.page-menu-open .page-menu {
     border-color:
         rgba(255, 40, 40, 0.3);
 }
-
 
 .bot-card-top {
     display: flex;
@@ -2088,7 +1886,6 @@ body.page-menu-open .page-menu {
     letter-spacing: 3px;
 }
 
-
 .bot-status {
     color: #ff2424;
 
@@ -2096,7 +1893,6 @@ body.page-menu-open .page-menu {
 
     letter-spacing: 1px;
 }
-
 
 .bot-card h3 {
     margin-top: 65px;
@@ -2112,7 +1908,6 @@ body.page-menu-open .page-menu {
     letter-spacing: -1px;
 }
 
-
 .bot-card p {
     color: #6d6d6d;
 
@@ -2122,9 +1917,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    BEYOND GRID
-======================================== */
+   ========================================================= */
 
 .beyond-grid {
     display: grid;
@@ -2136,7 +1931,6 @@ body.page-menu-open .page-menu {
 
     margin-top: 40px;
 }
-
 
 .beyond-card {
     min-height: 200px;
@@ -2157,7 +1951,6 @@ body.page-menu-open .page-menu {
         border-color 0.2s ease;
 }
 
-
 .beyond-card:hover {
     transform:
         translateY(-4px);
@@ -2165,7 +1958,6 @@ body.page-menu-open .page-menu {
     border-color:
         #333333;
 }
-
 
 .beyond-card > span {
     color: #ff2424;
@@ -2177,7 +1969,6 @@ body.page-menu-open .page-menu {
     letter-spacing: 2px;
 }
 
-
 .beyond-card h3 {
     color: #eeeeee;
 
@@ -2186,7 +1977,6 @@ body.page-menu-open .page-menu {
     margin:
         38px 0 10px;
 }
-
 
 .beyond-card p {
     color: #626262;
@@ -2197,9 +1987,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    TECH DISPLAY
-======================================== */
+   ========================================================= */
 
 .tech-display {
     display: grid;
@@ -2217,7 +2007,6 @@ body.page-menu-open .page-menu {
 
     overflow: hidden;
 }
-
 
 .tech-display div {
     min-height: 85px;
@@ -2240,11 +2029,9 @@ body.page-menu-open .page-menu {
         #1c1c1c;
 }
 
-
 .tech-display div:last-child {
     border-right: none;
 }
-
 
 .tech-display span {
     color: #555555;
@@ -2256,22 +2043,20 @@ body.page-menu-open .page-menu {
     letter-spacing: 1px;
 }
 
-
 .tech-display b {
     color: #ff2424;
 
     font-size: 18px;
 }
 
-
 .tech-display b.bad {
     color: #333333;
 }
 
 
-/* ========================================
+/* =========================================================
    EVOLUTION
-======================================== */
+   ========================================================= */
 
 .evolution {
     margin:
@@ -2290,7 +2075,6 @@ body.page-menu-open .page-menu {
 
     text-align: center;
 }
-
 
 .evolution > h2 {
     color: #ffffff;
@@ -2311,7 +2095,6 @@ body.page-menu-open .page-menu {
     margin-bottom: 70px;
 }
 
-
 .evolution-line {
     display: flex;
 
@@ -2326,14 +2109,12 @@ body.page-menu-open .page-menu {
     padding-bottom: 20px;
 }
 
-
 .evolution-node {
     flex:
         0 0 150px;
 
     position: relative;
 }
-
 
 .node-dot {
     width: 52px;
@@ -2370,7 +2151,6 @@ body.page-menu-open .page-menu {
         rgba(255, 0, 0, 0.08);
 }
 
-
 .evolution-node h3 {
     margin-top: 20px;
 
@@ -2383,7 +2163,6 @@ body.page-menu-open .page-menu {
     letter-spacing: 1px;
 }
 
-
 .evolution-node p {
     margin-top: 7px;
 
@@ -2391,7 +2170,6 @@ body.page-menu-open .page-menu {
 
     font-size: 10px;
 }
-
 
 .evolution-connector {
     flex:
@@ -2409,7 +2187,6 @@ body.page-menu-open .page-menu {
         );
 }
 
-
 .evolution-node.future .node-dot {
     color: #444444;
 
@@ -2419,15 +2196,14 @@ body.page-menu-open .page-menu {
     box-shadow: none;
 }
 
-
 .evolution-node.future h3 {
     color: #555555;
 }
 
 
-/* ========================================
-   NEXT
-======================================== */
+/* =========================================================
+   ABOUT NEXT
+   ========================================================= */
 
 .about-next {
     padding:
@@ -2444,7 +2220,6 @@ body.page-menu-open .page-menu {
 
     border-radius: 20px;
 }
-
 
 .about-next h2 {
     color: #ffffff;
@@ -2463,7 +2238,6 @@ body.page-menu-open .page-menu {
     margin-bottom: 25px;
 }
 
-
 .about-next > p:not(.about-eyebrow) {
     max-width: 550px;
 
@@ -2475,7 +2249,6 @@ body.page-menu-open .page-menu {
 
     line-height: 1.8;
 }
-
 
 .next-project {
     display: inline-block;
@@ -2503,15 +2276,14 @@ body.page-menu-open .page-menu {
     letter-spacing: 2px;
 }
 
-
 .next-project span {
     color: #ff2424;
 }
 
 
-/* ========================================
-   FOOTER
-======================================== */
+/* =========================================================
+   ABOUT FOOTER
+   ========================================================= */
 
 .about-footer {
     padding:
@@ -2524,7 +2296,6 @@ body.page-menu-open .page-menu {
         #151515;
 }
 
-
 .about-footer strong {
     display: block;
 
@@ -2534,7 +2305,6 @@ body.page-menu-open .page-menu {
 
     letter-spacing: 4px;
 }
-
 
 .about-footer span {
     display: block;
@@ -2547,132 +2317,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width: 700px) {
-
-    .about-header {
-        height: 68px;
-
-        padding:
-            0 16px;
-    }
-
-
-    .about-main {
-        padding:
-            125px 18px 70px;
-    }
-
-
-    .about-hero {
-        margin-bottom: 80px;
-    }
-
-
-    .about-hero h1 {
-        letter-spacing: -3px;
-    }
-
-
-    .about-story,
-    .about-story.reverse {
-        grid-template-columns:
-            1fr;
-
-        gap: 15px;
-
-        padding:
-            65px 0;
-    }
-
-
-    .story-number {
-        padding: 0;
-    }
-
-
-    .story-content h2 {
-        letter-spacing: -2px;
-    }
-
-
-    .bot-split {
-        grid-template-columns:
-            1fr;
-    }
-
-
-    .beyond-grid {
-        grid-template-columns:
-            1fr;
-    }
-
-
-    .tech-display {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-
-    .tech-display div:nth-child(2) {
-        border-right: none;
-    }
-
-
-    .tech-display div:nth-child(3),
-    .tech-display div:nth-child(4),
-    .tech-display div:nth-child(5) {
-        border-top:
-            1px solid
-            #1c1c1c;
-    }
-
-
-    .evolution {
-        text-align: left;
-    }
-
-
-    .evolution > h2 {
-        letter-spacing: -2px;
-    }
-
-
-    .evolution-line {
-        justify-content:
-            flex-start;
-    }
-
-
-    .evolution-node {
-        flex-basis:
-            130px;
-    }
-
-
-    .evolution-connector {
-        flex-basis:
-            30px;
-    }
-
-
-    .about-next {
-        padding:
-            70px 20px;
-    }
-
-
-    .about-next h2 {
-        letter-spacing: -3px;
-    }
-
-}
-/* ========================================
+/* =========================================================
    PROJECTS PAGE
-======================================== */
+   ========================================================= */
 
 .projects-page {
     min-height: 100vh;
@@ -2738,9 +2385,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    PROJECT GRID
-======================================== */
+   ========================================================= */
 
 .projects-grid {
     display: grid;
@@ -2862,9 +2509,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    PROJECTS BOTTOM
-======================================== */
+   ========================================================= */
 
 .projects-bottom {
     margin-top: 70px;
@@ -2886,9 +2533,9 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
+/* =========================================================
    ERROR PAGE
-======================================== */
+   ========================================================= */
 
 .error-page {
     min-height: 100vh;
@@ -3024,11 +2671,306 @@ body.page-menu-open .page-menu {
 }
 
 
-/* ========================================
-   MOBILE
-======================================== */
+/* =========================================================
+   MOBILE — GLOBAL
+   ========================================================= */
 
 @media (max-width: 700px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .navbar nav {
+        gap: 12px;
+    }
+
+    .navbar nav a {
+        font-size: 10px;
+    }
+
+    #bacothn-title {
+        letter-spacing: -4px;
+    }
+
+    .quick-links {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding:
+            100px 6%;
+    }
+
+    .section-heading h2 {
+        font-size: 40px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+
+    /* =====================================================
+       MOBILE LINKS
+       ===================================================== */
+
+    .links-header {
+        height: 68px;
+
+        grid-template-columns:
+            1fr
+            auto;
+
+        padding:
+            0 16px;
+    }
+
+    .links-header-left {
+        justify-content:
+            flex-start;
+    }
+
+    .links-header-title {
+        display: none;
+    }
+
+    .links-main {
+        padding:
+            120px 18px 80px;
+    }
+
+    .links-intro {
+        margin-bottom: 45px;
+    }
+
+    .links-intro h1 {
+        letter-spacing: -1px;
+    }
+
+    .social-link-item {
+        padding: 24px;
+    }
+
+
+    /* =====================================================
+       MOBILE PROFILE
+       ===================================================== */
+
+    .profile-header {
+        height: 68px;
+
+        grid-template-columns:
+            1fr
+            auto;
+
+        padding:
+            0 16px;
+    }
+
+    .profile-header-title {
+        display: none;
+    }
+
+    .profile-main {
+        padding:
+            110px 16px 60px;
+    }
+
+    .profile-plate {
+        padding:
+            35px 25px;
+
+        border-radius: 20px;
+
+        overflow: visible;
+    }
+
+    .profile-name {
+        font-size:
+            clamp(
+                29px,
+                9.5vw,
+                68px
+            );
+
+        letter-spacing:
+            -2px;
+
+        line-height: 1.08;
+
+        padding-right:
+            12px;
+
+        overflow:
+            visible;
+    }
+
+    .profile-description {
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+    .profile-music {
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+
+
+    /* =====================================================
+       MOBILE PAGE MENU
+       ===================================================== */
+
+    body.page-menu-open {
+        padding-top: 155px;
+    }
+
+    body.page-menu-open .page-menu,
+    body.page-menu-open #pagesDrawer,
+    #pagesDrawer.open {
+        height: 155px;
+    }
+
+    .page-menu-inner {
+        height: 155px;
+
+        padding:
+            18px 16px;
+    }
+
+    #pagesButton,
+    .page-menu-button {
+        top: 17px !important;
+
+        right: 16px !important;
+
+        height: 32px;
+    }
+
+    .page-menu-link {
+        min-width: 135px;
+
+        height: 46px;
+
+        padding:
+            0 20px;
+    }
+
+
+    /* =====================================================
+       MOBILE ABOUT
+       ===================================================== */
+
+    .about-header {
+        height: 68px;
+
+        padding:
+            0 16px;
+    }
+
+    .about-main {
+        padding:
+            125px 18px 70px;
+    }
+
+    .about-hero {
+        margin-bottom: 80px;
+    }
+
+    .about-hero h1 {
+        letter-spacing: -3px;
+    }
+
+    .about-story,
+    .about-story.reverse {
+        grid-template-columns:
+            1fr;
+
+        gap: 15px;
+
+        padding:
+            65px 0;
+    }
+
+    .story-number {
+        padding: 0;
+    }
+
+    .story-content h2 {
+        letter-spacing: -2px;
+    }
+
+    .bot-split {
+        grid-template-columns:
+            1fr;
+    }
+
+    .beyond-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .tech-display {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .tech-display div:nth-child(2) {
+        border-right: none;
+    }
+
+    .tech-display div:nth-child(3),
+    .tech-display div:nth-child(4),
+    .tech-display div:nth-child(5) {
+        border-top:
+            1px solid
+            #1c1c1c;
+    }
+
+    .evolution {
+        text-align: left;
+    }
+
+    .evolution > h2 {
+        letter-spacing: -2px;
+    }
+
+    .evolution-line {
+        justify-content:
+            flex-start;
+    }
+
+    .evolution-node {
+        flex-basis:
+            130px;
+    }
+
+    .evolution-connector {
+        flex-basis:
+            30px;
+    }
+
+    .about-next {
+        padding:
+            70px 20px;
+    }
+
+    .about-next h2 {
+        letter-spacing: -3px;
+    }
+
+
+    /* =====================================================
+       MOBILE PROJECTS
+       ===================================================== */
 
     .projects-page {
         padding:
@@ -3056,6 +2998,7 @@ body.page-menu-open .page-menu {
 
     .project-status {
         top: 25px;
+
         right: 25px;
     }
 
@@ -3066,133 +3009,11 @@ body.page-menu-open .page-menu {
     .error-code {
         letter-spacing: -6px;
     }
-
-}
-/* =========================================================
-   PAGES BUTTON
-   ========================================================= */
-
-#pagesButton,
-.page-menu-button {
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-
-    z-index: 99999 !important;
-
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    cursor: pointer;
-
-    padding: 10px 15px;
-
-    background: #000;
-    color: #fff;
-
-    border: 1px solid #fff;
-
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: bold;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
-}
-
-#pagesButton:hover,
-.page-menu-button:hover,
-#pagesButton.active,
-.page-menu-button.active {
-    background: #fff;
-    color: #000;
-}
-
-.page-menu-button-icon {
-    font-size: 18px;
-    line-height: 1;
 }
 
 
 /* =========================================================
-   PAGES MENU
-   ========================================================= */
-
-#pagesDrawer,
-.page-menu {
-    position: fixed !important;
-
-    top: 70px !important;
-    right: 20px !important;
-
-    z-index: 99998 !important;
-
-    display: none;
-
-    min-width: 180px;
-
-    background: #000;
-    color: #fff;
-
-    border: 1px solid #fff;
-}
-
-#pagesDrawer.open,
-.page-menu.open {
-    display: block !important;
-}
-
-.page-menu-inner {
-    padding: 15px;
-}
-
-.page-menu-label {
-    margin-bottom: 10px;
-
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.page-menu-scroll {
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-.page-menu-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.page-menu-link {
-    display: block;
-
-    padding: 9px 10px;
-
-    color: #fff;
-    text-decoration: none;
-
-    border: 1px solid transparent;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.page-menu-link:hover {
-    background: #fff;
-    color: #000;
-    border-color: #fff;
-}
-
-
-/* =========================================================
-   MOBILE
+   SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
@@ -3200,14 +3021,130 @@ body.page-menu-open .page-menu {
     #pagesButton,
     .page-menu-button {
         top: 12px !important;
+
         right: 12px !important;
     }
 
-    #pagesDrawer,
-    .page-menu {
-        top: 60px !important;
-        right: 12px !important;
-
-        max-width: calc(100vw - 24px);
+    #pagesDrawer {
+        max-width: none;
     }
 }
+
+
+/* =========================================================
+   PAGES DRAWER — FINAL COMPATIBILITY OVERRIDES
+   =========================================================
+
+   IMPORTANT:
+   - Does NOT use display:none.
+   - Keeps the original slide-down animation.
+   - #pagesDrawer and .page-menu behave identically.
+   - #pagesDrawer.open opens the drawer.
+   - body.page-menu-open opens the drawer.
+   ========================================================= */
+
+#pagesDrawer {
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: center;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transition:
+        height 0.45s
+            cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            ),
+        opacity 0.2s ease,
+        visibility 0s linear 0.45s;
+}
+
+body.page-menu-open #pagesDrawer,
+#pagesDrawer.open {
+    visibility: visible;
+
+    pointer-events: auto;
+
+    opacity: 1;
+
+    transition:
+        height 0.45s
+            cubic-bezier(
+                0.22,
+                1,
+                0.36,
+                1
+            ),
+        opacity 0.2s ease,
+        visibility 0s linear 0s;
+}
+
+#pagesDrawer .page-menu-inner {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL SAFETY OVERRIDES
+   ========================================================= */
+
+#pagesButton {
+    appearance: none;
+    -webkit-appearance: none;
+
+    text-decoration: none;
+
+    outline: none;
+}
+
+#pagesButton:focus-visible,
+.page-menu-button:focus-visible {
+    outline:
+        2px solid
+        rgba(255, 36, 36, 0.7);
+
+    outline-offset: 3px;
+}
+
+.page-menu-link:focus-visible {
+    outline:
+        2px solid
+        rgba(255, 36, 36, 0.7);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   END — BACOTHN FULL CSS
+   ========================================================= */
