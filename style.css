@@ -3068,3 +3068,146 @@ body.page-menu-open .page-menu {
     }
 
 }
+/* =========================================================
+   PAGES BUTTON
+   ========================================================= */
+
+#pagesButton,
+.page-menu-button {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+
+    z-index: 99999 !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    cursor: pointer;
+
+    padding: 10px 15px;
+
+    background: #000;
+    color: #fff;
+
+    border: 1px solid #fff;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+#pagesButton:hover,
+.page-menu-button:hover,
+#pagesButton.active,
+.page-menu-button.active {
+    background: #fff;
+    color: #000;
+}
+
+.page-menu-button-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   PAGES MENU
+   ========================================================= */
+
+#pagesDrawer,
+.page-menu {
+    position: fixed !important;
+
+    top: 70px !important;
+    right: 20px !important;
+
+    z-index: 99998 !important;
+
+    display: none;
+
+    min-width: 180px;
+
+    background: #000;
+    color: #fff;
+
+    border: 1px solid #fff;
+}
+
+#pagesDrawer.open,
+.page-menu.open {
+    display: block !important;
+}
+
+.page-menu-inner {
+    padding: 15px;
+}
+
+.page-menu-label {
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.page-menu-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.page-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.page-menu-link {
+    display: block;
+
+    padding: 9px 10px;
+
+    color: #fff;
+    text-decoration: none;
+
+    border: 1px solid transparent;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.page-menu-link:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    #pagesButton,
+    .page-menu-button {
+        top: 12px !important;
+        right: 12px !important;
+    }
+
+    #pagesDrawer,
+    .page-menu {
+        top: 60px !important;
+        right: 12px !important;
+
+        max-width: calc(100vw - 24px);
+    }
+}
