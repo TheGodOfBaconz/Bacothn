@@ -1,710 +1,258 @@
 /* =========================================================
-   BACOTHN SITE SCRIPT
-   ========================================================= */
-
-
-/* =========================================================
    BACOTHN TITLE GLITCH
    ========================================================= */
 
 const word = "BACOTHN";
-
-const glitchCharacters = [
-    "$",
-    "%",
-    "#",
-    "&",
-    "¥",
-    "£",
-    "€",
-    "@",
-    "⃁",
-    "!"
-];
-
-const totalAnimationTime = 2000;
-
-const stepTime =
-    totalAnimationTime / word.length;
-
-const title =
-    document.getElementById(
-        "bacothn-title"
-    );
-
+const glitchCharacters = ["$", "%", "#", "&", "¥", "£", "€", "@", "!", "?"];
+const title = document.getElementById("bacothn-title");
 
 function randomCharacter() {
-
-    return glitchCharacters[
-        Math.floor(
-            Math.random() *
-            glitchCharacters.length
-        )
-    ];
-
+    return glitchCharacters[Math.floor(Math.random() * glitchCharacters.length)];
 }
 
-
-function createScrambledText(
-    resolvedCount
-) {
-
+function createScrambledText(resolvedCount) {
     let result = "";
 
-    for (
-        let i = 0;
-        i < word.length;
-        i++
-    ) {
-
-        if (
-            i < resolvedCount
-        ) {
-
-            result += word[i];
-
-        } else {
-
-            result += randomCharacter();
-
-        }
-
+    for (let i = 0; i < word.length; i++) {
+        result += i < resolvedCount ? word[i] : randomCharacter();
     }
 
     return result;
-
 }
-
 
 async function animateTitle() {
+    if (!title) return;
 
-    if (!title) {
-        return;
-    }
+    const stepTime = 2000 / word.length;
+    title.textContent = createScrambledText(0);
 
-    title.textContent =
-        createScrambledText(0);
+    for (let resolved = 0; resolved < word.length; resolved++) {
+        await new Promise(resolve => setTimeout(resolve, stepTime));
 
-    for (
-        let resolved = 0;
-        resolved < word.length;
-        resolved++
-    ) {
+        title.textContent = createScrambledText(resolved + 1);
 
-        await new Promise(
-            function(resolve) {
-
-                setTimeout(
-                    resolve,
-                    stepTime
-                );
-
-            }
-        );
-
-        title.textContent =
-            createScrambledText(
-                resolved + 1
-            );
-
-        title.classList.remove(
-            "glitch"
-        );
-
+        title.classList.remove("glitch");
         void title.offsetWidth;
-
-        title.classList.add(
-            "glitch"
-        );
-
+        title.classList.add("glitch");
     }
 
-    title.textContent =
-        word;
-
-    title.classList.remove(
-        "glitch"
-    );
-
+    title.textContent = word;
+    title.classList.remove("glitch");
 }
-
 
 animateTitle();
 
 
-
 /* =========================================================
-   PAGE MENU
+   PAGES MENU
    ========================================================= */
 
-const pageMenuPages = [
-    {
-        name: "HOME",
-        url: "index.html"
-    },
-
-    {
-        name: "PROFILE",
-        url: "profile.html"
-    },
-
-    {
-        name: "ABOUT",
-        url: "about.html"
-    },
-
-    {
-        name: "PROJECTS",
-        url: "projects.html"
-    },
-
-    {
-        name: "LINKS",
-        url: "links.html"
-    },
-
-    {
-        name: "GIF CREATOR",
-        url: "gif-creator.html"
-    }
+const pages = [
+    { name: "HOME", file: "index.html" },
+    { name: "PROFILE", file: "profile.html" },
+    { name: "ABOUT", file: "about.html" },
+    { name: "PROJECTS", file: "projects.html" },
+    { name: "LINKS", file: "links.html" },
+    { name: "ERROR", file: "error.html" }
 ];
 
-
 function getCurrentPage() {
+    let page = window.location.pathname.split("/").pop().toLowerCase();
 
-    let current =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-
-    if (!current) {
-        current = "index.html";
+    // GitHub Pages root = index.html
+    if (!page || page === "") {
+        page = "index.html";
     }
 
-    return current;
-
+    return page;
 }
 
+function setupPagesMenu() {
+    /*
+     * Create the button if it doesn't already exist.
+     * This makes it appear on index.html and every other page.
+     */
+    let button = document.getElementById("pagesButton");
 
-function getPageButton() {
+    if (!button) {
+        button = document.createElement("button");
+
+        button.id = "pagesButton";
+        button.className = "page-menu-button";
+        button.type = "button";
+
+        button.innerHTML = `
+            <span class="page-menu-button-icon">☰</span>
+            <span>PAGES</span>
+        `;
+
+        document.body.appendChild(button);
+    }
 
     /*
-        First use the button already written
-        inside the HTML.
+     * Create the menu if it doesn't already exist.
+     */
+    let menu = document.getElementById("pagesDrawer");
 
-        This prevents script.js from creating
-        duplicate buttons.
-    */
+    if (!menu) {
+        menu = document.createElement("div");
 
-    const existing =
-        document.getElementById(
-            "pagesButton"
-        );
+        menu.id = "pagesDrawer";
+        menu.className = "page-menu";
 
-    if (existing) {
-        return existing;
+        menu.innerHTML = `
+            <div class="page-menu-inner">
+                <div class="page-menu-label">PAGES</div>
+                <div class="page-menu-scroll">
+                    <div class="page-menu-list"></div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(menu);
     }
 
+    const list = menu.querySelector(".page-menu-list");
+    const currentPage = getCurrentPage();
 
     /*
-        Compatibility with older pages.
-    */
-
-    const oldButton =
-        document.getElementById(
-            "page-menu-button"
-        );
-
-    if (oldButton) {
-        return oldButton;
-    }
-
-
-    return null;
-
-}
-
-
-function getPageDrawer() {
-
-    const existing =
-        document.getElementById(
-            "pagesDrawer"
-        );
-
-    if (existing) {
-        return existing;
-    }
-
-
-    const oldDrawer =
-        document.getElementById(
-            "page-menu"
-        );
-
-    if (oldDrawer) {
-        return oldDrawer;
-    }
-
-
-    return null;
-
-}
-
-
-function setupPageMenu() {
-
-    const button =
-        getPageButton();
-
-    const drawer =
-        getPageDrawer();
-
-
-    /*
-        If this page doesn't have the menu,
-        don't break the rest of the site.
-    */
-
-    if (
-        !button ||
-        !drawer
-    ) {
-
-        return;
-
-    }
-
-
-    const currentPage =
-        getCurrentPage();
-
-
-    const list =
-        drawer.querySelector(
-            "#pagesList, .page-menu-list"
-        );
-
-
-    if (!list) {
-        return;
-    }
-
-
-    /*
-        Clear dynamically-created links.
-
-        This is safe because the navigation is
-        controlled by this script.
-    */
-
+     * IMPORTANT:
+     * Clear the menu before rebuilding it.
+     * This prevents duplicate pages.
+     */
     list.innerHTML = "";
 
-
-    pageMenuPages.forEach(
-        function(page) {
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-            link.className =
-                "page-menu-link";
-
-            link.href =
-                page.url;
-
-            link.textContent =
-                page.name;
-
-
-            if (
-                page.url.toLowerCase() ===
-                currentPage
-            ) {
-
-                link.classList.add(
-                    "current"
-                );
-
-            }
-
-
-            list.appendChild(
-                link
-            );
-
-        }
-    );
-
-
     /*
-        Remove old event handlers by cloning
-        the button.
-
-        This prevents multiple listeners if
-        the script is loaded more than once.
-    */
-
-    const cleanButton =
-        button.cloneNode(true);
-
-    button.replaceWith(
-        cleanButton
-    );
-
-
-    let menuOpen =
-        false;
-
-
-    function setButton(
-        open
-    ) {
-
-        if (open) {
-
-            cleanButton.innerHTML = `
-                <span class="page-menu-button-icon">
-                    ×
-                </span>
-
-                <span>
-                    CLOSE
-                </span>
-            `;
-
-        } else {
-
-            cleanButton.innerHTML = `
-                <span class="page-menu-button-icon">
-                    ☰
-                </span>
-
-                <span>
-                    PAGES
-                </span>
-            `;
-
+     * Add every HTML page EXCEPT the one currently open.
+     */
+    pages.forEach(page => {
+        if (page.file.toLowerCase() === currentPage) {
+            return;
         }
 
-    }
+        const link = document.createElement("a");
 
+        link.className = "page-menu-link";
+        link.href = page.file;
+        link.textContent = page.name;
+
+        list.appendChild(link);
+    });
+
+    let menuOpen = false;
 
     function openMenu() {
-
         menuOpen = true;
 
-        drawer.classList.add(
-            "open"
-        );
+        menu.classList.add("open");
+        button.classList.add("active");
 
-        document.body.classList.add(
-            "page-menu-open"
-        );
+        button.setAttribute("aria-expanded", "true");
+        menu.setAttribute("aria-hidden", "false");
 
-        cleanButton.classList.add(
-            "active"
-        );
-
-        setButton(true);
-
+        button.innerHTML = `
+            <span class="page-menu-button-icon">×</span>
+            <span>CLOSE</span>
+        `;
     }
-
 
     function closeMenu() {
-
         menuOpen = false;
 
-        drawer.classList.remove(
-            "open"
-        );
+        menu.classList.remove("open");
+        button.classList.remove("active");
 
-        document.body.classList.remove(
-            "page-menu-open"
-        );
+        button.setAttribute("aria-expanded", "false");
+        menu.setAttribute("aria-hidden", "true");
 
-        cleanButton.classList.remove(
-            "active"
-        );
-
-        setButton(false);
-
+        button.innerHTML = `
+            <span class="page-menu-button-icon">☰</span>
+            <span>PAGES</span>
+        `;
     }
 
-
-    cleanButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-            if (menuOpen) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Escape" &&
-                menuOpen
-            ) {
-
-                closeMenu();
-
-            }
-
-        }
-    );
-
-
     /*
-        Clicking outside the drawer closes it.
-    */
+     * Prevent multiple click handlers from being added.
+     */
+    button.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-    document.addEventListener(
-        "click",
-        function(event) {
-
-            if (!menuOpen) {
-                return;
-            }
-
-
-            if (
-                cleanButton.contains(
-                    event.target
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                drawer.contains(
-                    event.target
-                )
-            ) {
-
-                return;
-
-            }
-
-
+        if (menuOpen) {
             closeMenu();
-
+        } else {
+            openMenu();
         }
-    );
-
+    };
 
     /*
-        Drag scrolling for the menu.
-    */
+     * Don't let clicking inside the menu immediately close it.
+     */
+    menu.onclick = function(event) {
+        event.stopPropagation();
+    };
 
-    const scrollArea =
-        drawer.querySelector(
-            ".page-menu-scroll"
-        );
+    /*
+     * Close when clicking outside.
+     */
+    document.addEventListener("click", function(event) {
+        if (!menuOpen) return;
 
-
-    if (scrollArea) {
-
-        let dragging = false;
-
-        let startX = 0;
-
-        let startScroll = 0;
-
-
-        scrollArea.addEventListener(
-            "pointerdown",
-            function(event) {
-
-                dragging = true;
-
-                startX =
-                    event.clientX;
-
-                startScroll =
-                    scrollArea.scrollLeft;
-
-                scrollArea.classList.add(
-                    "dragging"
-                );
-
-
-                try {
-
-                    scrollArea.setPointerCapture(
-                        event.pointerId
-                    );
-
-                } catch (error) {}
-
-            }
-        );
-
-
-        scrollArea.addEventListener(
-            "pointermove",
-            function(event) {
-
-                if (!dragging) {
-                    return;
-                }
-
-
-                const distance =
-                    event.clientX -
-                    startX;
-
-
-                scrollArea.scrollLeft =
-                    startScroll -
-                    distance;
-
-            }
-        );
-
-
-        function stopDragging() {
-
-            dragging = false;
-
-            scrollArea.classList.remove(
-                "dragging"
-            );
-
+        if (
+            !button.contains(event.target) &&
+            !menu.contains(event.target)
+        ) {
+            closeMenu();
         }
+    });
 
-
-        scrollArea.addEventListener(
-            "pointerup",
-            stopDragging
-        );
-
-
-        scrollArea.addEventListener(
-            "pointercancel",
-            stopDragging
-        );
-
-    }
-
+    /*
+     * ESC closes the menu.
+     */
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && menuOpen) {
+            closeMenu();
+        }
+    });
 }
 
-
-setupPageMenu();
-
+setupPagesMenu();
 
 
 /* =========================================================
    COPY BUTTONS
    ========================================================= */
 
-const copyButtons =
-    document.querySelectorAll(
-        ".copy-button"
-    );
+document.querySelectorAll(".copy-button").forEach(button => {
+    button.addEventListener("click", async () => {
+        const text = button.dataset.copy;
 
+        if (!text) return;
 
-copyButtons.forEach(
-    function(button) {
+        const original = button.textContent;
 
-        button.addEventListener(
-            "click",
-            async function() {
+        try {
+            await navigator.clipboard.writeText(text);
 
-                const text =
-                    button.dataset.copy;
+            button.textContent = "Copied!";
+            button.classList.add("copied");
+        } catch (error) {
+            button.textContent = "Copy failed";
+        }
 
-
-                if (!text) {
-                    return;
-                }
-
-
-                const original =
-                    button.textContent;
-
-
-                try {
-
-                    await navigator
-                        .clipboard
-                        .writeText(text);
-
-
-                    button.textContent =
-                        "Copied!";
-
-                    button.classList.add(
-                        "copied"
-                    );
-
-
-                    setTimeout(
-                        function() {
-
-                            button.textContent =
-                                original;
-
-                            button.classList.remove(
-                                "copied"
-                            );
-
-                        },
-                        1500
-                    );
-
-
-                } catch (error) {
-
-                    button.textContent =
-                        "Copy failed";
-
-
-                    setTimeout(
-                        function() {
-
-                            button.textContent =
-                                original;
-
-                        },
-                        1500
-                    );
-
-                }
-
-            }
-        );
-
-    }
-);
-
+        setTimeout(() => {
+            button.textContent = original;
+            button.classList.remove("copied");
+        }, 1500);
+    });
+});
 
 
 /* =========================================================
    FALLING PROFILE WORDS
    ========================================================= */
 
-const fallingBackground =
-    document.getElementById(
-        "falling-background"
-    );
-
+const fallingBackground = document.getElementById("falling-background");
 
 const fallingWords = [
     "Bacothn",
@@ -712,228 +260,104 @@ const fallingWords = [
     "GOD"
 ];
 
-
-const totalFallingWords = 20;
-
-
-function randomFallingWord() {
-
-    return fallingWords[
-        Math.floor(
-            Math.random() *
-            fallingWords.length
-        )
-    ];
-
-}
-
-
 function createFallingWord() {
+    if (!fallingBackground) return;
 
-    if (!fallingBackground) {
-        return;
-    }
+    const element = document.createElement("span");
 
-
-    const element =
-        document.createElement(
-            "span"
-        );
-
-
-    element.className =
-        "falling-word";
-
-
+    element.className = "falling-word";
     element.textContent =
-        randomFallingWord();
+        fallingWords[Math.floor(Math.random() * fallingWords.length)];
 
+    element.style.left = Math.random() * 100 + "%";
 
-    element.style.left =
-        (
-            Math.random() * 100
-        ) + "%";
-
-
-    const duration =
-        7 +
-        Math.random() * 9;
-
+    const duration = 7 + Math.random() * 9;
 
     element.style.fontSize =
-        (
-            10 +
-            Math.random() * 16
-        ) + "px";
-
+        10 + Math.random() * 16 + "px";
 
     element.style.animationDuration =
         duration + "s";
 
-
     element.style.animationDelay =
-        (
-            -(Math.random() * duration)
-        ) + "s";
-
+        -(Math.random() * duration) + "s";
 
     element.style.setProperty(
         "--rotation",
-        (
-            -12 +
-            Math.random() * 24
-        ) + "deg"
+        -12 + Math.random() * 24 + "deg"
     );
 
+    fallingBackground.appendChild(element);
 
-    fallingBackground.appendChild(
-        element
-    );
-
-
-    element.addEventListener(
-        "animationend",
-        function() {
-
-            element.remove();
-
-            createFallingWord();
-
-        }
-    );
-
+    element.addEventListener("animationend", () => {
+        element.remove();
+        createFallingWord();
+    });
 }
-
 
 if (fallingBackground) {
-
-    for (
-        let i = 0;
-        i < totalFallingWords;
-        i++
-    ) {
-
+    for (let i = 0; i < 20; i++) {
         createFallingWord();
-
     }
-
 }
-
 
 
 /* =========================================================
    PROFILE MUSIC
    ========================================================= */
 
-const music =
-    document.getElementById(
-        "profile-music"
-    );
+const music = document.getElementById("profile-music");
+const musicButton = document.getElementById("music-button");
+const musicStatus = document.getElementById("music-status");
 
+if (music && musicButton) {
 
-const musicButton =
-    document.getElementById(
-        "music-button"
-    );
+    musicButton.addEventListener("click", async () => {
 
+        if (music.paused) {
 
-const musicStatus =
-    document.getElementById(
-        "music-status"
-    );
+            try {
+                await music.play();
 
-
-if (
-    music &&
-    musicButton
-) {
-
-    musicButton.addEventListener(
-        "click",
-        async function() {
-
-            if (music.paused) {
-
-                try {
-
-                    await music.play();
-
-                    musicButton.textContent =
-                        "Ⅱ PAUSE MUSIC";
-
-
-                    if (musicStatus) {
-
-                        musicStatus.textContent =
-                            "playing...";
-
-                    }
-
-
-                } catch (error) {
-
-                    musicButton.textContent =
-                        "MUSIC UNAVAILABLE";
-
-
-                    if (musicStatus) {
-
-                        musicStatus.textContent =
-                            "check the music file";
-
-                    }
-
-                }
-
-
-            } else {
-
-                music.pause();
-
-                musicButton.textContent =
-                    "▶ PLAY MUSIC";
-
+                musicButton.textContent = "Ⅱ PAUSE MUSIC";
 
                 if (musicStatus) {
-
-                    musicStatus.textContent =
-                        "paused";
-
+                    musicStatus.textContent = "playing...";
                 }
 
+            } catch (error) {
+
+                musicButton.textContent = "MUSIC UNAVAILABLE";
+
+                if (musicStatus) {
+                    musicStatus.textContent = "check the music file";
+                }
             }
 
+        } else {
+
+            music.pause();
+
+            musicButton.textContent = "▶ PLAY MUSIC";
+
+            if (musicStatus) {
+                musicStatus.textContent = "paused";
+            }
         }
-    );
+    });
 
-
-    music.addEventListener(
-        "ended",
-        function() {
-
-            musicButton.textContent =
-                "▶ PLAY MUSIC";
-
-        }
-    );
-
+    music.addEventListener("ended", () => {
+        musicButton.textContent = "▶ PLAY MUSIC";
+    });
 }
-
 
 
 /* =========================================================
    FOOTER YEAR
    ========================================================= */
 
-const yearElement =
-    document.getElementById(
-        "year"
-    );
-
+const yearElement = document.getElementById("year");
 
 if (yearElement) {
-
-    yearElement.textContent =
-        new Date().getFullYear();
-
+    yearElement.textContent = new Date().getFullYear();
 }
