@@ -1,370 +1,397 @@
 /* =========================================================
-   BACOTHN TITLE GLITCH
-========================================================= */
+   BACOTHN — MAIN SITE SCRIPT
+   ========================================================= */
 
-const word = "BACOTHN";
+(() => {
+    "use strict";
 
-const glitchCharacters = [
-    "$", "%", "#", "&", "¥",
-    "£", "€", "@", "!", "?"
-];
+    /* =====================================================
+       CONFIGURATION
+    ===================================================== */
 
-const title =
-    document.getElementById("bacothn-title");
+    const CONFIG = {
+        title: {
+            word: "BACOTHN",
+            duration: 2000,
+            characters: [
+                "$",
+                "%",
+                "#",
+                "&",
+                "¥",
+                "£",
+                "€",
+                "@",
+                "!",
+                "?"
+            ]
+        },
+
+        pages: [
+            {
+                name: "HOME",
+                file: "index.html"
+            },
+            {
+                name: "PROFILE",
+                file: "profile.html"
+            },
+            {
+                name: "ABOUT",
+                file: "about.html"
+            },
+            {
+                name: "PROJECTS",
+                file: "projects.html"
+            },
+            {
+                name: "LINKS",
+                file: "links.html"
+            },
+            {
+                name: "ERROR",
+                file: "error.html"
+            }
+        ],
+
+        fallingWords: [
+            "Bacothn",
+            "Bacon",
+            "GOD"
+        ],
+
+        fallingWordCount: 20
+    };
 
 
-function randomCharacter() {
+    /* =====================================================
+       UTILITIES
+    ===================================================== */
 
-    return glitchCharacters[
-        Math.floor(
-            Math.random() *
-            glitchCharacters.length
-        )
-    ];
-
-}
+    const $ = (selector, parent = document) =>
+        parent.querySelector(selector);
 
 
-function createScrambledText(
-    resolvedCount
-) {
-
-    let result = "";
-
-    for (
-        let i = 0;
-        i < word.length;
-        i++
-    ) {
-
-        result +=
-            i < resolvedCount
-                ? word[i]
-                : randomCharacter();
-
-    }
-
-    return result;
-
-}
+    const $$ = (selector, parent = document) =>
+        Array.from(parent.querySelectorAll(selector));
 
 
-async function animateTitle() {
-
-    if (!title) return;
-
-    const stepTime =
-        2000 / word.length;
-
-    title.textContent =
-        createScrambledText(0);
-
-
-    for (
-        let resolved = 0;
-        resolved < word.length;
-        resolved++
-    ) {
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    stepTime
-                )
+    const sleep = (milliseconds) =>
+        new Promise(resolve =>
+            setTimeout(resolve, milliseconds)
         );
 
 
-        title.textContent =
-            createScrambledText(
-                resolved + 1
-            );
+    const random = (min, max) =>
+        Math.random() * (max - min) + min;
 
 
-        title.classList.remove(
-            "glitch"
-        );
-
-        void title.offsetWidth;
-
-        title.classList.add(
-            "glitch"
-        );
-
-    }
+    const randomItem = (array) =>
+        array[Math.floor(Math.random() * array.length)];
 
 
-    title.textContent =
-        word;
+    /* =====================================================
+       BACOTHN TITLE GLITCH
+    ===================================================== */
 
-    title.classList.remove(
-        "glitch"
-    );
+    function setupTitleGlitch() {
 
-}
+        const title = $("#bacothn-title");
 
-
-animateTitle();
-
-
-/* =========================================================
-   PAGES MENU
-========================================================= */
-
-/*
-    These are the site's actual pages.
-
-    The current page is automatically removed
-    from the menu.
-*/
-
-const pages = [
-
-    {
-        name: "HOME",
-        file: "index.html"
-    },
-
-    {
-        name: "PROFILE",
-        file: "profile.html"
-    },
-
-    {
-        name: "ABOUT",
-        file: "about.html"
-    },
-
-    {
-        name: "PROJECTS",
-        file: "projects.html"
-    },
-
-    {
-        name: "LINKS",
-        file: "links.html"
-    },
-
-    {
-        name: "ERROR",
-        file: "error.html"
-    }
-
-];
+        if (!title) {
+            return;
+        }
 
 
-/* =========================================================
-   CURRENT PAGE
-========================================================= */
-
-function getCurrentPage() {
-
-    let path =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
+        const {
+            word,
+            duration,
+            characters
+        } = CONFIG.title;
 
 
-    /*
-        GitHub Pages root:
+        const randomCharacter = () =>
+            randomItem(characters);
 
-        /Bacothn/
 
-        has no filename, so it is index.html.
-    */
+        const createScrambledText = (resolvedCount) => {
 
-    if (
-        !path ||
-        path === ""
-    ) {
+            let result = "";
 
-        return "index.html";
+            for (
+                let index = 0;
+                index < word.length;
+                index++
+            ) {
+
+                result +=
+                    index < resolvedCount
+                        ? word[index]
+                        : randomCharacter();
+
+            }
+
+            return result;
+
+        };
+
+
+        const animateTitle = async () => {
+
+            title.textContent =
+                createScrambledText(0);
+
+
+            const stepTime =
+                duration / word.length;
+
+
+            for (
+                let resolved = 0;
+                resolved < word.length;
+                resolved++
+            ) {
+
+                await sleep(stepTime);
+
+
+                title.textContent =
+                    createScrambledText(
+                        resolved + 1
+                    );
+
+
+                title.classList.remove("glitch");
+
+
+                /*
+                    Force a reflow so the glitch
+                    animation can restart correctly.
+                */
+
+                void title.offsetWidth;
+
+
+                title.classList.add("glitch");
+
+            }
+
+
+            title.textContent = word;
+
+            title.classList.remove("glitch");
+
+        };
+
+
+        animateTitle();
 
     }
 
 
-    return path;
+    /* =====================================================
+       PAGE DETECTION
+    ===================================================== */
 
-}
+    function getCurrentPage() {
+
+        const path =
+            window.location.pathname
+                .split("/")
+                .filter(Boolean)
+                .pop()
+                ?.toLowerCase();
 
 
-/* =========================================================
-   CREATE PAGES BUTTON
-========================================================= */
+        if (!path) {
+            return "index.html";
+        }
 
-function createPagesButton() {
 
-    let button =
-        document.getElementById(
-            "pagesButton"
+        /*
+            GitHub Pages can sometimes expose
+            paths without the .html extension.
+        */
+
+        if (
+            path.endsWith(".html")
+        ) {
+            return path;
+        }
+
+
+        if (
+            path === "bacothn"
+        ) {
+            return "index.html";
+        }
+
+
+        return path;
+
+    }
+
+
+    /* =====================================================
+       PAGES BUTTON
+    ===================================================== */
+
+    function createPagesButton() {
+
+        let button =
+            $("#pagesButton");
+
+
+        if (button) {
+            return button;
+        }
+
+
+        button =
+            document.createElement("button");
+
+
+        button.id = "pagesButton";
+
+        button.className =
+            "page-menu-button";
+
+
+        button.type = "button";
+
+
+        button.setAttribute(
+            "aria-label",
+            "Open pages menu"
         );
 
 
-    if (button) {
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        button.innerHTML = `
+            <span
+                class="page-menu-button-icon"
+                aria-hidden="true"
+            >+</span>
+
+            <span>PAGES</span>
+        `;
+
+
+        document.body.appendChild(button);
+
 
         return button;
 
     }
 
 
-    button =
-        document.createElement(
-            "button"
+    /* =====================================================
+       PAGES DRAWER
+    ===================================================== */
+
+    function createPagesMenu() {
+
+        let menu =
+            $("#pagesDrawer");
+
+
+        if (menu) {
+
+            /*
+                Ensure the expected class exists
+                even when HTML already supplied it.
+            */
+
+            menu.classList.add("page-menu");
+
+            return menu;
+
+        }
+
+
+        menu =
+            document.createElement("div");
+
+
+        menu.id = "pagesDrawer";
+
+        menu.className =
+            "page-menu";
+
+
+        menu.setAttribute(
+            "aria-hidden",
+            "true"
         );
 
 
-    button.id =
-        "pagesButton";
+        menu.innerHTML = `
+            <div class="page-menu-inner">
 
-    button.className =
-        "page-menu-button";
+                <div class="page-menu-label">
+                    PAGES
+                </div>
 
-    button.type =
-        "button";
+                <div
+                    class="page-menu-scroll"
+                    role="region"
+                    aria-label="Site pages"
+                    tabindex="0"
+                >
+                    <div class="page-menu-list"></div>
+                </div>
 
-
-    button.setAttribute(
-        "aria-label",
-        "Open pages menu"
-    );
-
-
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
+            </div>
+        `;
 
 
-    button.innerHTML = `
-        <span class="page-menu-button-icon">
-            +
-        </span>
+        document.body.appendChild(menu);
 
-        <span>
-            PAGES
-        </span>
-    `;
-
-
-    document.body.appendChild(
-        button
-    );
-
-
-    return button;
-
-}
-
-
-/* =========================================================
-   CREATE PAGES MENU
-========================================================= */
-
-function createPagesMenu() {
-
-    let menu =
-        document.getElementById(
-            "pagesDrawer"
-        );
-
-
-    if (menu) {
 
         return menu;
 
     }
 
 
-    menu =
-        document.createElement(
-            "div"
-        );
+    /* =====================================================
+       BUILD PAGE LINKS
+    ===================================================== */
+
+    function buildPagesList(menu) {
+
+        const list =
+            $(".page-menu-list", menu);
 
 
-    menu.id =
-        "pagesDrawer";
-
-    menu.className =
-        "page-menu";
+        if (!list) {
+            return;
+        }
 
 
-    menu.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+        list.replaceChildren();
 
 
-    menu.innerHTML = `
-
-        <div class="page-menu-inner">
-
-            <div class="page-menu-label">
-                PAGES
-            </div>
-
-            <div class="page-menu-list">
-            </div>
-
-        </div>
-
-    `;
+        const currentPage =
+            getCurrentPage();
 
 
-    document.body.appendChild(
-        menu
-    );
-
-
-    return menu;
-
-}
-
-
-/* =========================================================
-   BUILD PAGES
-========================================================= */
-
-function buildPagesList(menu) {
-
-    const list =
-        menu.querySelector(
-            ".page-menu-list"
-        );
-
-
-    if (!list) return;
-
-
-    list.innerHTML = "";
-
-
-    const currentPage =
-        getCurrentPage();
-
-
-    pages.forEach(
-        function(page) {
-
-            /*
-                NEVER show the page
-                we're currently on.
-            */
+        CONFIG.pages.forEach(page => {
 
             if (
                 page.file.toLowerCase() ===
                 currentPage
             ) {
-
                 return;
-
             }
 
 
             const link =
-                document.createElement(
-                    "a"
-                );
+                document.createElement("a");
 
 
             link.className =
@@ -379,558 +406,750 @@ function buildPagesList(menu) {
                 page.name;
 
 
-            list.appendChild(
-                link
+            list.appendChild(link);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       PAGE MENU STATE
+    ===================================================== */
+
+    function setupPagesMenu() {
+
+        const button =
+            createPagesButton();
+
+
+        const menu =
+            createPagesMenu();
+
+
+        buildPagesList(menu);
+
+
+        let open = false;
+
+
+        const setButtonState = (isOpen) => {
+
+            button.classList.toggle(
+                "active",
+                isOpen
+            );
+
+
+            button.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
+
+            button.setAttribute(
+                "aria-label",
+                isOpen
+                    ? "Close pages menu"
+                    : "Open pages menu"
+            );
+
+
+            button.innerHTML = isOpen
+                ? `
+                    <span
+                        class="page-menu-button-icon"
+                        aria-hidden="true"
+                    >×</span>
+
+                    <span>CLOSE</span>
+                `
+                : `
+                    <span
+                        class="page-menu-button-icon"
+                        aria-hidden="true"
+                    >+</span>
+
+                    <span>PAGES</span>
+                `;
+
+        };
+
+
+        const updateState = (isOpen) => {
+
+            open = isOpen;
+
+
+            menu.classList.toggle(
+                "open",
+                isOpen
+            );
+
+
+            document.body.classList.toggle(
+                "page-menu-open",
+                isOpen
+            );
+
+
+            menu.setAttribute(
+                "aria-hidden",
+                String(!isOpen)
+            );
+
+
+            setButtonState(isOpen);
+
+        };
+
+
+        const openMenu = () =>
+            updateState(true);
+
+
+        const closeMenu = () =>
+            updateState(false);
+
+
+        const toggleMenu = () =>
+            updateState(!open);
+
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                toggleMenu();
+
+            }
+        );
+
+
+        menu.addEventListener(
+            "click",
+            event => {
+
+                /*
+                    Allow actual page links to navigate.
+                */
+
+                if (
+                    event.target.closest(
+                        ".page-menu-link"
+                    )
+                ) {
+                    return;
+                }
+
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (!open) {
+                    return;
+                }
+
+
+                if (
+                    button.contains(event.target) ||
+                    menu.contains(event.target)
+                ) {
+                    return;
+                }
+
+
+                closeMenu();
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape" &&
+                    open
+                ) {
+
+                    closeMenu();
+
+                    button.focus();
+
+                }
+
+            }
+        );
+
+
+        /*
+            Close the drawer after navigation begins.
+        */
+
+        $$(".page-menu-link", menu)
+            .forEach(link => {
+
+                link.addEventListener(
+                    "click",
+                    () => closeMenu()
+                );
+
+            });
+
+
+        /*
+            Correct initial state.
+        */
+
+        updateState(false);
+
+    }
+
+
+    /* =====================================================
+       COPY BUTTONS
+    ===================================================== */
+
+    async function copyText(text) {
+
+        if (!text) {
+            throw new Error(
+                "Nothing to copy."
+            );
+        }
+
+
+        /*
+            Modern Clipboard API.
+        */
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(text);
+
+            return;
+
+        }
+
+
+        /*
+            Fallback for browsers/environments
+            where Clipboard API isn't available.
+        */
+
+        const textarea =
+            document.createElement("textarea");
+
+
+        textarea.value = text;
+
+        textarea.setAttribute(
+            "readonly",
+            ""
+        );
+
+
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        textarea.style.pointerEvents = "none";
+
+
+        document.body.appendChild(textarea);
+
+
+        textarea.select();
+
+
+        const successful =
+            document.execCommand("copy");
+
+
+        textarea.remove();
+
+
+        if (!successful) {
+
+            throw new Error(
+                "Copy operation failed."
             );
 
         }
-    );
-
-}
-
-
-/* =========================================================
-   SET BUTTON STATE
-========================================================= */
-
-function setPagesButtonState(
-    button,
-    open
-) {
-
-    button.classList.toggle(
-        "active",
-        open
-    );
-
-
-    button.setAttribute(
-        "aria-expanded",
-        String(open)
-    );
-
-
-    if (open) {
-
-        button.innerHTML = `
-
-            <span class="page-menu-button-icon">
-                ×
-            </span>
-
-            <span>
-                CLOSE
-            </span>
-
-        `;
-
-    } else {
-
-        button.innerHTML = `
-
-            <span class="page-menu-button-icon">
-                +
-            </span>
-
-            <span>
-                PAGES
-            </span>
-
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   PAGE MENU SETUP
-========================================================= */
-
-function setupPagesMenu() {
-
-    const button =
-        createPagesButton();
-
-
-    const menu =
-        createPagesMenu();
-
-
-    buildPagesList(
-        menu
-    );
-
-
-    let open =
-        false;
-
-
-    function openMenu() {
-
-        open = true;
-
-
-        menu.classList.add(
-            "open"
-        );
-
-
-        button.classList.add(
-            "active"
-        );
-
-
-        menu.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
-        setPagesButtonState(
-            button,
-            true
-        );
 
     }
 
 
-    function closeMenu() {
+    function setupCopyButtons() {
 
-        open = false;
+        $$(".copy-button")
+            .forEach(button => {
 
+                if (
+                    button.dataset.copyInitialized ===
+                    "true"
+                ) {
+                    return;
+                }
 
-        menu.classList.remove(
-            "open"
-        );
 
+                button.dataset.copyInitialized =
+                    "true";
 
-        button.classList.remove(
-            "active"
-        );
 
+                button.addEventListener(
+                    "click",
+                    async () => {
 
-        menu.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+                        const text =
+                            button.dataset.copy;
 
 
-        setPagesButtonState(
-            button,
-            false
-        );
+                        if (!text) {
+                            return;
+                        }
 
-    }
 
+                        if (
+                            button.dataset.copyBusy ===
+                            "true"
+                        ) {
+                            return;
+                        }
 
-    button.addEventListener(
-        "click",
-        function(event) {
 
-            event.preventDefault();
+                        button.dataset.copyBusy =
+                            "true";
 
-            event.stopPropagation();
 
+                        const original =
+                            button.textContent;
 
-            if (open) {
 
-                closeMenu();
+                        try {
 
-            } else {
+                            await copyText(text);
 
-                openMenu();
-
-            }
-
-        }
-    );
-
-
-    menu.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-        }
-    );
-
-
-    document.addEventListener(
-        "click",
-        function(event) {
-
-            if (!open) return;
-
-
-            if (
-                button.contains(
-                    event.target
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                menu.contains(
-                    event.target
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            closeMenu();
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Escape" &&
-                open
-            ) {
-
-                closeMenu();
-
-            }
-
-        }
-    );
-
-}
-
-
-/*
-    Run after the page exists.
-*/
-
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        setupPagesMenu
-    );
-
-} else {
-
-    setupPagesMenu();
-
-}
-
-
-/* =========================================================
-   COPY BUTTONS
-========================================================= */
-
-document
-    .querySelectorAll(
-        ".copy-button"
-    )
-    .forEach(
-        function(button) {
-
-            button.addEventListener(
-                "click",
-                async function() {
-
-                    const text =
-                        button.dataset.copy;
-
-
-                    if (!text) return;
-
-
-                    const original =
-                        button.textContent;
-
-
-                    try {
-
-                        await navigator
-                            .clipboard
-                            .writeText(
-                                text
-                            );
-
-
-                        button.textContent =
-                            "Copied!";
-
-
-                        button.classList.add(
-                            "copied"
-                        );
-
-
-                    } catch (error) {
-
-                        button.textContent =
-                            "Copy failed";
-
-                    }
-
-
-                    setTimeout(
-                        function() {
 
                             button.textContent =
-                                original;
+                                "Copied!";
 
 
-                            button.classList.remove(
+                            button.classList.add(
                                 "copied"
                             );
 
-                        },
-                        1500
-                    );
 
-                }
-            );
+                        } catch (error) {
 
-        }
-    );
+                            console.error(
+                                "BACOTHN copy error:",
+                                error
+                            );
 
 
-/* =========================================================
-   FALLING PROFILE WORDS
-========================================================= */
+                            button.textContent =
+                                "Copy failed";
 
-const fallingBackground =
-    document.getElementById(
-        "falling-background"
-    );
+                        }
 
 
-const fallingWords = [
-    "Bacothn",
-    "Bacon",
-    "GOD"
-];
+                        window.setTimeout(
+                            () => {
+
+                                button.textContent =
+                                    original;
 
 
-function createFallingWord() {
+                                button.classList.remove(
+                                    "copied"
+                                );
 
-    if (!fallingBackground) {
-        return;
+
+                                button.dataset.copyBusy =
+                                    "false";
+
+                            },
+                            1500
+                        );
+
+                    }
+                );
+
+            });
+
     }
 
 
-    const element =
-        document.createElement(
-            "span"
-        );
+    /* =====================================================
+       FALLING PROFILE WORDS
+    ===================================================== */
+
+    function setupFallingBackground() {
+
+        const background =
+            $("#falling-background");
 
 
-    element.className =
-        "falling-word";
+        if (!background) {
+            return;
+        }
 
 
-    element.textContent =
-        fallingWords[
-            Math.floor(
-                Math.random() *
-                fallingWords.length
-            )
-        ];
+        /*
+            Respect reduced-motion preferences.
+        */
+
+        const reducedMotion =
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
 
 
-    element.style.left =
-        Math.random() * 100 +
-        "%";
+        if (reducedMotion) {
+
+            background.replaceChildren();
+
+            return;
+
+        }
 
 
-    const duration =
-        7 +
-        Math.random() * 9;
+        let active = true;
 
 
-    element.style.fontSize =
-        10 +
-        Math.random() * 16 +
-        "px";
+        const createFallingWord = () => {
+
+            if (!active) {
+                return;
+            }
 
 
-    element.style.animationDuration =
-        duration +
-        "s";
+            const element =
+                document.createElement("span");
 
 
-    element.style.animationDelay =
-        -(Math.random() * duration) +
-        "s";
+            element.className =
+                "falling-word";
 
 
-    element.style.setProperty(
-        "--rotation",
-        -12 +
-        Math.random() * 24 +
-        "deg"
-    );
+            element.textContent =
+                randomItem(
+                    CONFIG.fallingWords
+                );
 
 
-    fallingBackground.appendChild(
-        element
-    );
+            element.style.left =
+                `${random(0, 100)}%`;
 
 
-    element.addEventListener(
-        "animationend",
-        function() {
+            const duration =
+                random(7, 16);
 
-            element.remove();
+
+            element.style.fontSize =
+                `${random(10, 26)}px`;
+
+
+            element.style.animationDuration =
+                `${duration}s`;
+
+
+            element.style.animationDelay =
+                `${-random(0, duration)}s`;
+
+
+            element.style.setProperty(
+                "--rotation",
+                `${random(-12, 12)}deg`
+            );
+
+
+            background.appendChild(
+                element
+            );
+
+
+            element.addEventListener(
+                "animationend",
+                () => {
+
+                    element.remove();
+
+                    if (active) {
+                        createFallingWord();
+                    }
+
+                },
+                {
+                    once: true
+                }
+            );
+
+        };
+
+
+        for (
+            let index = 0;
+            index < CONFIG.fallingWordCount;
+            index++
+        ) {
 
             createFallingWord();
 
         }
-    );
-
-}
 
 
-if (fallingBackground) {
+        /*
+            Stop creating new words if the page
+            is being unloaded.
+        */
 
-    for (
-        let i = 0;
-        i < 20;
-        i++
-    ) {
-
-        createFallingWord();
+        window.addEventListener(
+            "pagehide",
+            () => {
+                active = false;
+            },
+            {
+                once: true
+            }
+        );
 
     }
 
-}
+
+    /* =====================================================
+       PROFILE MUSIC
+    ===================================================== */
+
+    function setupProfileMusic() {
+
+        const music =
+            $("#profile-music");
 
 
-/* =========================================================
-   PROFILE MUSIC
-========================================================= */
-
-const music =
-    document.getElementById(
-        "profile-music"
-    );
+        const button =
+            $("#music-button");
 
 
-const musicButton =
-    document.getElementById(
-        "music-button"
-    );
+        const status =
+            $("#music-status");
 
 
-const musicStatus =
-    document.getElementById(
-        "music-status"
-    );
+        if (
+            !music ||
+            !button
+        ) {
+            return;
+        }
 
 
-if (
-    music &&
-    musicButton
-) {
+        const setMusicUI = (
+            label,
+            statusText = ""
+        ) => {
 
-    musicButton.addEventListener(
-        "click",
-        async function() {
-
-            if (music.paused) {
-
-                try {
-
-                    await music.play();
+            button.textContent =
+                label;
 
 
-                    musicButton.textContent =
-                        "Ⅱ PAUSE MUSIC";
+            if (status) {
+
+                status.textContent =
+                    statusText;
+
+            }
+
+        };
 
 
-                    if (musicStatus) {
+        button.addEventListener(
+            "click",
+            async () => {
 
-                        musicStatus.textContent =
-                            "playing...";
+                if (music.paused) {
+
+                    try {
+
+                        await music.play();
+
+
+                        setMusicUI(
+                            "Ⅱ PAUSE MUSIC",
+                            "playing..."
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "BACOTHN music error:",
+                            error
+                        );
+
+
+                        setMusicUI(
+                            "MUSIC UNAVAILABLE",
+                            "check the music file"
+                        );
 
                     }
 
-
-                } catch (error) {
-
-                    musicButton.textContent =
-                        "MUSIC UNAVAILABLE";
-
-
-                    if (musicStatus) {
-
-                        musicStatus.textContent =
-                            "check the music file";
-
-                    }
+                    return;
 
                 }
 
-
-            } else {
 
                 music.pause();
 
 
-                musicButton.textContent =
-                    "▶ PLAY MUSIC";
+                setMusicUI(
+                    "▶ PLAY MUSIC",
+                    "paused"
+                );
+
+            }
+        );
 
 
-                if (musicStatus) {
+        music.addEventListener(
+            "play",
+            () => {
 
-                    musicStatus.textContent =
-                        "paused";
+                setMusicUI(
+                    "Ⅱ PAUSE MUSIC",
+                    "playing..."
+                );
+
+            }
+        );
+
+
+        music.addEventListener(
+            "pause",
+            () => {
+
+                if (
+                    !music.ended
+                ) {
+
+                    setMusicUI(
+                        "▶ PLAY MUSIC",
+                        "paused"
+                    );
 
                 }
 
             }
+        );
 
+
+        music.addEventListener(
+            "ended",
+            () => {
+
+                setMusicUI(
+                    "▶ PLAY MUSIC",
+                    "finished"
+                );
+
+            }
+        );
+
+
+        music.addEventListener(
+            "error",
+            () => {
+
+                setMusicUI(
+                    "MUSIC UNAVAILABLE",
+                    "check the music file"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FOOTER YEAR
+    ===================================================== */
+
+    function setupFooterYear() {
+
+        const yearElement =
+            $("#year");
+
+
+        if (!yearElement) {
+            return;
         }
-    );
 
 
-    music.addEventListener(
-        "ended",
-        function() {
+        yearElement.textContent =
+            String(
+                new Date().getFullYear()
+            );
 
-            musicButton.textContent =
-                "▶ PLAY MUSIC";
-
-        }
-    );
-
-}
+    }
 
 
-/* =========================================================
-   FOOTER YEAR
-========================================================= */
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
 
-const yearElement =
-    document.getElementById(
-        "year"
-    );
+    function init() {
+
+        setupTitleGlitch();
+
+        setupPagesMenu();
+
+        setupCopyButtons();
+
+        setupFallingBackground();
+
+        setupProfileMusic();
+
+        setupFooterYear();
+
+    }
 
 
-if (yearElement) {
+    /* =====================================================
+       START
+    ===================================================== */
 
-    yearElement.textContent =
-        new Date().getFullYear();
+    if (
+        document.readyState ===
+        "loading"
+    ) {
 
-}
+        document.addEventListener(
+            "DOMContentLoaded",
+            init,
+            {
+                once: true
+            }
+        );
+
+    } else {
+
+        init();
+
+    }
+
+})();
