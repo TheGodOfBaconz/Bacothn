@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIF Maker — BACOTHN</title>
+<meta name="description" content="Turn a video or one or more images into a customizable GIF, entirely in your browser.">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+  /* =========================================================
+     GIF MAKER — PAGE-SPECIFIC STYLES
+     (Extends the tokens defined in style.css :root)
+     ========================================================= */
+
+  .tool-page {
+    min-height: 100svh;
+    background: radial-gradient(circle at 50% 0%, #171717 0%, #090909 38%, #050505 100%);
+  }
+
+  .tool-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    background: rgba(5, 5, 5, 0.55);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+  }
+
+  .tool-logo {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    transition: color var(--fast);
+  }
+
+  .tool-logo:hover { color: var(--red); }
+
+  .tool-header-tag {
+    color: #555555;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+
+  .tool-main {
+    width: 100%;
+    max-width: 1120px;
+    margin: auto;
+    padding: 155px 30px 100px;
+  }
+
+  .tool-hero {
+    max-width: 750px;
+    margin: 0 auto 70px;
+    text-align: center;
+  }
+
+  .tool-eyebrow {
+    margin-bottom: 20px;
+    color: var(--red-bright);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 5px;
+  }
+
+  .tool-hero h1 {
+    margin-bottom: 22px;
+    color: #ffffff;
+    font-size: clamp(38px, 6.5vw, 68px);
+    font-weight: 950;
+    letter-spacing: -3px;
+    line-height: 0.98;
+  }
+
+  .tool-hero p {
+    max-width: 560px;
+    margin: auto;
+    color: #777777;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .tool-card {
+    background: linear-gradient(145deg, #0f0f0f, #0b0b0b);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+  }
+
+  .tool-card h2 {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .tool-card-sub {
+    color: #666666;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+
+  /* ---------- Dropzone ---------- */
+
+  .dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 220px;
+    padding: 30px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1.5px dashed #333333;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--fast), background var(--fast);
+  }
+
+  .dropzone:hover,
+  .dropzone:focus-visible {
+    border-color: rgba(255, 30, 30, 0.45);
+    background: rgba(255, 0, 0, 0.03);
+  }
+
+  .dropzone.dragover {
+    border-color: var(--red-bright);
+    background: rgba(255, 0, 0, 0.07);
+  }
+
+  .dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .dropzone-icon {
+    font-size: 26px;
+    color: var(--red-bright);
+  }
+
+  .dropzone-title {
+    color: #eeeeee;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .dropzone-sub {
+    color: #555555;
+    font-size: 11px;
+    max-width: 320px;
+  }
+
+  .file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .file-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #262626;
+    border-radius: 5px;
+    color: #999999;
+    font-size: 11px;
+    font-weight: 600;
+    max-width: 100%;
+  }
+
+  .file-pill span.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+  }
+
+  .file-pill button {
+    color: #666666;
+    background: none;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .file-pill button:hover { color: var(--red-bright); }
+
+  /* ---------- Preview canvas ---------- */
+
+  .preview-frame {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    background: #050505;
+    border: 1px solid #1c1c1c;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .preview-frame img,
+  .preview-frame canvas {
+    max-width: 100%;
+    max-height: 320px;
+    display: block;
+  }
+
+  .preview-empty {
+    color: #3f3f3f;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  /* ---------- Controls ---------- */
+
+  .field-group {
+    margin-bottom: 22px;
+  }
+
+  .field-group:last-child { margin-bottom: 0; }
+
+  .field-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .field-label {
+    color: #cccccc;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .field-value {
+    color: var(--red-bright);
+    font-size: 11px;
+    font-weight: 800;
+    font-family: monospace;
+  }
+
+  .field-hint {
+    margin-top: 8px;
+    color: #555555;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 3px;
+    background: #232323;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--red-bright);
+    border: 2px solid #0b0b0b;
+    box-shadow: 0 0 0 1px rgba(255, 30, 30, 0.4);
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--red-bright);
+    border: 2px solid #0b0b0b;
+    cursor: pointer;
+  }
+
+  input[type="number"],
+  select {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 12px;
+    color: #eeeeee;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid #292929;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, #666 50%), linear-gradient(135deg, #666 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  input[type="number"]:focus,
+  select:focus {
+    border-color: rgba(255, 30, 30, 0.45);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    flex: 0 0 auto;
+  }
+
+  .switch input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .switch-track {
+    position: absolute;
+    inset: 0;
+    background: #262626;
+    border: 1px solid #333333;
+    border-radius: 999px;
+    transition: background var(--fast), border-color var(--fast);
+  }
+
+  .switch-track::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #888888;
+    transition: transform var(--fast), background var(--fast);
+  }
+
+  .switch input:checked + .switch-track {
+    background: rgba(255, 0, 0, 0.18);
+    border-color: rgba(255, 30, 30, 0.5);
+  }
+
+  .switch input:checked + .switch-track::before {
+    background: var(--red-bright);
+    transform: translateX(18px);
+  }
+
+  .switch input:focus-visible + .switch-track {
+    outline: 2px solid rgba(255, 36, 36, 0.7);
+    outline-offset: 2px;
+  }
+
+  .divider {
+    height: 1px;
+    margin: 24px 0;
+    background: #1a1a1a;
+  }
+
+  /* ---------- Buttons ---------- */
+
+  .button.primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #ff2424, #b30000);
+    border-color: transparent;
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.18);
+  }
+
+  .button.primary:hover {
+    box-shadow: 0 14px 36px rgba(255, 0, 0, 0.3);
+  }
+
+  .button.primary:disabled,
+  .button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .button.full {
+    width: 100%;
+  }
+
+  .actions-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  /* ---------- Progress / status ---------- */
+
+  .progress-wrap {
+    margin-top: 18px;
+    display: none;
+  }
+
+  .progress-wrap.active { display: block; }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff2424, #ff6a6a);
+    transition: width 0.15s ease;
+  }
+
+  .status-text {
+    margin-top: 10px;
+    color: #777777;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    min-height: 15px;
+  }
+
+  .status-text.error { color: #ff5c5c; }
+  .status-text.success { color: #4dff8a; }
+
+  /* ---------- Output ---------- */
+
+  .output-card {
+    margin-top: 20px;
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid #202020;
+    border-radius: var(--radius-md);
+    display: none;
+  }
+
+  .output-card.active { display: block; }
+
+  .output-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .meta-tag {
+    padding: 6px 9px;
+    color: #888888;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid #262626;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    font-family: monospace;
+  }
+
+  @media (max-width: 900px) {
+    .tool-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .tool-header { height: 64px; padding: 0 16px; }
+    .tool-main { padding: 120px 16px 70px; }
+    .tool-card { padding: 22px; }
+    .two-col { grid-template-columns: 1fr; }
+    .actions-row { flex-direction: column; }
+  }
+</style>
+</head>
+
+<body class="tool-page">
+
+<header class="tool-header">
+  <a href="index.html" class="tool-logo">BACOTHN</a>
+  <span class="tool-header-tag">GIF MAKER</span>
+</header>
+
+<main class="tool-main">
+
+  <div class="tool-hero">
+    <div class="tool-eyebrow">BACOTHN TOOLS</div>
+    <h1>Turn Clips Into GIFs</h1>
+    <p>
+      Drop in a video, one image, or several images. Everything runs
+      locally in your browser — nothing is uploaded anywhere.
+    </p>
+  </div>
+
+  <div class="tool-grid">
+
+    <!-- ============ LEFT: SOURCE + PREVIEW ============ -->
+    <section class="tool-card">
+      <h2>Source</h2>
+      <p class="tool-card-sub">
+        One video, one image, or multiple images (used as sequential frames).
+        A single image is automatically turned into a 2-frame GIF.
+      </p>
+
+      <label class="dropzone" id="dropzone" tabindex="0">
+        <input
+          type="file"
+          id="fileInput"
+          accept="video/*,image/*"
+          multiple
+          aria-label="Choose a video or image files"
+        >
+        <div class="dropzone-icon" aria-hidden="true">+</div>
+        <div class="dropzone-title">Drop files or click to browse</div>
+        <div class="dropzone-sub">MP4, WebM, MOV, GIF, PNG, JPG, WEBP</div>
+      </label>
+
+      <div class="file-list" id="fileList"></div>
+
+      <div class="preview-frame" id="previewFrame">
+        <span class="preview-empty" id="previewEmpty">NO SOURCE LOADED</span>
+      </div>
+
+      <div class="output-card" id="outputCard">
+        <h2>Result</h2>
+        <div class="preview-frame" id="outputFrame" style="margin-top: 14px;"></div>
+        <div class="output-meta" id="outputMeta"></div>
+        <div class="actions-row">
+          <a href="#" id="downloadLink" class="button primary full" download="bacothn.gif">Download GIF</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RIGHT: CONTROLS ============ -->
+    <section class="tool-card">
+      <h2>Customize</h2>
+      <p class="tool-card-sub">Adjust output before you generate.</p>
+
+      <div class="field-group">
+        <div class="field-label-row">
+          <span class="field-label">Frame rate</span>
+          <span class="field-value" id="fpsValue">10 fps</span>
+        </div>
+        <input type="range" id="fpsRange" min="1" max="30" step="1" value="10">
+        <div class="field-hint">
+          Controls how many frames are extracted per second of video, and the
+          delay between frames for images.
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label-row">
+          <span class="field-label">Output width</span>
+          <span class="field-value" id="widthValue">480 px</span>
+        </div>
+        <input type="range" id="widthRange" min="80" max="960" step="10" value="480">
+        <div class="field-hint">Height scales automatically to keep the source aspect ratio.</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label-row">
+          <span class="field-label">Colors</span>
+          <span class="field-value" id="colorsValue">128</span>
+        </div>
+        <input type="range" id="colorsRange" min="2" max="256" step="1" value="128">
+        <div class="field-hint">Fewer colors = smaller file. GIFs support up to 256.</div>
+      </div>
+
+      <div class="field-group toggle-row">
+        <div>
+          <div class="field-label">Dithering</div>
+          <div class="field-hint" style="margin-top: 4px;">Smooths banding on low color counts.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="ditherToggle" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field-group">
+        <div class="field-label-row">
+          <span class="field-label">Looping</span>
+        </div>
+        <select id="loopMode">
+          <option value="forever" selected>Loop forever</option>
+          <option value="once">Play once</option>
+          <option value="custom">Repeat a set number of times</option>
+        </select>
+      </div>
+
+      <div class="field-group" id="loopCountGroup" style="display: none;">
+        <div class="field-label-row">
+          <span class="field-label">Repeat count</span>
+          <span class="field-value" id="loopCountValue">3</span>
+        </div>
+        <input type="range" id="loopCountRange" min="1" max="50" step="1" value="3">
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field-group toggle-row">
+        <div>
+          <div class="field-label">Trim video</div>
+          <div class="field-hint" style="margin-top: 4px;">Only applies when the source is a video.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="trimToggle">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="field-group two-col" id="trimGroup" style="display: none;">
+        <div>
+          <div class="field-label" style="margin-bottom: 8px;">Start (s)</div>
+          <input type="number" id="trimStart" min="0" step="0.1" value="0">
+        </div>
+        <div>
+          <div class="field-label" style="margin-bottom: 8px;">End (s)</div>
+          <input type="number" id="trimEnd" min="0" step="0.1" placeholder="auto">
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" class="button primary full" id="generateButton" disabled>Generate GIF</button>
+      </div>
+      <div class="actions-row">
+        <button type="button" class="button secondary full" id="resetButton">Clear</button>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+      <div class="status-text" id="statusText" role="status" aria-live="polite"></div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<footer style="border-top: 1px solid #151515; padding: 55px 25px; text-align: center;">
+  <p style="color: #444444; font-size: 12px;">
+    &copy; <span id="year"></span> BACOTHN — built for <a href="index.html" style="color: #777777;">bacothn.github.io</a>
+  </p>
+</footer>
+
+<div id="falling-background" class="falling-background" aria-hidden="true"></div>
+
+<script src="script.js" defer></script>
+
+<script type="module">
+import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm";
+
+(() => {
+  "use strict";
+
+  const MAX_FRAMES = 240;
+  const MIN_DELAY_MS = 20;
+
+  const $ = (id) => document.getElementById(id);
+
+  const dropzone = $("dropzone");
+  const fileInput = $("fileInput");
+  const fileListEl = $("fileList");
+  const previewFrame = $("previewFrame");
+  const previewEmpty = $("previewEmpty");
+
+  const fpsRange = $("fpsRange");
+  const fpsValue = $("fpsValue");
+  const widthRange = $("widthRange");
+  const widthValue = $("widthValue");
+  const colorsRange = $("colorsRange");
+  const colorsValue = $("colorsValue");
+  const ditherToggle = $("ditherToggle");
+
+  const loopMode = $("loopMode");
+  const loopCountGroup = $("loopCountGroup");
+  const loopCountRange = $("loopCountRange");
+  const loopCountValue = $("loopCountValue");
+
+  const trimToggle = $("trimToggle");
+  const trimGroup = $("trimGroup");
+  const trimStart = $("trimStart");
+  const trimEnd = $("trimEnd");
+
+  const generateButton = $("generateButton");
+  const resetButton = $("resetButton");
+
+  const progressWrap = $("progressWrap");
+  const progressFill = $("progressFill");
+  const statusText = $("statusText");
+
+  const outputCard = $("outputCard");
+  const outputFrame = $("outputFrame");
+  const outputMeta = $("outputMeta");
+  const downloadLink = $("downloadLink");
+
+  let videoFile = null;
+  let imageFiles = [];
+  let lastObjectUrl = null;
+  let lastOutputUrl = null;
+  let isProcessing = false;
+
+  /* -----------------------------------------------------
+     UI HELPERS
+  ----------------------------------------------------- */
+
+  function setStatus(message, tone = "") {
+    statusText.textContent = message || "";
+    statusText.className = "status-text" + (tone ? ` ${tone}` : "");
+  }
+
+  function setProgress(fraction) {
+    progressFill.style.width = `${Math.round(fraction * 100)}%`;
+  }
+
+  function showProgress(show) {
+    progressWrap.classList.toggle("active", show);
+    if (!show) setProgress(0);
+  }
+
+  function formatBytes(bytes) {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  function renderFileList() {
+    fileListEl.replaceChildren();
+
+    const all = videoFile ? [videoFile] : imageFiles;
+
+    all.forEach((file) => {
+      const pill = document.createElement("div");
+      pill.className = "file-pill";
+
+      const name = document.createElement("span");
+      name.className = "name";
+      name.textContent = file.name;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "×";
+      remove.setAttribute("aria-label", `Remove ${file.name}`);
+      remove.addEventListener("click", () => {
+        if (videoFile === file) {
+          videoFile = null;
+        } else {
+          imageFiles = imageFiles.filter((f) => f !== file);
+        }
+        renderFileList();
+        renderSourcePreview();
+        updateGenerateState();
+      });
+
+      pill.appendChild(name);
+      pill.appendChild(remove);
+      fileListEl.appendChild(pill);
+    });
+  }
+
+  function clearPreview() {
+    previewFrame.replaceChildren(previewEmpty);
+    previewEmpty.style.display = "block";
+  }
+
+  function renderSourcePreview() {
+    const file = videoFile || imageFiles[0];
+
+    if (!file) {
+      clearPreview();
+      return;
+    }
+
+    previewEmpty.style.display = "none";
+
+    if (lastObjectUrl) {
+      URL.revokeObjectURL(lastObjectUrl);
+    }
+
+    lastObjectUrl = URL.createObjectURL(file);
+
+    previewFrame.replaceChildren();
+
+    if (videoFile) {
+      const video = document.createElement("video");
+      video.src = lastObjectUrl;
+      video.controls = true;
+      video.muted = true;
+      video.playsInline = true;
+      previewFrame.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = lastObjectUrl;
+      img.alt = "Selected image preview";
+      previewFrame.appendChild(img);
+    }
+  }
+
+  function updateGenerateState() {
+    const hasSource = !!videoFile || imageFiles.length > 0;
+    generateButton.disabled = hasSource ? false : true;
+  }
+
+  /* -----------------------------------------------------
+     FILE INTAKE
+  ----------------------------------------------------- */
+
+  function handleFiles(fileListInput) {
+    const files = Array.from(fileListInput || []);
+    if (!files.length) return;
+
+    const incomingVideo = files.find((f) => f.type.startsWith("video/"));
+    const incomingImages = files.filter((f) => f.type.startsWith("image/"));
+
+    if (incomingVideo) {
+      videoFile = incomingVideo;
+      imageFiles = [];
+      if (incomingImages.length) {
+        setStatus("A video was included, so the images were ignored — one video at a time.", "");
+      }
+    } else if (incomingImages.length) {
+      videoFile = null;
+      imageFiles = imageFiles.concat(incomingImages);
+    } else {
+      setStatus("That file type isn't supported.", "error");
+      return;
+    }
+
+    outputCard.classList.remove("active");
+    setStatus("");
+    renderFileList();
+    renderSourcePreview();
+    updateGenerateState();
+  }
+
+  fileInput.addEventListener("change", (event) => {
+    handleFiles(event.target.files);
+    fileInput.value = "";
+  });
+
+  dropzone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropzone.classList.add("dragover");
+  });
+
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("dragover");
+  });
+
+  dropzone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropzone.classList.remove("dragover");
+    handleFiles(event.dataTransfer.files);
+  });
+
+  /* -----------------------------------------------------
+     CONTROL BINDINGS
+  ----------------------------------------------------- */
+
+  fpsRange.addEventListener("input", () => {
+    fpsValue.textContent = `${fpsRange.value} fps`;
+  });
+
+  widthRange.addEventListener("input", () => {
+    widthValue.textContent = `${widthRange.value} px`;
+  });
+
+  colorsRange.addEventListener("input", () => {
+    colorsValue.textContent = colorsRange.value;
+  });
+
+  loopCountRange.addEventListener("input", () => {
+    loopCountValue.textContent = loopCountRange.value;
+  });
+
+  loopMode.addEventListener("change", () => {
+    loopCountGroup.style.display = loopMode.value === "custom" ? "block" : "none";
+  });
+
+  trimToggle.addEventListener("change", () => {
+    trimGroup.style.display = trimToggle.checked ? "grid" : "none";
+  });
+
+  resetButton.addEventListener("click", () => {
+    if (isProcessing) return;
+    videoFile = null;
+    imageFiles = [];
+    renderFileList();
+    renderSourcePreview();
+    updateGenerateState();
+    outputCard.classList.remove("active");
+    setStatus("");
+    showProgress(false);
+  });
+
+  /* -----------------------------------------------------
+     FRAME BUILDING
+  ----------------------------------------------------- */
+
+  function computeTargetSize(sourceWidth, sourceHeight, targetWidth) {
+    const width = Math.max(2, Math.round(targetWidth));
+    const scale = width / sourceWidth;
+    const height = Math.max(2, Math.round(sourceHeight * scale));
+    return { width, height };
+  }
+
+  async function imageToFrame(file, targetWidth) {
+    const url = URL.createObjectURL(file);
+
+    try {
+      const image = await new Promise((resolve, reject) => {
+        const el = new Image();
+        el.onload = () => resolve(el);
+        el.onerror = () => reject(new Error(`Could not load ${file.name}`));
+        el.src = url;
+      });
+
+      const { width, height } = computeTargetSize(image.naturalWidth, image.naturalHeight, targetWidth);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx.drawImage(image, 0, 0, width, height);
+
+      const { data } = ctx.getImageData(0, 0, width, height);
+
+      return { data, width, height };
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  function seekVideo(video, time) {
+    return new Promise((resolve) => {
+      const onSeeked = () => {
+        video.removeEventListener("seeked", onSeeked);
+        resolve();
+      };
+      video.addEventListener("seeked", onSeeked);
+      video.currentTime = time;
+    });
+  }
+
+  async function extractVideoFrames(file, opts) {
+    const { targetWidth, fps, delayMs, trim } = opts;
+    const url = URL.createObjectURL(file);
+
+    const video = document.createElement("video");
+    video.src = url;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "auto";
+
+    try {
+      await new Promise((resolve, reject) => {
+        video.addEventListener("loadedmetadata", resolve, { once: true });
+        video.addEventListener("error", () => reject(new Error("Could not read video metadata.")), { once: true });
+      });
+
+      const duration = video.duration;
+      let start = 0;
+      let end = duration;
+
+      if (trim.enabled) {
+        start = Math.min(Math.max(0, trim.start || 0), duration);
+        end = trim.end ? Math.min(Math.max(start + 0.05, trim.end), duration) : duration;
+      }
+
+      const { width, height } = computeTargetSize(video.videoWidth, video.videoHeight, targetWidth);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+      let totalFrames = Math.max(1, Math.round((end - start) * fps));
+      let capped = false;
+
+      if (totalFrames > MAX_FRAMES) {
+        totalFrames = MAX_FRAMES;
+        capped = true;
+      }
+
+      const frames = [];
+
+      for (let i = 0; i < totalFrames; i++) {
+        const time = totalFrames === 1 ? start : start + (i / (totalFrames - 1)) * (end - start);
+        await seekVideo(video, Math.min(time, duration - 0.01));
+        ctx.drawImage(video, 0, 0, width, height);
+        const { data } = ctx.getImageData(0, 0, width, height);
+        frames.push({ data, width, height, delay: delayMs });
+
+        setProgress((i + 1) / totalFrames * 0.6);
+        setStatus(`Extracting frame ${i + 1} of ${totalFrames}...`);
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+
+      if (capped) {
+        setStatus(`Capped at ${MAX_FRAMES} frames to keep this from freezing your browser.`);
+      }
+
+      return frames;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  /* -----------------------------------------------------
+     ENCODING
+  ----------------------------------------------------- */
+
+  function encodeFrames(frames, { colors, dither, repeat }) {
+    const gif = GIFEncoder();
+    const format = dither ? "rgb444-dither" : "rgb444";
+
+    frames.forEach((frame, i) => {
+      const palette = quantize(frame.data, colors, { format: "rgb444" });
+      const index = applyPalette(frame.data, palette, format);
+
+      gif.writeFrame(index, frame.width, frame.height, {
+        palette,
+        delay: frame.delay,
+        repeat,
+        dispose: -1,
+        first: i === 0,
+      });
+
+      setProgress(0.6 + ((i + 1) / frames.length) * 0.4);
+    });
+
+    gif.finish();
+    return gif.bytes();
+  }
+
+  function getLoopRepeat() {
+    if (loopMode.value === "forever") return 0;
+    if (loopMode.value === "once") return -1;
+    return Number(loopCountRange.value) || 1;
+  }
+
+  /* -----------------------------------------------------
+     MAIN PIPELINE
+  ----------------------------------------------------- */
+
+  generateButton.addEventListener("click", async () => {
+    if (isProcessing) return;
+    if (!videoFile && imageFiles.length === 0) return;
+
+    isProcessing = true;
+    generateButton.disabled = true;
+    resetButton.disabled = true;
+    showProgress(true);
+    setProgress(0);
+    setStatus("Preparing frames...");
+    outputCard.classList.remove("active");
+
+    try {
+      const targetWidth = Number(widthRange.value);
+      const fps = Number(fpsRange.value);
+      const delayMs = Math.max(MIN_DELAY_MS, Math.round(1000 / fps));
+      const colors = Number(colorsRange.value);
+      const dither = ditherToggle.checked;
+      const repeat = getLoopRepeat();
+
+      let frames = [];
+
+      if (videoFile) {
+        frames = await extractVideoFrames(videoFile, {
+          targetWidth,
+          fps,
+          delayMs,
+          trim: {
+            enabled: trimToggle.checked,
+            start: Number(trimStart.value) || 0,
+            end: trimEnd.value ? Number(trimEnd.value) : null,
+          },
+        });
+      } else if (imageFiles.length === 1) {
+        setStatus("Building 2-frame GIF from your image...");
+        const frame = await imageToFrame(imageFiles[0], targetWidth);
+        frames = [
+          { ...frame, delay: delayMs },
+          { ...frame, delay: delayMs },
+        ];
+      } else {
+        for (let i = 0; i < imageFiles.length; i++) {
+          setStatus(`Reading image ${i + 1} of ${imageFiles.length}...`);
+          const frame = await imageToFrame(imageFiles[i], targetWidth);
+          frames.push({ ...frame, delay: delayMs });
+          setProgress(((i + 1) / imageFiles.length) * 0.6);
+          await new Promise((r) => requestAnimationFrame(r));
+        }
+      }
+
+      if (!frames.length) {
+        throw new Error("No frames could be built from that source.");
+      }
+
+      setStatus("Encoding GIF...");
+      const bytes = encodeFrames(frames, { colors, dither, repeat });
+
+      const blob = new Blob([bytes], { type: "image/gif" });
+
+      if (lastOutputUrl) URL.revokeObjectURL(lastOutputUrl);
+      lastOutputUrl = URL.createObjectURL(blob);
+
+      outputFrame.replaceChildren();
+      const img = document.createElement("img");
+      img.src = lastOutputUrl;
+      img.alt = "Generated GIF preview";
+      outputFrame.appendChild(img);
+
+      outputMeta.replaceChildren();
+      const metaItems = [
+        `${frames[0].width}×${frames[0].height}px`,
+        `${frames.length} frames`,
+        `${fps} fps`,
+        `${colors} colors`,
+        formatBytes(blob.size),
+      ];
+      metaItems.forEach((text) => {
+        const tag = document.createElement("span");
+        tag.className = "meta-tag";
+        tag.textContent = text;
+        outputMeta.appendChild(tag);
+      });
+
+      downloadLink.href = lastOutputUrl;
+      const sourceName = (videoFile || imageFiles[0]).name.replace(/\.[^.]+$/, "");
+      downloadLink.download = `${sourceName || "bacothn"}.gif`;
+
+      outputCard.classList.add("active");
+      setProgress(1);
+      setStatus(`Done — ${formatBytes(blob.size)} GIF ready.`, "success");
+    } catch (error) {
+      console.error("BACOTHN gif maker error:", error);
+      setStatus(error.message || "Something went wrong generating the GIF.", "error");
+    } finally {
+      isProcessing = false;
+      generateButton.disabled = false;
+      resetButton.disabled = false;
+      updateGenerateState();
+      window.setTimeout(() => showProgress(false), 600);
+    }
+  });
+
+  updateGenerateState();
+})();
+</script>
+
+</body>
+</html>
