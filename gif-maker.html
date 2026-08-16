@@ -216,6 +216,12 @@
 
   .file-pill button:hover { color: var(--red-bright); }
 
+  /* ---------- Output name ---------- */
+
+  .filename-group {
+    margin-top: 18px;
+  }
+
   /* ---------- Preview canvas ---------- */
 
   .preview-frame {
@@ -313,6 +319,7 @@
   }
 
   input[type="number"],
+  input[type="text"],
   select {
     width: 100%;
     min-height: 38px;
@@ -335,6 +342,7 @@
   }
 
   input[type="number"]:focus,
+  input[type="text"]:focus,
   select:focus {
     border-color: rgba(255, 30, 30, 0.45);
   }
@@ -409,6 +417,60 @@
     height: 1px;
     margin: 24px 0;
     background: #1a1a1a;
+  }
+
+  /* ---------- Trim range slider (two-handle) ---------- */
+
+  .trim-slider {
+    position: relative;
+    height: 32px;
+    margin-top: 6px;
+  }
+
+  .trim-track {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 3px;
+    background: #232323;
+  }
+
+  .trim-track-fill {
+    position: absolute;
+    top: 13px;
+    height: 4px;
+    border-radius: 3px;
+    background: var(--red-bright);
+    pointer-events: none;
+  }
+
+  .trim-slider input[type="range"] {
+    position: absolute;
+    top: 9px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .trim-slider input[type="range"]::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+
+  .trim-slider input[type="range"]::-moz-range-track {
+    background: transparent;
+  }
+
+  .trim-slider input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+
+  .trim-slider input[type="range"]::-moz-range-thumb {
+    pointer-events: auto;
   }
 
   /* ---------- Buttons ---------- */
@@ -569,6 +631,21 @@
 
       <div class="file-list" id="fileList"></div>
 
+      <div class="field-group filename-group">
+        <div class="field-label-row">
+          <span class="field-label">Output name</span>
+        </div>
+        <input
+          type="text"
+          id="filenameInput"
+          placeholder="bacothn"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="GIF output filename"
+        >
+        <div class="field-hint">What the downloaded file is named. No need to add .gif.</div>
+      </div>
+
       <div class="preview-frame" id="previewFrame">
         <span class="preview-empty" id="previewEmpty">NO SOURCE LOADED</span>
       </div>
@@ -650,6 +727,17 @@
         <input type="range" id="loopCountRange" min="1" max="50" step="1" value="3">
       </div>
 
+      <div class="field-group toggle-row">
+        <div>
+          <div class="field-label">Boomerang</div>
+          <div class="field-hint" style="margin-top: 4px;">Plays forward, then reverses back to the start.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="boomerangToggle">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
       <div class="divider"></div>
 
       <div class="field-group toggle-row">
@@ -663,15 +751,18 @@
         </label>
       </div>
 
-      <div class="field-group two-col" id="trimGroup" style="display: none;">
-        <div>
-          <div class="field-label" style="margin-bottom: 8px;">Start (s)</div>
-          <input type="number" id="trimStart" min="0" step="0.1" value="0">
+      <div class="field-group" id="trimGroup" style="display: none;">
+        <div class="field-label-row">
+          <span class="field-label">Selected range</span>
+          <span class="field-value" id="trimRangeValue">0:00 – 0:00</span>
         </div>
-        <div>
-          <div class="field-label" style="margin-bottom: 8px;">End (s)</div>
-          <input type="number" id="trimEnd" min="0" step="0.1" placeholder="auto">
+        <div class="trim-slider" id="trimSlider">
+          <div class="trim-track"></div>
+          <div class="trim-track-fill" id="trimTrackFill"></div>
+          <input type="range" id="trimStartRange" min="0" max="100" step="0.1" value="0" aria-label="Trim start">
+          <input type="range" id="trimEndRange" min="0" max="100" step="0.1" value="100" aria-label="Trim end">
         </div>
+        <div class="field-hint">Drag either handle to pick the part of the video to use.</div>
       </div>
 
       <div class="actions-row">
@@ -700,8 +791,6 @@
   </p>
 </footer>
 
-<div id="falling-background" class="falling-background" aria-hidden="true"></div>
-
 <script src="script.js" defer></script>
 
 <script type="module">
@@ -712,6 +801,7 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
 
   const MAX_FRAMES = 240;
   const MIN_DELAY_MS = 20;
+  const MIN_TRIM_GAP = 0.2;
 
   const $ = (id) => document.getElementById(id);
 
@@ -720,6 +810,8 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
   const fileListEl = $("fileList");
   const previewFrame = $("previewFrame");
   const previewEmpty = $("previewEmpty");
+
+  const filenameInput = $("filenameInput");
 
   const fpsRange = $("fpsRange");
   const fpsValue = $("fpsValue");
@@ -734,10 +826,14 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
   const loopCountRange = $("loopCountRange");
   const loopCountValue = $("loopCountValue");
 
+  const boomerangToggle = $("boomerangToggle");
+
   const trimToggle = $("trimToggle");
   const trimGroup = $("trimGroup");
-  const trimStart = $("trimStart");
-  const trimEnd = $("trimEnd");
+  const trimStartRange = $("trimStartRange");
+  const trimEndRange = $("trimEndRange");
+  const trimTrackFill = $("trimTrackFill");
+  const trimRangeValue = $("trimRangeValue");
 
   const generateButton = $("generateButton");
   const resetButton = $("resetButton");
@@ -779,6 +875,17 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  function formatTime(seconds) {
+    const total = Math.max(0, seconds || 0);
+    const m = Math.floor(total / 60);
+    const s = Math.floor(total % 60);
+    return `${m}:${String(s).padStart(2, "0")}`;
+  }
+
+  function sanitizeFilename(name) {
+    return (name || "").trim().replace(/\.gif$/i, "").replace(/[\\/:*?"<>|]+/g, "").trim();
   }
 
   function renderFileList() {
@@ -859,6 +966,80 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
   }
 
   /* -----------------------------------------------------
+     TRIM SLIDER
+  ----------------------------------------------------- */
+
+  function updateTrimFill() {
+    const max = Number(trimEndRange.max) || 1;
+    const s = Number(trimStartRange.value);
+    const e = Number(trimEndRange.value);
+
+    const leftPct = (s / max) * 100;
+    const rightPct = (e / max) * 100;
+
+    trimTrackFill.style.left = `${leftPct}%`;
+    trimTrackFill.style.width = `${Math.max(0, rightPct - leftPct)}%`;
+
+    trimRangeValue.textContent = `${formatTime(s)} – ${formatTime(e)}`;
+  }
+
+  function resetTrimBounds(duration) {
+    const max = duration && isFinite(duration) ? duration : 100;
+
+    trimStartRange.max = max;
+    trimEndRange.max = max;
+    trimStartRange.value = 0;
+    trimEndRange.value = max;
+
+    updateTrimFill();
+  }
+
+  function loadVideoDuration(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const probe = document.createElement("video");
+
+      probe.preload = "metadata";
+      probe.muted = true;
+      probe.src = url;
+
+      probe.addEventListener(
+        "loadedmetadata",
+        () => {
+          URL.revokeObjectURL(url);
+          resolve(probe.duration);
+        },
+        { once: true }
+      );
+
+      probe.addEventListener(
+        "error",
+        () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("Could not read video duration."));
+        },
+        { once: true }
+      );
+    });
+  }
+
+  trimStartRange.addEventListener("input", () => {
+    const minGap = MIN_TRIM_GAP;
+    if (Number(trimStartRange.value) > Number(trimEndRange.value) - minGap) {
+      trimStartRange.value = Math.max(0, Number(trimEndRange.value) - minGap);
+    }
+    updateTrimFill();
+  });
+
+  trimEndRange.addEventListener("input", () => {
+    const minGap = MIN_TRIM_GAP;
+    if (Number(trimEndRange.value) < Number(trimStartRange.value) + minGap) {
+      trimEndRange.value = Number(trimStartRange.value) + minGap;
+    }
+    updateTrimFill();
+  });
+
+  /* -----------------------------------------------------
      FILE INTAKE
   ----------------------------------------------------- */
 
@@ -872,6 +1053,15 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
     if (incomingVideo) {
       videoFile = incomingVideo;
       imageFiles = [];
+
+      resetTrimBounds(null);
+
+      loadVideoDuration(videoFile)
+        .then((duration) => resetTrimBounds(duration))
+        .catch(() => {
+          setStatus("Couldn't read this video's duration — trimming may be inaccurate.", "error");
+        });
+
       if (incomingImages.length) {
         setStatus("A video was included, so the images were ignored — one video at a time.", "");
       }
@@ -881,6 +1071,11 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
     } else {
       setStatus("That file type isn't supported.", "error");
       return;
+    }
+
+    const primary = videoFile || imageFiles[0];
+    if (primary) {
+      filenameInput.placeholder = primary.name.replace(/\.[^.]+$/, "") || "bacothn";
     }
 
     outputCard.classList.remove("active");
@@ -935,13 +1130,23 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
   });
 
   trimToggle.addEventListener("change", () => {
-    trimGroup.style.display = trimToggle.checked ? "grid" : "none";
+    trimGroup.style.display = trimToggle.checked ? "block" : "none";
+  });
+
+  filenameInput.addEventListener("input", () => {
+    if (outputCard.classList.contains("active")) {
+      const sanitized = sanitizeFilename(filenameInput.value) || sanitizeFilename(filenameInput.placeholder) || "bacothn";
+      downloadLink.download = `${sanitized}.gif`;
+    }
   });
 
   resetButton.addEventListener("click", () => {
     if (isProcessing) return;
     videoFile = null;
     imageFiles = [];
+    filenameInput.value = "";
+    filenameInput.placeholder = "bacothn";
+    resetTrimBounds(null);
     renderFileList();
     renderSourcePreview();
     updateGenerateState();
@@ -1130,8 +1335,8 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
           delayMs,
           trim: {
             enabled: trimToggle.checked,
-            start: Number(trimStart.value) || 0,
-            end: trimEnd.value ? Number(trimEnd.value) : null,
+            start: Number(trimStartRange.value) || 0,
+            end: Number(trimEndRange.value) || null,
           },
         });
       } else if (imageFiles.length === 1) {
@@ -1153,6 +1358,11 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
 
       if (!frames.length) {
         throw new Error("No frames could be built from that source.");
+      }
+
+      if (boomerangToggle.checked && frames.length > 2) {
+        const reversedMiddle = frames.slice(1, -1).reverse();
+        frames = frames.concat(reversedMiddle);
       }
 
       setStatus("Encoding GIF...");
@@ -1184,9 +1394,11 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
         outputMeta.appendChild(tag);
       });
 
-      downloadLink.href = lastOutputUrl;
       const sourceName = (videoFile || imageFiles[0]).name.replace(/\.[^.]+$/, "");
-      downloadLink.download = `${sourceName || "bacothn"}.gif`;
+      const finalName = sanitizeFilename(filenameInput.value) || sanitizeFilename(sourceName) || "bacothn";
+
+      downloadLink.href = lastOutputUrl;
+      downloadLink.download = `${finalName}.gif`;
 
       outputCard.classList.add("active");
       setProgress(1);
@@ -1203,6 +1415,7 @@ import { GIFEncoder, quantize, applyPalette } from "https://cdn.jsdelivr.net/npm
     }
   });
 
+  updateTrimFill();
   updateGenerateState();
 })();
 </script>
