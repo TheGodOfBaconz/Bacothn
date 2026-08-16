@@ -47,10 +47,6 @@
             {
                 name: "LINKS",
                 file: "links.html"
-            },
-            {
-                name: "ERROR",
-                file: "error.html"
             }
         ],
 
